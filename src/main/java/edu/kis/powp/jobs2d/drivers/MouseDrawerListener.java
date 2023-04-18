@@ -16,12 +16,13 @@ public class MouseDrawerListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getButton() + " mouse clicked X:" + e.getX() + " Y: " + e.getY());
         currentDriver = driverManager.getCurrentDriver();
         if(e.getButton() == MouseEvent.BUTTON1){
-            currentDriver.setPosition(e.getX(), e.getY());
+            currentDriver.setPosition(e.getY(), e.getX());
         }
-        else if(e.getButton() == MouseEvent.BUTTON2){
-            currentDriver.operateTo(e.getX(), e.getY());
+        else if(e.getButton() == MouseEvent.BUTTON3){
+            currentDriver.operateTo(e.getY(), e.getX());
         }
     }
 
