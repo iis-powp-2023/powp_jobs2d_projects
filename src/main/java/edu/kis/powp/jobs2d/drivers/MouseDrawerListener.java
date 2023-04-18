@@ -10,7 +10,7 @@ public class MouseDrawerListener implements MouseListener {
     private DriverManager driverManager;
     private Job2dDriver currentDriver;
 
-    MouseDrawerListener(DriverManager driverManager){
+    public MouseDrawerListener(DriverManager driverManager){
         this.driverManager = driverManager;
     }
 
