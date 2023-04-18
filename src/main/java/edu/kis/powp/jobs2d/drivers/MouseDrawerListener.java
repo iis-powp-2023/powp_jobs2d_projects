@@ -7,22 +7,23 @@ import java.awt.event.MouseListener;
 
 public class MouseDrawerListener implements MouseListener {
 
-    private DriverManager driverManager;
-    private Job2dDriver currentDriver;
+    private final DriverManager driverManager;
 
     public MouseDrawerListener(DriverManager driverManager){
         this.driverManager = driverManager;
+
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getButton() + " mouse clicked X:" + e.getX() + " Y: " + e.getY());
-        currentDriver = driverManager.getCurrentDriver();
+        Job2dDriver currentDriver = driverManager.getCurrentDriver();
+        int xOffset = 268;
+        int yOffset = 226;
         if(e.getButton() == MouseEvent.BUTTON1){
-            currentDriver.setPosition(e.getY(), e.getX());
+            currentDriver.setPosition(e.getX() - xOffset, e.getY() - yOffset);
         }
         else if(e.getButton() == MouseEvent.BUTTON3){
-            currentDriver.operateTo(e.getY(), e.getX());
+            currentDriver.operateTo(e.getX() - xOffset, e.getY() - yOffset);
         }
     }
 
