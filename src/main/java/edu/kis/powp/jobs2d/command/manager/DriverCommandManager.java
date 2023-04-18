@@ -51,6 +51,23 @@ public class DriverCommandManager {
 			public String toString() {
 				return name;
 			}
+
+            @Override
+            public void setDriverCommands(List<DriverCommand> driver) {
+               driverCommands = driver;
+            }
+
+            @Override
+            public List<DriverCommand> getDriverCommands() {
+                return driverCommands;
+            }
+
+            @Override
+            public Object clone() throws CloneNotSupportedException {
+                ICompoundCommand cpy = (ICompoundCommand) super.clone();
+                cpy.setDriverCommands(List.copyOf(driverCommands));
+                return cpy;
+            }
 		});
 
 	}
