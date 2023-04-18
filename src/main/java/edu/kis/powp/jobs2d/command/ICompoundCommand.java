@@ -9,4 +9,10 @@ public interface ICompoundCommand extends DriverCommand {
 
     public Iterator<DriverCommand> iterator();
 
+
+    @Override
+    public default void accept(CommandVisitor commandVisitor) {
+        commandVisitor.visitICompoundCommand(this);
+    }
+
 }
