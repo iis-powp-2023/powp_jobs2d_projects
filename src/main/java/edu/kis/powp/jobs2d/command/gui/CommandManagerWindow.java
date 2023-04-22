@@ -15,6 +15,11 @@ import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.observer.Subscriber;
 
+import edu.kis.powp.jobs2d.command.DriverCommand;
+
+//import edu.kis.powp.jobs2d.command.gui.CommandImporter;
+import java.util.Scanner;
+
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private CommandManager commandManager;
@@ -23,6 +28,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
+
+    private JTextArea textInput;
 
     /**
      * 
@@ -57,7 +64,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(currentCommandField, c);
         updateCurrentCommandField();
 
-        JTextField textInput = new JTextField();
+        textInput = new JTextArea("Write here for command import");
+        textInput.setEditable(true);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
@@ -90,7 +98,55 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     private void importCommand() {
-        System.out.println("importCommand");
+        try
+        {
+            String input = textInput.getText();
+            if (input.equals(""))
+            {
+                currentCommandField.setText("Write here for command import");
+                return;
+            }
+            else if (input.equals("Write here for command import"))
+            {
+                return;
+            }
+
+            String[] elements = input.split(".");
+
+            switch (elements[elements.length - 1])
+            {
+                case "txt":
+                {
+
+                }
+                break;
+
+                default:
+                {
+                    List<DriverCommand> command =  CommandImporter.fromText(input);
+                    Scanner scanner = new Scanner(input);
+                    String name = scanner.nextLine();
+                    scanner.close();
+                    if (command == null)
+                    {
+                        input = "This command was incorrect" + input;
+                        textInput.setText(input);
+                        return;
+                    }
+
+                    commandManager.setCurrentCommand(command, name);
+                    textInput.setText("Write here for command import");
+                }
+            }
+    
+            
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
     }
 
     private void clearCommand() {
