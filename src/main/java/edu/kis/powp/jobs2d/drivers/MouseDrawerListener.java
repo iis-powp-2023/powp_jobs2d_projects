@@ -8,22 +8,23 @@ import java.awt.event.MouseListener;
 public class MouseDrawerListener implements MouseListener {
 
     private final DriverManager driverManager;
+    private final int panelWidth;
+    private final int panelHeight;
 
-    public MouseDrawerListener(DriverManager driverManager){
+    public MouseDrawerListener(DriverManager driverManager, int panelWidth, int panelHeight){
         this.driverManager = driverManager;
-
+        this.panelWidth = panelWidth;
+        this.panelHeight = panelHeight;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         Job2dDriver currentDriver = driverManager.getCurrentDriver();
-        int xOffset = 268;
-        int yOffset = 226;
         if(e.getButton() == MouseEvent.BUTTON1){
-            currentDriver.setPosition(e.getX() - xOffset, e.getY() - yOffset);
+            currentDriver.setPosition(e.getX() - (panelWidth / 2), e.getY() - (panelHeight / 2));
         }
         else if(e.getButton() == MouseEvent.BUTTON3){
-            currentDriver.operateTo(e.getX() - xOffset, e.getY() - yOffset);
+            currentDriver.operateTo(e.getX() - (panelWidth / 2), e.getY() - (panelHeight / 2));
         }
     }
 
