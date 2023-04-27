@@ -5,6 +5,7 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -59,7 +60,7 @@ public class TestJobs2dApp {
     private static void setupDrivers(Application application) {
         DriverComposite composite = new DriverComposite();
 
-        Job2dDriver loggerDriver = new LoggerDriver();
+        Job2dDriver loggerDriver = new PositionLoggingDriver();
         DriverFeature.addDriver("Logger driver", loggerDriver);
         composite.addDriver(loggerDriver);
 
