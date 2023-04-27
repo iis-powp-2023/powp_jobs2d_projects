@@ -6,10 +6,7 @@ import java.util.logging.Logger;
 
 public class PositionLoggingDriver implements Job2dDriver {
     Logger logger = Logger.getLogger("global");
-    int operationCount = 0;
-
-    public PositionLoggingDriver() {
-    }
+    private int operationCount = 0;
 
     public void setPosition(int x, int y) {
         this.logger.info("(" + x + ", " + y + ")\tSetting position\t  [#" + (++operationCount) + "]");
