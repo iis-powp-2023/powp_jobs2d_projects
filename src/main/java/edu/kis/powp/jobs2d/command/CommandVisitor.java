@@ -4,7 +4,14 @@ public class CommandVisitor implements ICommandVisitor {
 
 	@Override
 	public void visit(ICompoundCommand command) {
-		System.out.println("Displaying ICompoundCommand");
+		int commandsCount = 0;
+		
+		while(command.iterator().hasNext()) {
+			commandsCount++;
+			command.iterator().next();
+		}
+		
+		System.out.println("Compound commands count = " + commandsCount);
 	}
 
 	@Override
