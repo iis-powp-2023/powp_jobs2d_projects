@@ -9,7 +9,6 @@ import edu.kis.powp.jobs2d.features.RecordFeature;
 public class SelectStopRecordingOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        //stop recording
         RecordFeature.stopRecording();
     }
 }

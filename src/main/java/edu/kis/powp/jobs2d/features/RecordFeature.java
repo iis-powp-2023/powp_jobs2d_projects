@@ -66,18 +66,4 @@ public class RecordFeature {
 }
 
 
-        /*
-        public static void addDriver(String name, Job2dDriver driver) {
-            SelectDriverMenuOptionListener listener = new SelectDriverMenuOptionListener(driver, driverManager);
-            app.addComponentMenuElement(edu.kis.powp.jobs2d.features.DriverFeature.class, name, listener);
-        }
-
-        /**
-         * Update driver info.
-         */
-        /*
-        public static void updateDriverInfo() {
-            app.updateInfo(driverManager.getCurrentDriver().toString());
-        }
-        */
 
