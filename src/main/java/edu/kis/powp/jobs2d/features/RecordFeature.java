@@ -1,8 +1,15 @@
 package edu.kis.powp.jobs2d.features;
 
+import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
+import edu.kis.powp.jobs2d.events.SelectClearPanelOptionListener;
+import edu.kis.powp.jobs2d.events.SelectStartRecordingOptionListener;
+import edu.kis.powp.jobs2d.events.SelectStopRecordingOptionListener;
+import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
+
+
 
 public class RecordFeature {
 
@@ -14,8 +21,17 @@ public class RecordFeature {
      * @param application Application context.
      */
     public static void setupRecorderPlugin(Application application) {
+        SelectStartRecordingOptionListener selectStartRecordingOptionListener = new SelectStartRecordingOptionListener();
+        SelectStopRecordingOptionListener selectStopRecordingOptionListener = new SelectStopRecordingOptionListener();
+        SelectClearRecordingOptionListener selectClearRecordingOptionListener = new SelectClearRecordingOptionListener();
+
+
         app = application;
         app.addComponentMenu(edu.kis.powp.jobs2d.features.RecordFeature.class, "Recorder");
+        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Start Recording", selectStartRecordingOptionListener);
+        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Stop Recording", selectStopRecordingOptionListener);
+        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Clear Recording", selectClearRecordingOptionListener);
+
     }
 }
 
