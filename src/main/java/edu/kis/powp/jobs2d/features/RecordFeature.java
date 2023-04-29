@@ -11,6 +11,7 @@ import edu.kis.powp.jobs2d.events.SelectStartRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectStopRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
 
+import java.util.List;
 
 
 public class RecordFeature {
@@ -56,6 +57,10 @@ public class RecordFeature {
 
     public static void clearRecording(){
         commandRecorder.clearCommand();
+    }
+
+    public static List<DriverCommand> getCommands(){
+        return commandRecorder.getCommands();
     }
 
 }

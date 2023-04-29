@@ -16,4 +16,8 @@ public class CommandRecorder {
         this.driverCommands.clear();
     }
 
+    public List<DriverCommand> getCommands(){
+        return driverCommands;
+    }
+
 }
