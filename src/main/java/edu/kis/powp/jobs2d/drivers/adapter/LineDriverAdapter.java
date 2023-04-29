@@ -3,6 +3,9 @@ package edu.kis.powp.jobs2d.drivers.adapter;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
+import edu.kis.powp.jobs2d.features.RecordFeature;
 
 /**
  * Line adapter - Job2dDriver with DrawPanelController object.
@@ -25,6 +28,7 @@ public class LineDriverAdapter implements Job2dDriver {
     public void setPosition(int x, int y) {
         this.startX = x;
         this.startY = y;
+        RecordFeature.recordCommand(new SetPositionCommand(x,y));
     }
 
     @Override
@@ -34,6 +38,7 @@ public class LineDriverAdapter implements Job2dDriver {
         line.setEndCoordinates(x, y);
 
         drawController.drawLine(line);
+        RecordFeature.recordCommand(new OperateToCommand(x,y));
     }
 
     @Override
