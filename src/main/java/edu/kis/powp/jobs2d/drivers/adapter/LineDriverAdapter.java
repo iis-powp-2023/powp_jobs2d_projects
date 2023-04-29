@@ -33,12 +33,12 @@ public class LineDriverAdapter implements Job2dDriver {
 
     @Override
     public void operateTo(int x, int y) {
+        RecordFeature.recordCommand(new OperateToCommand(x,y));
         line.setStartCoordinates(this.startX, this.startY);
         this.setPosition(x, y);
         line.setEndCoordinates(x, y);
 
         drawController.drawLine(line);
-        RecordFeature.recordCommand(new OperateToCommand(x,y));
     }
 
     @Override
