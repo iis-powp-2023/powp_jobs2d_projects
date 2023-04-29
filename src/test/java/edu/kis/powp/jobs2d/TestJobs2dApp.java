@@ -9,10 +9,7 @@ import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
-import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
+import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
@@ -48,6 +45,7 @@ public class TestJobs2dApp {
      */
     private static void setupCommandTests(Application application) {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
+        application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
