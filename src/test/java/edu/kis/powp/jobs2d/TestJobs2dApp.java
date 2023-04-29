@@ -16,6 +16,7 @@ import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.features.RecordFeature;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -120,6 +121,7 @@ public class TestJobs2dApp {
                 CommandsFeature.setupCommandManager();
 
                 DriverFeature.setupDriverPlugin(app);
+                RecordFeature.setupRecorderPlugin(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
