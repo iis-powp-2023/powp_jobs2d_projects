@@ -45,6 +45,19 @@ public class RecordFeature {
             commandRecorder.addCommand(command);
         }
     }
+
+    public static void setRecording(){
+        isRecording = true;
+    }
+
+    public static void stopRecording(){
+        isRecording = false;
+    }
+
+    public static void clearRecording(){
+        commandRecorder.clearCommand();
+    }
+
 }
 
 

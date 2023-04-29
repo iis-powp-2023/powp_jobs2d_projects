@@ -11,4 +11,9 @@ public class CommandRecorder {
     public void addCommand(DriverCommand command){
         driverCommands.add(command);
     }
+
+    public void clearCommand(){
+        this.driverCommands.clear();
+    }
+
 }
