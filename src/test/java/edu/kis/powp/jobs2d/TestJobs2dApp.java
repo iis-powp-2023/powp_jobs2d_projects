@@ -9,13 +9,12 @@ import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
-import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
+import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
+import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.features.RecordFeature;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -47,6 +46,7 @@ public class TestJobs2dApp {
      */
     private static void setupCommandTests(Application application) {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
+        application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
@@ -60,18 +60,18 @@ public class TestJobs2dApp {
     private static void setupDrivers(Application application) {
         DriverComposite composite = new DriverComposite();
 
-        Job2dDriver loggerDriver = new PositionLoggingDriver();
+        Job2dDriver loggerDriver = new RecordingDriver(new PositionLoggingDriver());
         DriverFeature.addDriver("Logger driver", loggerDriver);
         composite.addDriver(loggerDriver);
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        Job2dDriver driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         DriverFeature.addDriver("Line Simulator", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
 
-        driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+        driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
         DriverFeature.addDriver("Special line Simulator", driver);
 
         DriverFeature.addDriver("Logger + line driver", composite);
@@ -120,6 +120,7 @@ public class TestJobs2dApp {
                 CommandsFeature.setupCommandManager();
 
                 DriverFeature.setupDriverPlugin(app);
+                RecordFeature.setupRecorderPlugin(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
