@@ -15,12 +15,13 @@ import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.observer.Subscriber;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
-
-//import edu.kis.powp.jobs2d.command.gui.CommandImporter;
 import java.util.Scanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
@@ -141,6 +142,44 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                     e.printStackTrace();
                     return;
                 }
+            }
+            else if (input.substring(input.length() - 4, input.length()).equals("json"))
+            {
+                try
+                {
+                    File fileObject = new File(input);
+                    Scanner scanner = new Scanner(fileObject);
+                    String result = "";
+                    while (scanner.hasNextLine()) 
+                    {
+                        result += scanner.nextLine() + "\n";
+                    }
+
+                    JSONObject inputJson = new JSONObject(result);
+		            String name = (String) inputJson.get("name");
+
+                    List<DriverCommand> command =  CommandImporter.fromJsonFile(inputJson);
+
+                    commandManager.setCurrentCommand(command, name);
+                    textInput.setText("Write here for command import");
+                }
+                catch (FileNotFoundException ex)
+                {
+                    input = "So such text file was found\n" + input;
+                    textInput.setText(input);
+                    ex.printStackTrace();
+                    return;
+                }
+                catch (JSONException e)
+                {
+                    input = "The file is not a correct JSON file\n" + input;
+                    textInput.setText(input);
+                    e.printStackTrace();
+                    return;
+                }
+
+                
+
             }
             else
             {

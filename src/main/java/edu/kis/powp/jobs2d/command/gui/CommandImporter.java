@@ -8,7 +8,9 @@ import java.util.Scanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class CommandImporter
 {
@@ -75,7 +77,26 @@ public class CommandImporter
         File fileObject = new File(text);
         Scanner scanner = new Scanner(fileObject);
         return processText(scanner);
-    
+    }
+
+    public static List<DriverCommand> fromJsonFile(JSONObject input) throws Exception
+    {
+        JSONArray array = (JSONArray) input.get("actions");
+        List<DriverCommand> ret = new ArrayList<DriverCommand>();
+        
+        for (Object one : array)
+        {
+            JSONObject action = (JSONObject) one;
+
+            DriverCommand next = createCommand((String) action.get("type"), (Integer) action.get("x"), (Integer) action.get("y"));
+            if (next == null)
+            {
+                return null;
+            }
+            ret.add(next);            
+        }
+
+        return ret;
     }
 
 
