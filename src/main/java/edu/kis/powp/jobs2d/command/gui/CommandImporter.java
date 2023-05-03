@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 public class CommandImporter
 {
     private static DriverCommand createCommand(String command, Integer x, Integer y)
@@ -24,33 +30,73 @@ public class CommandImporter
 
     }
 
-    public static List<DriverCommand> fromText(String text)
+    private static List<DriverCommand> processText(Scanner scanner)
     {
-        Scanner scanner = new Scanner(text);
         scanner.nextLine();
         List<DriverCommand> ret = new ArrayList<DriverCommand>();
+        boolean hasCommand = false;
         while (scanner.hasNextLine()) 
         {
             String line = scanner.nextLine();
             if (line.equals(""))
             {
-                return ret;
+                break;
             }
+            
+            hasCommand = true;
             String[] elements = line.split(" ");
             DriverCommand next = createCommand(elements[0], Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
             if (next == null)
             {
+                scanner.close();
                 return null;
             }
             ret.add(next);
         }
         scanner.close();
-        return ret;
+
+        if (hasCommand)
+        {
+            return ret;
+        }
+        else
+        {
+            return null;
+        }
+        
     }
 
-    public static List<DriverCommand> fromTextfile(String text)
+    public static List<DriverCommand> fromText(String text)
     {
-        return null;
+        Scanner scanner = new Scanner(text);
+        return processText(scanner);        
+    }
+
+    public static List<DriverCommand> fromTextfile(String text) throws FileNotFoundException
+    {
+        File fileObject = new File(text);
+        Scanner scanner = new Scanner(fileObject);
+        return processText(scanner);
+    }
+
+    public static List<DriverCommand> fromJsonFile(JSONObject input) throws Exception
+    {
+        JSONArray array = (JSONArray) input.get("actions");
+        List<DriverCommand> ret = new ArrayList<DriverCommand>();
+        
+        for (Object one : array)
+        {
+            JSONObject action = (JSONObject) one;
+
+            DriverCommand next = createCommand((String) action.get("type"), (Integer) action.get("x"), (Integer) action.get("y"));
+            if (next == null)
+            {
+                return null;
+            }
+            ret.add(next);            
+        }
+
+        return ret;
     }
 
 

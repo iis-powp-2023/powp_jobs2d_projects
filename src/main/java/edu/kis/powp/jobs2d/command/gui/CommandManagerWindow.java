@@ -9,16 +9,19 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.observer.Subscriber;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
-
-//import edu.kis.powp.jobs2d.command.gui.CommandImporter;
 import java.util.Scanner;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
@@ -98,12 +101,13 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     private void importCommand() {
+        
         try
         {
             String input = textInput.getText();
             if (input.equals(""))
             {
-                currentCommandField.setText("Write here for command import");
+                textInput.setText("Write here for command import");
                 return;
             }
             else if (input.equals("Write here for command import"))
@@ -111,25 +115,19 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 return;
             }
 
-            String[] elements = input.split(".");
-
-            switch (elements[elements.length - 1])
+            if (input.substring(input.length() - 3, input.length()).equals("txt"))
             {
-                case "txt":
+                
+                try
                 {
-
-                }
-                break;
-
-                default:
-                {
-                    List<DriverCommand> command =  CommandImporter.fromText(input);
-                    Scanner scanner = new Scanner(input);
+                    List<DriverCommand> command =  CommandImporter.fromTextfile(input);
+                    File fileObject = new File(input);
+                    Scanner scanner = new Scanner(fileObject);
                     String name = scanner.nextLine();
                     scanner.close();
                     if (command == null)
                     {
-                        input = "This command was incorrect" + input;
+                        input = "This command was incorrect\n" + input;
                         textInput.setText(input);
                         return;
                     }
@@ -137,13 +135,75 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                     commandManager.setCurrentCommand(command, name);
                     textInput.setText("Write here for command import");
                 }
+                catch (FileNotFoundException e)
+                {
+                    input = "No such text file found\n" + input;
+                    textInput.setText(input);
+                    e.printStackTrace();
+                    return;
+                }
             }
-    
-            
-            
+            else if (input.substring(input.length() - 4, input.length()).equals("json"))
+            {
+                try
+                {
+                    File fileObject = new File(input);
+                    Scanner scanner = new Scanner(fileObject);
+                    String result = "";
+                    while (scanner.hasNextLine()) 
+                    {
+                        result += scanner.nextLine() + "\n";
+                    }
+
+                    JSONObject inputJson = new JSONObject(result);
+		            String name = (String) inputJson.get("name");
+                    scanner.close();
+
+                    List<DriverCommand> command =  CommandImporter.fromJsonFile(inputJson);
+
+                    commandManager.setCurrentCommand(command, name);
+                    textInput.setText("Write here for command import");
+                }
+                catch (FileNotFoundException ex)
+                {
+                    input = "No such JSON file found\n" + input;
+                    textInput.setText(input);
+                    ex.printStackTrace();
+                    return;
+                }
+                catch (JSONException e)
+                {
+                    input = "The file is not a correct JSON file\n" + input;
+                    textInput.setText(input);
+                    e.printStackTrace();
+                    return;
+                }
+
+                
+
+            }
+            else
+            {
+                input += "\n";
+                List<DriverCommand> command =  CommandImporter.fromText(input);
+                Scanner scanner = new Scanner(input);
+                String name = scanner.nextLine();
+                scanner.close();
+                if (command == null)
+                {
+                    input = "This command was incorrect\n" + input;
+                    textInput.setText(input);
+                    return;
+                }
+
+                commandManager.setCurrentCommand(command, name);
+                textInput.setText("Write here for command import");
+            }         
         }
         catch(Exception e)
         {
+            String input = "No command was loaded\n" +  textInput.getText() + "\n";;
+            textInput.setText(input);
             e.printStackTrace();
         }
         
