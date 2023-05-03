@@ -54,7 +54,7 @@ public class InkUsageFeature {
     public boolean checkTonerLevel(int x, int y) {
         calculateInkUsage(x, y);
         headDistance += inkUsage;
-
+        
         inkLevel -= inkUsage;
         if (inkLevel <= 0) {
             inkUsage = 0;
