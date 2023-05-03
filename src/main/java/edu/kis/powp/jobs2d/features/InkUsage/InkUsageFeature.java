@@ -27,7 +27,7 @@ public class InkUsageFeature {
     }
 
     public void saveCoordinates(int x, int y) {
-        headDistance += calculateDistance(x, y);
+        calculateDistance(x, y);
         this.x = x;
         this.y = y;
     }
@@ -38,6 +38,7 @@ public class InkUsageFeature {
 
     private void calculateInkUsage(int x, int y) {
         inkUsage += calculateDistance(x, y);
+        headDistance += inkUsage;
     }
 
     public void fillPlotterWithInk(double inkAmount) {
@@ -53,7 +54,6 @@ public class InkUsageFeature {
 
     public boolean checkTonerLevel(int x, int y) {
         calculateInkUsage(x, y);
-        headDistance += inkUsage;
 
         inkLevel -= inkUsage;
         if (inkLevel <= 0) {
