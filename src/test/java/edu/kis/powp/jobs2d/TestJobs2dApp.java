@@ -14,6 +14,7 @@ import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.features.InkUsage.InkUsageFeatureManager;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
 import java.awt.*;
@@ -58,6 +59,8 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
+        int inkLevel = 5000;
+        InkUsageFeatureManager.getInkUsageFeature().fillPlotterWithInk(inkLevel);
         DriverComposite composite = new DriverComposite();
 
         Job2dDriver loggerDriver = new RecordingDriver(new PositionLoggingDriver());
