@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.features.InkUsage;
 
-sealed public class InkUsageFeature permits InkUsageFeatureManager {
+public class InkUsageFeature {
     private static final double MAX_INK_LEVEL = 5000.0;
     private double inkUsage;
     private double inkLevel;
