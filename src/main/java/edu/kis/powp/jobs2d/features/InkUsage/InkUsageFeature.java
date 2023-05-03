@@ -42,7 +42,6 @@ sealed public class InkUsageFeature permits InkUsageFeatureManager {
 
     public void fillPlotterWithInk(double inkAmount) {
         if (inkAmount < 0) {
-            System.out.println("Ink amount cannot be negative");
             return;
         }
 
