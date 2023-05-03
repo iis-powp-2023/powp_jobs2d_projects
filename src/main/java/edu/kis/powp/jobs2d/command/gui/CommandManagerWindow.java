@@ -137,7 +137,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 }
                 catch (FileNotFoundException e)
                 {
-                    input = "So such text file was found\n" + input;
+                    input = "No such text file found\n" + input;
                     textInput.setText(input);
                     e.printStackTrace();
                     return;
@@ -157,6 +157,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
                     JSONObject inputJson = new JSONObject(result);
 		            String name = (String) inputJson.get("name");
+                    scanner.close();
 
                     List<DriverCommand> command =  CommandImporter.fromJsonFile(inputJson);
 
@@ -165,7 +166,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 }
                 catch (FileNotFoundException ex)
                 {
-                    input = "So such text file was found\n" + input;
+                    input = "No such JSON file found\n" + input;
                     textInput.setText(input);
                     ex.printStackTrace();
                     return;
