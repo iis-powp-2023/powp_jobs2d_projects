@@ -27,7 +27,7 @@ public class HeadUsageFeature {
     }
 
     public void saveCoordinates(int x, int y) {
-        headDistance += calculateDistance(x, y);
+        calculateDistance(x, y);
         this.x = x;
         this.y = y;
     }
@@ -66,4 +66,3 @@ public class HeadUsageFeature {
         return true;
     }
 }
-
