@@ -1,17 +1,17 @@
-package edu.kis.powp.jobs2d.features.InkUsage;
+package edu.kis.powp.jobs2d.features.HeadUsage;
 
-public class InkUsageFeature {
+public class HeadUsageFeature {
     private static final double MAX_INK_LEVEL = 5000.0;
-    private double inkUsage;
-    private double inkLevel;
+    private double headUsage;
+    private double usageLevel;
     private int x;
     private int y;
     private double headDistance;
     private double operationDistance;
 
-    InkUsageFeature() {
-        this.inkUsage = 0;
-        this.inkLevel = 0.0;
+    HeadUsageFeature() {
+        this.headUsage = 0;
+        this.usageLevel = 0.0;
         this.x = 0;
         this.y = 0;
         this.headDistance = 0.0;
@@ -37,7 +37,7 @@ public class InkUsageFeature {
     }
 
     private void calculateInkUsage(int x, int y) {
-        inkUsage += calculateDistance(x, y);
+        headUsage += calculateDistance(x, y);
     }
 
     public void fillPlotterWithInk(double inkAmount) {
@@ -45,24 +45,24 @@ public class InkUsageFeature {
             return;
         }
 
-        inkLevel += inkAmount;
-        if (inkLevel > MAX_INK_LEVEL) {
-            inkLevel = MAX_INK_LEVEL;
+        usageLevel += inkAmount;
+        if (usageLevel > MAX_INK_LEVEL) {
+            usageLevel = MAX_INK_LEVEL;
         }
     }
 
     public boolean checkTonerLevel(int x, int y) {
         calculateInkUsage(x, y);
-        headDistance += inkUsage;
+        headDistance += headUsage;
         
-        inkLevel -= inkUsage;
-        if (inkLevel <= 0) {
-            inkUsage = 0;
+        usageLevel -= headUsage;
+        if (usageLevel <= 0) {
+            headUsage = 0;
             return false;
         }
 
-        operationDistance += inkUsage;
-        inkUsage = 0;
+        operationDistance += headUsage;
+        headUsage = 0;
         return true;
     }
 }
