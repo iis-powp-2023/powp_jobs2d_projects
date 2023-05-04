@@ -14,6 +14,10 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
 	}
 
+	public List<DriverCommand> getCommands() {
+		return commands;
+	}	
+
 	public ICompoundCommand addCommand(DriverCommand command) {
 		List<DriverCommand> newCommands = new ArrayList<>(commands);
 		newCommands.add(command);
