@@ -33,6 +33,8 @@ public class DriverCommandManager {
 	 * @param name        name of the command.
 	 */
 	public synchronized void setCurrentCommand(List<DriverCommand> commandList, String name) {
+
+
 		setCurrentCommand(new ICompoundCommand() {
 
 			List<DriverCommand> driverCommands = commandList;
@@ -45,6 +47,11 @@ public class DriverCommandManager {
 			@Override
 			public Iterator<DriverCommand> iterator() {
 				return driverCommands.iterator();
+			}
+
+			@Override
+			public ICompoundCommand createDeepCopy() {
+				return null;
 			}
 
 			@Override
