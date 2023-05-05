@@ -95,7 +95,7 @@ public class ImmutableCompoundCommandTest {
         ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(commands);
 
         DriverCommand newCommand = mock(DriverCommand.class);
-        ImmutableCompoundCommand newCompoundCommand = (ImmutableCompoundCommand) compoundCommand.addCommand(newCommand);
+        ImmutableCompoundCommand newCompoundCommand = (ImmutableCompoundCommand) compoundCommand.addCommandToExistingCommandsList(newCommand);
 
         assertEquals(commands.size(), 1);
         assertEquals(newCompoundCommand.getCommands().size(), 2);
