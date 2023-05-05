@@ -50,6 +50,8 @@ public class TestJobs2dApp {
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
+        application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
+
     }
 
     /**
