@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.features.InkUsage.InkUsageFeature;
-import edu.kis.powp.jobs2d.features.InkUsage.InkUsageFeatureManager;
+import edu.kis.powp.jobs2d.features.HeadUsage.HeadUsageFeature;
+import edu.kis.powp.jobs2d.features.HeadUsage.HeadUsageSingleton;
 
 public class DriverComposite implements Job2dDriver {
 
     private final List<Job2dDriver> drivers;
-    private final InkUsageFeature inkUsageFeature;
+    private final HeadUsageFeature headUsageFeature;
     public DriverComposite() {
         drivers = new ArrayList<>();
-        inkUsageFeature = InkUsageFeatureManager.getInkUsageFeature();
+        headUsageFeature = HeadUsageSingleton.setupHeadUsageFeature(500.0);
     }
     public void addDriver(Job2dDriver driver) {
         drivers.add(driver);
@@ -24,14 +24,14 @@ public class DriverComposite implements Job2dDriver {
     @Override
     public void setPosition(int x, int y) {
         for (Job2dDriver driver : drivers) {
-            inkUsageFeature.saveCoordinates(x, y);
+            headUsageFeature.saveCoordinates(x, y);
             driver.setPosition(x, y);
         }
     }
     @Override
     public void operateTo(int x, int y) {
         for(Job2dDriver driver : drivers) {
-            if (!inkUsageFeature.checkTonerLevel(x, y)) {
+            if (!headUsageFeature.checkTonerLevel(x, y)) {
                 continue;
             }
             driver.operateTo(x, y);
