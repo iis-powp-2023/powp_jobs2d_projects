@@ -39,4 +39,7 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 	public Iterator<DriverCommand> iterator() {
 		return commands.iterator();
 	}
+
+	@Override
+	public void accept(ICommandVisitor visitor) {}
 }
