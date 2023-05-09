@@ -15,8 +15,8 @@ public class ShapesFactory {
         commands.add(new OperateToCommand((int)p2.getX(), (int) p2.getY()));
         commands.add(new OperateToCommand((int)p3.getX(), (int) p3.getY()));
         commands.add(new OperateToCommand((int)p1.getX(),(int) p1.getY()));
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandsToExistingCommandsList(commands);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommands(commands);
 
         return builder.build();
     }
@@ -30,8 +30,8 @@ public class ShapesFactory {
         commands.add(new OperateToCommand((int)rightUpperPoint.getX(), (int) rightUpperPoint.getY()));
         commands.add(new OperateToCommand((int)leftBottomPoint.getX(),(int) rightUpperPoint.getY()));
 
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandsToExistingCommandsList(commands);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommands(commands);
 
         return builder.build();
     }
@@ -49,8 +49,8 @@ public class ShapesFactory {
             commands.add(new OperateToCommand((int)point.getX(), (int) point.getY()));
         }
         commands.add(new OperateToCommand((int)point2DList.get(0).getX(),(int) point2DList.get(0).getY()));
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandsToExistingCommandsList(commands);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommands(commands);
 
         return builder.build();
     }

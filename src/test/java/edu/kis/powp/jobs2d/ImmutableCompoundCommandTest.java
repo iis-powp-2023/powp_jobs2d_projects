@@ -28,9 +28,9 @@ public class ImmutableCompoundCommandTest {
         commands.add(mockCommand);
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandToExistingCommandsList(mockCommand);
-        builder.addCommandToExistingCommandsList(mockCommand);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommand(mockCommand);
+        builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
         assertEquals(commands, compoundCommand.getCommands());
@@ -45,23 +45,11 @@ public class ImmutableCompoundCommandTest {
     public void testImmutableCompoundCommandImmutable() {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandToExistingCommandsList(mockCommand);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
         assertThrows(UnsupportedOperationException.class, () -> compoundCommand.getCommands().add(mockCommand));
-    }
-
-    /**
-     * Test whether adding a null list of commands to an ImmutableCompoundCommand
-     * object results in an object is null.
-     */
-    @Test
-    public void testImmutableCompoundCommandNotAddingCommands() {
-
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        ImmutableCompoundCommand compoundCommand = builder.build();
-        assertEquals(null, compoundCommand);
     }
 
     /**
@@ -71,11 +59,11 @@ public class ImmutableCompoundCommandTest {
     @Test
     public void testImmutableCompoundCommandAddingEmptyList() {
         List<DriverCommand> commands = new ArrayList<>();
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandsToExistingCommandsList(commands);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommands(commands);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
-        assertEquals(null, compoundCommand);
+        assertEquals(0, compoundCommand.getCommands().size());
     }
 
     /**
@@ -87,8 +75,8 @@ public class ImmutableCompoundCommandTest {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandToExistingCommandsList(mockCommand);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
         List<DriverCommand> resultCommands = new ArrayList<>();
@@ -106,13 +94,13 @@ public class ImmutableCompoundCommandTest {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
-        builder.addCommandToExistingCommandsList(mockCommand);
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
         DriverCommand newCommand = mock(DriverCommand.class);
 
-        builder.addCommandToExistingCommandsList(newCommand);
+        builder.addCommand(newCommand);
         ImmutableCompoundCommand newCompoundCommand = builder.build();
 
         assertEquals(commands.size(), 1);

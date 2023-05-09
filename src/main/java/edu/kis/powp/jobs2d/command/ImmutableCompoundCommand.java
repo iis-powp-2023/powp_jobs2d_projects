@@ -32,25 +32,22 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 	public void accept(ICommandVisitor visitor) {
 	}
 
-	public static class ImmutableCompoundCommandBuilder {
+	public static class Builder {
 		private final List<DriverCommand> commands;
 
-		public ImmutableCompoundCommandBuilder() {
+		public Builder() {
 			this.commands = new ArrayList<>();
 		}
 
 		public ImmutableCompoundCommand build() {
-			if (commands.isEmpty()) {
-				return null;
-			}
 			return new ImmutableCompoundCommand(commands);
 		}
 
-		public void addCommandToExistingCommandsList(DriverCommand command) {
+		public void addCommand(DriverCommand command) {
 			commands.add(command);
 		}
 
-		public void addCommandsToExistingCommandsList(List<DriverCommand> commands) {
+		public void addCommands(List<DriverCommand> commands) {
 			this.commands.addAll(commands);
 		}
 
