@@ -31,7 +31,7 @@ public class DriverComposite implements Job2dDriver {
     }
     @Override
     public String toString() {
-        return "Logger + Line Driver";
+        return drivers.stream().map(Object::toString).reduce((a, b) -> a + ", " + b).orElse("");
     }
 
 }
