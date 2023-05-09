@@ -35,7 +35,11 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 	}
 
 	public static class ImmutableCompoundCommandBuilder {
-		private final List<DriverCommand> commands= new ArrayList<>();;
+		private final List<DriverCommand> commands;
+
+		public ImmutableCompoundCommandBuilder() {
+			this.commands= new ArrayList<>();
+		}
 
 		public ImmutableCompoundCommand build() {
 			return new ImmutableCompoundCommand(commands);

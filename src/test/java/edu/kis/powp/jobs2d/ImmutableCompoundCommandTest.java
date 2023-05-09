@@ -30,7 +30,10 @@ public class ImmutableCompoundCommandTest {
         commands.add(mockCommand);
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(commands);
+        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder =new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+        builder.addCommandToExistingCommandsList(mockCommand);
+        builder.addCommandToExistingCommandsList(mockCommand);
+        ImmutableCompoundCommand compoundCommand=builder.build();
 
         assertEquals(commands, compoundCommand.getCommands());
     }
