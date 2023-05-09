@@ -28,10 +28,6 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		return commands.iterator();
 	}
 
-	@Override
-	public void accept(ICommandVisitor visitor) {
-	}
-
 	public static class Builder {
 		private final List<DriverCommand> commands;
 
@@ -52,4 +48,5 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		}
 
 	};
+  
 }

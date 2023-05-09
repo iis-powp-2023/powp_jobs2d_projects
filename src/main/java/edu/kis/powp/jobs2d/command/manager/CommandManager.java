@@ -35,7 +35,6 @@ public class CommandManager {
      */
     public synchronized void setCurrentCommand(List<DriverCommand> commandList, String name) {
         setCurrentCommand(new ICompoundCommand() {
-
             List<DriverCommand> driverCommands = commandList;
 
             @Override
