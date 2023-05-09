@@ -10,13 +10,13 @@ import java.util.List;
 public class ImmutableCompoundCommand implements ICompoundCommand {
 	private final List<DriverCommand> commands;
 
-	public ImmutableCompoundCommand(List<DriverCommand> commands) {
+	private ImmutableCompoundCommand(List<DriverCommand> commands) {
 		this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
 	}
 
 	public List<DriverCommand> getCommands() {
 		return commands;
-	}	
+	}
 
 	public ICompoundCommand addCommandToExistingCommandsList(DriverCommand command) {
 		List<DriverCommand> newCommands = new ArrayList<>(commands);
@@ -41,5 +41,10 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 	}
 
 	@Override
-	public void accept(ICommandVisitor visitor) {}
+	public void accept(ICommandVisitor visitor) {
+	}
+
+	public static class ImmutableCompoundCommandBuilder {
+
+	};
 }
