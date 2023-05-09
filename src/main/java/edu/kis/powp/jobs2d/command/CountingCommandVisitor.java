@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 public class CountingCommandVisitor implements ICommandVisitor {
 	
-	private int compoundCommandsCount;
-	private int operateToCommandsCount;
-	private int setPositionCommandsCount;
+	private int compoundCommandsCount = 0;
+	private int operateToCommandsCount = 0;
+	private int setPositionCommandsCount = 0;
 
 	public int getCompoundCommandsCount() {
 		return this.compoundCommandsCount;
@@ -20,21 +20,14 @@ public class CountingCommandVisitor implements ICommandVisitor {
 		return this.setPositionCommandsCount;
 	}
 	
-	public CountingCommandVisitor() {
-		this.compoundCommandsCount = 0;
-		this.operateToCommandsCount = 0;
-		this.setPositionCommandsCount = 0;
-	}
+	public CountingCommandVisitor() {}
 	
 	@Override
 	public void visit(ICompoundCommand command) {
-		this.operateToCommandsCount = 0;
-		this.setPositionCommandsCount = 0;
+		Iterator<DriverCommand> iterator = command.iterator();
 		
-		Iterator<DriverCommand> iter = command.iterator();
-		
-		while(iter.hasNext()) {
-			iter.next().accept(this);
+		while(iterator.hasNext()) {
+			iterator.next().accept(this);
 		}
 		
 		this.compoundCommandsCount = this.operateToCommandsCount + this.setPositionCommandsCount;
@@ -49,5 +42,4 @@ public class CountingCommandVisitor implements ICommandVisitor {
 	public void visit(SetPositionCommand command) {
 		this.setPositionCommandsCount++;
 	}
-	
 }
