@@ -100,11 +100,15 @@ public class ImmutableCompoundCommandTest {
     public void testImmutableCompoundCommandAddCommand() {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
-        ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(commands);
+//        ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(commands);
+        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+        builder.addCommandToExistingCommandsList(mockCommand);
+        ImmutableCompoundCommand compoundCommand = builder.build();
 
         DriverCommand newCommand = mock(DriverCommand.class);
-        ImmutableCompoundCommand newCompoundCommand = (ImmutableCompoundCommand) compoundCommand
-                .addCommandToExistingCommandsList(newCommand);
+        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder newBuilder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+        builder.addCommandToExistingCommandsList(newCommand);
+        ImmutableCompoundCommand newCompoundCommand = newBuilder.build();
 
         assertEquals(commands.size(), 1);
         assertEquals(newCompoundCommand.getCommands().size(), 2);
