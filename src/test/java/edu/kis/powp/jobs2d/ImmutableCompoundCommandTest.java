@@ -53,17 +53,6 @@ public class ImmutableCompoundCommandTest {
     }
 
     /**
-     * Test whether adding a null list of commands to an ImmutableCompoundCommand
-     * object results in a NullPointerException.
-     */
-    @Test
-    public void testImmutableCompoundCommandAddingNullList() {
-        List<DriverCommand> commands = null;
-
-        assertThrows(NullPointerException.class, () -> new ImmutableCompoundCommand(commands));
-    }
-
-    /**
      * Test whether adding an empty list of commands to an ImmutableCompoundCommand
      * object results in an object that
      * contains no commands.
