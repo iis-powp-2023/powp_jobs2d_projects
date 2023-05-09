@@ -18,8 +18,6 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		return commands;
 	}
 
-
-
 	@Override
 	public void execute(Job2dDriver driver) {
 		commands.forEach(command -> command.execute(driver));
@@ -38,10 +36,13 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		private final List<DriverCommand> commands;
 
 		public ImmutableCompoundCommandBuilder() {
-			this.commands= new ArrayList<>();
+			this.commands = new ArrayList<>();
 		}
 
 		public ImmutableCompoundCommand build() {
+			if (commands.isEmpty()) {
+				return null;
+			}
 			return new ImmutableCompoundCommand(commands);
 		}
 

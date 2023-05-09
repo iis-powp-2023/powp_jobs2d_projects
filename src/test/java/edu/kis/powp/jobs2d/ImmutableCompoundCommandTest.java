@@ -57,10 +57,11 @@ public class ImmutableCompoundCommandTest {
      * object results in a NullPointerException.
      */
     @Test
-    public void testImmutableCompoundCommandAddingNullList() {
-        List<DriverCommand> commands = null;
+    public void testImmutableCompoundCommandNotAddingCommands() {
 
-        assertThrows(NullPointerException.class, () -> new ImmutableCompoundCommand(commands));
+        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+        ImmutableCompoundCommand compoundCommand = builder.build();
+        assertEquals(null, compoundCommand);
     }
 
     /**
@@ -71,9 +72,11 @@ public class ImmutableCompoundCommandTest {
     @Test
     public void testImmutableCompoundCommandAddingEmptyList() {
         List<DriverCommand> commands = new ArrayList<>();
-        ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(commands);
+        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+        builder.addCommandsToExistingCommandsList(commands);
+        ImmutableCompoundCommand compoundCommand = builder.build();
 
-        assertEquals(0, compoundCommand.getCommands().size());
+        assertEquals(null, compoundCommand);
     }
 
     /**
