@@ -54,7 +54,7 @@ public class ImmutableCompoundCommandTest {
 
     /**
      * Test whether adding a null list of commands to an ImmutableCompoundCommand
-     * object results in a NullPointerException.
+     * object results in an object is null.
      */
     @Test
     public void testImmutableCompoundCommandNotAddingCommands() {
@@ -66,8 +66,7 @@ public class ImmutableCompoundCommandTest {
 
     /**
      * Test whether adding an empty list of commands to an ImmutableCompoundCommand
-     * object results in an object that
-     * contains no commands.
+     * object results in an object is null.
      */
     @Test
     public void testImmutableCompoundCommandAddingEmptyList() {
@@ -106,16 +105,15 @@ public class ImmutableCompoundCommandTest {
     public void testImmutableCompoundCommandAddCommand() {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
-        // ImmutableCompoundCommand compoundCommand = new
-        // ImmutableCompoundCommand(commands);
+
         ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
         builder.addCommandToExistingCommandsList(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
         DriverCommand newCommand = mock(DriverCommand.class);
-        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder newBuilder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+
         builder.addCommandToExistingCommandsList(newCommand);
-        ImmutableCompoundCommand newCompoundCommand = newBuilder.build();
+        ImmutableCompoundCommand newCompoundCommand = builder.build();
 
         assertEquals(commands.size(), 1);
         assertEquals(newCompoundCommand.getCommands().size(), 2);

@@ -46,16 +46,12 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 			return new ImmutableCompoundCommand(commands);
 		}
 
-		public ICompoundCommand addCommandToExistingCommandsList(DriverCommand command) {
-			List<DriverCommand> newCommands = new ArrayList<>(commands);
-			newCommands.add(command);
-			return new ImmutableCompoundCommand(newCommands);
+		public void addCommandToExistingCommandsList(DriverCommand command) {
+			commands.add(command);
 		}
 
-		public ICompoundCommand addCommandsToExistingCommandsList(List<DriverCommand> commands) {
-			List<DriverCommand> newCommands = new ArrayList<>(this.commands);
-			newCommands.addAll(commands);
-			return new ImmutableCompoundCommand(newCommands);
+		public void addCommandsToExistingCommandsList(List<DriverCommand> commands) {
+			this.commands.addAll(commands);
 		}
 
 	};
