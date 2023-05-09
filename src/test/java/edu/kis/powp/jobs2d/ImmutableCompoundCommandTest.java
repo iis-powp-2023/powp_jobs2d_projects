@@ -72,7 +72,9 @@ public class ImmutableCompoundCommandTest {
     @Test
     public void testImmutableCompoundCommandAddingEmptyList() {
         List<DriverCommand> commands = new ArrayList<>();
-        ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(commands);
+        ImmutableCompoundCommand.ImmutableCompoundCommandBuilder builder = new ImmutableCompoundCommand.ImmutableCompoundCommandBuilder();
+        builder.addCommandsToExistingCommandsList(commands);
+        ImmutableCompoundCommand compoundCommand = builder.build();
 
         assertEquals(null, compoundCommand);
     }
