@@ -51,6 +51,8 @@ public class TestJobs2dApp {
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
+        application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
+
     }
 
     /**
@@ -73,7 +75,6 @@ public class TestJobs2dApp {
 
         driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
         DriverFeature.addDriver("Special line Simulator", driver);
-
         DriverFeature.addDriver("Logger + line driver", composite);
 
         composite.addDriver(HeadUsageFeature.initHeadUsageFeature());

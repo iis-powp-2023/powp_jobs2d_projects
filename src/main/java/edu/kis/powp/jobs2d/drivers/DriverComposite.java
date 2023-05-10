@@ -29,5 +29,9 @@ public class DriverComposite implements Job2dDriver {
             driver.operateTo(x, y);
         }
     }
+    @Override
+    public String toString() {
+        return drivers.stream().map(Object::toString).reduce((a, b) -> a + ", " + b).orElse("");
+    }
 
 }
