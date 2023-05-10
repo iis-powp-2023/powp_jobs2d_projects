@@ -10,24 +10,12 @@ import java.util.List;
 public class ImmutableCompoundCommand implements ICompoundCommand {
 	private final List<DriverCommand> commands;
 
-	public ImmutableCompoundCommand(List<DriverCommand> commands) {
+	private ImmutableCompoundCommand(List<DriverCommand> commands) {
 		this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
 	}
 
 	public List<DriverCommand> getCommands() {
 		return commands;
-	}	
-
-	public ICompoundCommand addCommandToExistingCommandsList(DriverCommand command) {
-		List<DriverCommand> newCommands = new ArrayList<>(commands);
-		newCommands.add(command);
-		return new ImmutableCompoundCommand(newCommands);
-	}
-
-	public ICompoundCommand addCommandsToExistingCommandsList(List<DriverCommand> commands) {
-		List<DriverCommand> newCommands = new ArrayList<>(this.commands);
-		newCommands.addAll(commands);
-		return new ImmutableCompoundCommand(newCommands);
 	}
 
 	@Override
@@ -39,4 +27,26 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 	public Iterator<DriverCommand> iterator() {
 		return commands.iterator();
 	}
+
+	public static class Builder {
+		private final List<DriverCommand> commands;
+
+		public Builder() {
+			this.commands = new ArrayList<>();
+		}
+
+		public ImmutableCompoundCommand build() {
+			return new ImmutableCompoundCommand(commands);
+		}
+
+		public void addCommand(DriverCommand command) {
+			commands.add(command);
+		}
+
+		public void addCommands(List<DriverCommand> commands) {
+			this.commands.addAll(commands);
+		}
+
+	};
+  
 }

@@ -76,11 +76,7 @@ public class TestJobs2dApp {
 
         driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special")));
         DriverFeature.addDriver("Special line Simulator", driver);
-
         DriverFeature.addDriver("Logger + line driver", composite);
-
-
-        DriverFeature.updateDriverInfo();
     }
 
     private static void setupWindows(Application application) {
