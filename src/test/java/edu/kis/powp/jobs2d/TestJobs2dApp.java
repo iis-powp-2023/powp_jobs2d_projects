@@ -8,7 +8,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.observer.DriverManagerChangeObserver;
+import edu.kis.powp.jobs2d.drivers.observer.DriverManagerChangeObserverDriverFeatureChange;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
@@ -76,10 +76,10 @@ public class TestJobs2dApp {
 
         DriverFeature.addDriver("Logger + line driver", composite);
 
-        DriverManagerChangeObserver driverManagerChangeObserver = new DriverManagerChangeObserver();
-        DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverManagerChangeObserver);
+        DriverManagerChangeObserverDriverFeatureChange driverManagerChangeObserverDriverFeatureChange = new DriverManagerChangeObserverDriverFeatureChange();
+        DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverManagerChangeObserverDriverFeatureChange);
 
-        driverManagerChangeObserver.update();
+        DriverFeature.updateDriverInfo();
     }
 
     private static void setupWindows(Application application) {
