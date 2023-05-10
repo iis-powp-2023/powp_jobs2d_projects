@@ -1,13 +1,10 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
-
 import java.util.logging.Logger;
 
-public class DistanceFeature {
-    private double headDistance;
-    private double operatingDistance;
+public class DeviceUsageManager {
+    private double headDistance = 0;
+    private double operatingDistance = 0;
 
     private int xLastPosition = 0;
     private int yLastPosition = 0;
