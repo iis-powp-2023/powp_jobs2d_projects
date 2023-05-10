@@ -3,7 +3,6 @@ package edu.kis.powp.jobs2d.features;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.LoggerHeadUsageObserver;
-import edu.kis.powp.jobs2d.features.HeadUsage.HeadUsageSingleton;
 
 public class CommandsFeature {
 

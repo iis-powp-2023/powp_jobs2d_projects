@@ -14,7 +14,7 @@ import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
-import edu.kis.powp.jobs2d.features.HeadUsage.HeadUsageSingleton;
+import edu.kis.powp.jobs2d.features.HeadUsage.HeadUsageFeature;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
 import java.awt.*;
@@ -59,8 +59,6 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        int headLevel = 5000;
-        HeadUsageSingleton.setupHeadUsageFeature(headLevel);
         DriverComposite composite = new DriverComposite();
 
         Job2dDriver loggerDriver = new RecordingDriver(new PositionLoggingDriver());
@@ -73,12 +71,12 @@ public class TestJobs2dApp {
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
-
         driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
         DriverFeature.addDriver("Special line Simulator", driver);
 
         DriverFeature.addDriver("Logger + line driver", composite);
 
+        composite.addDriver(HeadUsageFeature.initHeadUsageFeature());
 
         DriverFeature.updateDriverInfo();
     }
