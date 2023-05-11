@@ -9,7 +9,7 @@ import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.observer.DriverManagerChangeObserverDriverFeatureChange;
+import edu.kis.powp.jobs2d.drivers.observer.DriverLabelUpdateObserver;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
@@ -82,8 +82,8 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Special line Simulator", driver);
         DriverFeature.addDriver("Logger + line driver", composite);
 
-        DriverManagerChangeObserverDriverFeatureChange driverManagerChangeObserverDriverFeatureChange = new DriverManagerChangeObserverDriverFeatureChange();
-        DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverManagerChangeObserverDriverFeatureChange);
+        DriverLabelUpdateObserver driverLabelUpdateObserver = new DriverLabelUpdateObserver();
+        DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverLabelUpdateObserver);
 
         DriverFeature.updateDriverInfo();
     }
