@@ -10,7 +10,7 @@ public class DeviceUsageManager {
     private int xLastPosition = 0;
     private int yLastPosition = 0;
 
-    private final Publisher changePublisher = new Publisher();
+    private final Publisher distanceChangePublisher = new Publisher();
 
     private double calculateDistance(int x, int y){
         double distance = Math.sqrt(Math.pow(y - yLastPosition, 2) + Math.pow(x - xLastPosition, 2));
@@ -21,18 +21,18 @@ public class DeviceUsageManager {
 
     public void calculateMovingDistance(int x, int y){
         headDistance += calculateDistance(x, y);
-        changePublisher.notifyObservers();
+        distanceChangePublisher.notifyObservers();
     }
 
     public void calculateOperatingDistance(int x, int y){
         double distance = calculateDistance(x, y);
         headDistance += distance;
         operatingDistance += distance;
-        changePublisher.notifyObservers();
+        distanceChangePublisher.notifyObservers();
     }
 
     public synchronized void addSubscriber(Subscriber subscriber) {
-        changePublisher.addSubscriber(subscriber);
+        distanceChangePublisher.addSubscriber(subscriber);
     }
 
     public static double getHeadDistance() {
