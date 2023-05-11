@@ -52,6 +52,8 @@ public class TestJobs2dApp {
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
 
+        application.addTest("Compound command", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
+
     }
 
     /**
