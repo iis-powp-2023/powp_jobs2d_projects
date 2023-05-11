@@ -1,16 +1,13 @@
 package edu.kis.powp.jobs2d.drivers.decorator;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.features.DeviceUsageManager;
 
 public class DistanceCountingDriver extends DriverDecorator {
-
     private final DeviceUsageManager deviceUsageManager = new DeviceUsageManager();
 
     public DistanceCountingDriver(Job2dDriver driver) {
         super(driver);
-        deviceUsageManager.addSubscriber(new LoggerDistanceObserver());
     }
 
     @Override

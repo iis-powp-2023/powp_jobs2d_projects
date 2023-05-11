@@ -6,11 +6,16 @@ import java.util.logging.Logger;
 
 public class LoggerDistanceObserver implements Subscriber {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final DeviceUsageManager deviceUsageManager;
+
+    public LoggerDistanceObserver(DeviceUsageManager deviceUsageManager){
+        this.deviceUsageManager = deviceUsageManager;
+    }
 
     @Override
     public void update() {
-        logger.info("HeadDistance: " + DeviceUsageManager.getHeadDistance());
-        logger.info("OperatingDistance: " + DeviceUsageManager.getOperatingDistance());
+        logger.info("HeadDistance: " + deviceUsageManager.getHeadDistance());
+        logger.info("OperatingDistance: " + deviceUsageManager.getOperatingDistance());
     }
 
     public String toString() {
