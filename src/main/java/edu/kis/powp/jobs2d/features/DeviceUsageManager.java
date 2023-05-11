@@ -1,16 +1,20 @@
 package edu.kis.powp.jobs2d.features;
 
+import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.observer.Publisher;
-import edu.kis.powp.observer.Subscriber;
 
 public class DeviceUsageManager {
-    private static double headDistance = 0;
-    private static double operatingDistance = 0;
+    private double headDistance = 0;
+    private double operatingDistance = 0;
 
     private int xLastPosition = 0;
     private int yLastPosition = 0;
 
     private final Publisher distanceChangePublisher = new Publisher();
+
+    public DeviceUsageManager(){
+        distanceChangePublisher.addSubscriber(new LoggerDistanceObserver(this));
+    }
 
     private double calculateDistance(int x, int y){
         double distance = Math.sqrt(Math.pow(y - yLastPosition, 2) + Math.pow(x - xLastPosition, 2));
@@ -31,15 +35,11 @@ public class DeviceUsageManager {
         distanceChangePublisher.notifyObservers();
     }
 
-    public synchronized void addSubscriber(Subscriber subscriber) {
-        distanceChangePublisher.addSubscriber(subscriber);
-    }
-
-    public static double getHeadDistance() {
+    public double getHeadDistance() {
         return headDistance;
     }
 
-    public static double getOperatingDistance() {
+    public double getOperatingDistance() {
         return operatingDistance;
     }
 }
