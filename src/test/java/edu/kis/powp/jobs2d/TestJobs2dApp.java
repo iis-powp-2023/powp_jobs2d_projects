@@ -9,6 +9,7 @@ import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.decorator.HorizontalFlipDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
@@ -72,10 +73,14 @@ public class TestJobs2dApp {
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
-
         driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
         DriverFeature.addDriver("Special line Simulator", driver);
         DriverFeature.addDriver("Logger + line driver", composite);
+
+        Job2dDriver horizontalFlipDriver = new HorizontalFlipDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DriverFeature.addDriver("Horizontal Flip Driver", horizontalFlipDriver);
+
+        DriverFeature.updateDriverInfo();
     }
 
     private static void setupWindows(Application application) {
