@@ -11,8 +11,8 @@ public class LoggerHeadUsageObserver implements Subscriber {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final HeadUsageManager headUsageManager;
 
-    public LoggerHeadUsageObserver() {
-        this.headUsageManager = HeadUsageFeature.initHeadUsageFeature();
+    public LoggerHeadUsageObserver(HeadUsageManager headUsageManager) {
+        this.headUsageManager = headUsageManager;
     }
 
     public void update() {
