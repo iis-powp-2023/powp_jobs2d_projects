@@ -29,9 +29,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
     private JPanel iconJPanel;
     private DrawPanelController iconDraw;
-    /**
-     *
-     */
+    private JTextArea textInput;
+    private String defaultTextInputMessage = "Write here for command import";
     private static final long serialVersionUID = 9204679248304669948L;
     private final Job2dDriver driverCommandPreview;
     public CommandManagerWindow(CommandManager commandManager) {
@@ -67,6 +66,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         updateCurrentCommandField();
 
 
+
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
         c.gridy = 1;
@@ -78,6 +78,23 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         iconDraw.initialize(panel);
         driverCommandPreview = new LineDriverAdapter(iconDraw, LineFactory.getBasicLine(), "basic");
 
+
+
+        textInput = new JTextArea(defaultTextInputMessage);
+        textInput.setEditable(true);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(textInput, c);
+
+        JButton btnImportCommand = new JButton("Import command");
+        btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(btnImportCommand, c);
 
 
         JButton btnClearCommand = new JButton("Clear command");
@@ -97,6 +114,32 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridy = 3;
         c.weighty = 1;
         content.add(btnClearObservers, c);
+    }
+
+    private void importCommand() {
+        String input = textInput.getText();
+        if (input.equals(""))
+        {
+            textInput.setText(defaultTextInputMessage);
+            return;
+        }
+        else if (input.equals(defaultTextInputMessage))
+        {
+            return;
+        }
+
+        CommandFactory importedCommand = CommandFactory.interpretInput(input);
+
+        if (importedCommand == null)
+        {
+            input = "Could not import command:\n" + input;
+            textInput.setText(input);
+        }
+        else
+        {
+            commandManager.setCurrentCommand(importedCommand.getCommand(), importedCommand.getName());
+            textInput.setText(defaultTextInputMessage);
+        }        
     }
 
     private void clearCommand() {
