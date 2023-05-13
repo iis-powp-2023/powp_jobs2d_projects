@@ -84,15 +84,16 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         textInput.setEditable(true);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
-        c.gridx = 0;
+        c.gridwidth = 2;
+        c.gridy = 2;
         c.weighty = 1;
         content.add(textInput, c);
 
         JButton btnImportCommand = new JButton("Import command");
         btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
         c.fill = GridBagConstraints.BOTH;
+        c.gridy = 3;
         c.weightx = 1;
-        c.gridx = 0;
         c.weighty = 1;
         content.add(btnImportCommand, c);
 
@@ -102,7 +103,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 2;
+        c.gridy = 4;
         c.weighty = 1;
         content.add(btnClearCommand, c);
 
@@ -111,7 +112,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 3;
+        c.gridy = 5;
         c.weighty = 1;
         content.add(btnClearObservers, c);
     }
