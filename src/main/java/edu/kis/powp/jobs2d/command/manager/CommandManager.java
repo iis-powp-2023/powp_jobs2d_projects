@@ -49,7 +49,11 @@ public class CommandManager {
 
             @Override
             public String toString() {
-                return name;
+                StringBuilder string = new StringBuilder(name + ":\n");
+                for (DriverCommand command : driverCommands) {
+                    string.append(command.toString()).append("\n");
+                }
+                return string.toString();
             }
 
             @Override

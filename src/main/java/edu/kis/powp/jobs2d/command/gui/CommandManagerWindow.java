@@ -57,13 +57,15 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 
         currentCommandField = new JTextArea("");
+        JScrollPane currentCommandScrollPane = new JScrollPane(currentCommandField);
+        currentCommandScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         currentCommandField.setEditable(false);
-        c.fill = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
         c.gridwidth = 1;
         c.gridy = 1;
         c.weighty = 2;
         c.weightx=0.5;
-        content.add(currentCommandField, c);
+        content.add(currentCommandScrollPane, c);
         updateCurrentCommandField();
 
 

@@ -25,4 +25,8 @@ public class OperateToCommand implements DriverCommand {
         visitor.visit(this);
     }
 
+    @Override
+    public String toString(){
+        return "OperateTo: (" + posX + "," + posY + ")";
+    }
 }
