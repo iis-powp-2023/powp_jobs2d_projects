@@ -6,6 +6,10 @@ import edu.kis.powp.jobs2d.features.DeviceUsageManager;
 public class DistanceCountingDriver extends DriverDecorator {
     private final DeviceUsageManager deviceUsageManager = new DeviceUsageManager();
 
+    public DeviceUsageManager getDeviceUsageManager() {
+        return this.deviceUsageManager;
+    }
+
     public DistanceCountingDriver(Job2dDriver driver) {
         super(driver);
     }
