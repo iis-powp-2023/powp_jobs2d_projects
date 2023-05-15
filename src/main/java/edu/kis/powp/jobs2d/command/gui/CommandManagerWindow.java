@@ -14,6 +14,7 @@ import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
@@ -29,6 +30,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
     private JPanel iconJPanel;
     private DrawPanelController iconDraw;
+    private JButton btnClearObservers;
+    private JButton btnResetObservers;
     /**
      *
      */
@@ -96,7 +99,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnClearCommand, c);
 
-        JButton btnClearObservers = new JButton("Delete observers");
+        btnClearObservers = new JButton("Delete observers");
         btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
@@ -105,7 +108,15 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnClearObservers, c);
 
-
+        btnResetObservers = new JButton("Reset observers");
+        btnResetObservers.addActionListener((ActionEvent e) -> this.resetObservers());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 5;
+        c.weighty = 1;
+        content.add(btnResetObservers, c);
+        btnResetObservers.setEnabled(false);
 
     }
 
@@ -127,8 +138,16 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
         command.execute(driverCommandPreview);
     }
+
     public void deleteObservers() {
+        btnResetObservers.setEnabled(true);
         commandManager.getChangePublisher().clearObservers();
+        this.updateObserverListField();
+    }
+    public void resetObservers() {
+        btnResetObservers.setEnabled(false);
+        commandManager.getChangePublisher().addSubscriber(new LoggerCommandChangeObserver());
+        commandManager.getChangePublisher().addSubscriber(new CommandManagerWindowCommandChangeObserver(this));
         this.updateObserverListField();
     }
 
