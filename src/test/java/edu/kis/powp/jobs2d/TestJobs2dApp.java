@@ -9,8 +9,7 @@ import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.decorator.HorizontalFlipDriver;
-import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
+import edu.kis.powp.jobs2d.drivers.decorator.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
@@ -77,8 +76,17 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Special line Simulator", driver);
         DriverFeature.addDriver("Logger + line driver", composite);
 
+        Job2dDriver verticalFlipDriver = new VerticalFlipDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DriverFeature.addDriver("Vertical Flip Driver", verticalFlipDriver);
+
         Job2dDriver horizontalFlipDriver = new HorizontalFlipDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         DriverFeature.addDriver("Horizontal Flip Driver", horizontalFlipDriver);
+
+        Job2dDriver halfScaleDriver = new HalfScaleDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DriverFeature.addDriver("Half Scale Driver", halfScaleDriver);
+
+        Job2dDriver doubleScaleDriver = new DoubleScaleDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DriverFeature.addDriver("Double Scale Driver", doubleScaleDriver);
 
         DriverFeature.updateDriverInfo();
     }
