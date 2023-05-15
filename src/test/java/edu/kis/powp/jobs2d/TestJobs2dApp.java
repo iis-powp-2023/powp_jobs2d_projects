@@ -68,19 +68,19 @@ public class TestJobs2dApp {
         DeviceUsageManager deviceUsageManager;
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic")));
-        deviceUsageManager = ((DistanceCountingDriver)driver).getDeviceUsageManager();
-        deviceUsageManager.addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
-        DriverFeature.addDriver("Line Simulator", driver);
+        DistanceCountingDriver driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic")));
+        deviceUsageManager = driver.getDeviceUsageManager();
+        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
 
         driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special")));
-        deviceUsageManager = ((DistanceCountingDriver)driver).getDeviceUsageManager();
-        deviceUsageManager.addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
-        DriverFeature.addDriver("Special line Simulator", driver);
-        DriverFeature.addDriver("Logger + line driver", composite);
+        deviceUsageManager = driver.getDeviceUsageManager();
+        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        DriverFeature.addDriver("Special line Simulator + distance log", driver);
+        DriverFeature.addDriver("Logger + line driver + distance log", composite);
     }
 
     private static void setupWindows(Application application) {
