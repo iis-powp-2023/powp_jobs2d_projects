@@ -62,12 +62,6 @@
 			<artifactId>json</artifactId>
 			<version>20230227</version>
 		</dependency>
-        <!--https://github.com/ronmamo/reflections-->
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.10.2</version>
-        </dependency>
     </dependencies>
     
 

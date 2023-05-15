@@ -129,7 +129,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             return;
         }
 
-        CommandFactory importedCommand = CommandFactory.interpretInput(input);
+        CommandImporter importedCommand = CommandFactory.interpretInput(input);
 
         if (importedCommand == null)
         {

@@ -6,15 +6,23 @@ import java.util.*;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-public class CommandFromJson extends CommandFactory
+public class CommandFromJson extends CommandImporter
 {
     CommandFromJson()
     {
 
     }
 
+    /**
+     * This function accepts a string input formated like the example .json file in resources, parses it into a name and a list of 
+     * DriverCommand objects and seves them in the object
+     * 
+     * @param input A string input that should be in JSON format and contain a "name" field and an
+     * "actions" field, where "actions" is an array of objects with "type", "x", and "y" fields.
+     * @return The method returns a boolean value - true if at least one command could be constructed from the input, false if not.
+     */
     @Override
-    public boolean acceptText(String input)
+    public boolean parseText(String input)
     {
         try
         {
