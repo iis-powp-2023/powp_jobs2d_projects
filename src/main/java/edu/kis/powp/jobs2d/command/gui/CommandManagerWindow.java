@@ -15,6 +15,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
@@ -25,6 +26,8 @@ import edu.kis.powp.observer.Subscriber;
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private CommandManager commandManager;
+    private DriverManager driverManager;
+
     private JTextArea currentCommandField;
     private String observerListString;
     private JTextArea observerListField;
@@ -37,7 +40,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
      */
     private static final long serialVersionUID = 9204679248304669948L;
     private final Job2dDriver driverCommandPreview;
-    public CommandManagerWindow(CommandManager commandManager) {
+    public CommandManagerWindow(CommandManager commandManager, DriverManager driverManager) {
         this.setTitle("Command Manager");
 
         this.setSize(400, 400);
@@ -45,6 +48,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.setLayout(new GridBagLayout());
 
         this.commandManager = commandManager;
+        this.driverManager = driverManager;
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -121,7 +125,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     private void runCommand() {
-        CommandsFeature.getDriverCommandManager().getCurrentCommand().execute(DriverFeature.getDriverManager().getCurrentDriver());
+        commandManager.getCurrentCommand().execute(driverManager.getCurrentDriver());
     }
     private void clearCommand() {
         commandManager.clearCurrentCommand();
@@ -135,7 +139,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     public void updateCurrentCommandPreview()
     {
         iconDraw.clearPanel();
-        DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
+        DriverCommand command = commandManager.getCurrentCommand();
         command.execute(driverCommandPreview);
     }
 
