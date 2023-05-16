@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public final class CompoundCommand implements ICompoundCommand{
+public final class ImmutableComplexCommand implements ICompoundCommand{
 
     private final List<DriverCommand> ListOfCommands;
-    public CompoundCommand(Iterator iterator){
+    public ImmutableComplexCommand(Iterator iterator){
         List<DriverCommand> tempList = new ArrayList<>();
         while(iterator.hasNext()){
             DriverCommand command = (DriverCommand) iterator.next();
@@ -21,9 +21,9 @@ public final class CompoundCommand implements ICompoundCommand{
                 SetPositionCommand setPositionCommand = new SetPositionCommand( (SetPositionCommand) command);
                 tempList.add(setPositionCommand);
             }
-            else if(command instanceof CompoundCommand){
-                CompoundCommand compoundCommand = new CompoundCommand(((CompoundCommand) command).iterator());
-                tempList.add(compoundCommand);
+            else if(command instanceof ImmutableComplexCommand){
+                ImmutableComplexCommand immutableComplexCommand = new ImmutableComplexCommand(((ImmutableComplexCommand) command).iterator());
+                tempList.add(immutableComplexCommand);
             }
         }
         this.ListOfCommands = List.copyOf(tempList);

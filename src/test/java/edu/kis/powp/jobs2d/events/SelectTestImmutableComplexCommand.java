@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.events;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
@@ -34,15 +34,15 @@ public class SelectTestImmutableComplexCommand implements ActionListener {
         commands1.add(new SetPositionCommand(0,0));
         commands1.add(new OperateToCommand(50,50));
 
-        CompoundCommand compoundCommand = new CompoundCommand(commands.iterator());
+        ImmutableComplexCommand nestedImmutableComplexCommand = new ImmutableComplexCommand(commands.iterator());
 
-        commands1.add(compoundCommand);
+        commands1.add(nestedImmutableComplexCommand);
 
-        CompoundCommand nestedCompoundCommand = new CompoundCommand(commands1.iterator());
+        ImmutableComplexCommand immutableComplexCommand = new ImmutableComplexCommand(commands1.iterator());
 
         commands.add(new OperateToCommand(500, 500));
 
-        nestedCompoundCommand.execute(driverManager.getCurrentDriver());
+        immutableComplexCommand.execute(driverManager.getCurrentDriver());
 
     }
 }
