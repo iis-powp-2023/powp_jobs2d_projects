@@ -9,30 +9,21 @@ import java.util.List;
 public final class CompoundCommand implements ICompoundCommand{
 
     private final List<DriverCommand> ListOfCommands;
-    public CompoundCommand(List<DriverCommand> ListOfCommands){
+    public CompoundCommand(Iterator iterator){
         List<DriverCommand> tempList = new ArrayList<>();
-        for (DriverCommand command: ListOfCommands) {
+        while(iterator.hasNext()){
+            DriverCommand command = (DriverCommand) iterator.next();
             if(command instanceof OperateToCommand){
-                OperateToCommand obj = new OperateToCommand((OperateToCommand) command);
-                tempList.add(obj);
+                OperateToCommand operateToCommand = new OperateToCommand((OperateToCommand) command);
+                tempList.add(operateToCommand);
             }
             else if(command instanceof SetPositionCommand){
-                SetPositionCommand obj = new SetPositionCommand( (SetPositionCommand) command);
-                tempList.add(obj);
+                SetPositionCommand setPositionCommand = new SetPositionCommand( (SetPositionCommand) command);
+                tempList.add(setPositionCommand);
             }
-            else if(command instanceof ICompoundCommand){
-                Iterator iterator = ((ICompoundCommand) command).iterator();
-                while(iterator.hasNext()){
-                    DriverCommand driverCommand = ((DriverCommand) iterator.next());
-                    if(driverCommand instanceof OperateToCommand){
-                        OperateToCommand operateToCommand = new OperateToCommand((OperateToCommand) driverCommand);
-                        tempList.add(operateToCommand);
-                    }
-                    else if(driverCommand instanceof SetPositionCommand){
-                        SetPositionCommand setPositionCommand = new SetPositionCommand( (SetPositionCommand) driverCommand);
-                        tempList.add(setPositionCommand);
-                    }
-                }
+            else if(command instanceof CompoundCommand){
+                CompoundCommand compoundCommand = new CompoundCommand(((CompoundCommand) command).iterator());
+                tempList.add(compoundCommand);
             }
         }
         this.ListOfCommands = List.copyOf(tempList);

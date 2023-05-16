@@ -34,16 +34,15 @@ public class SelectTestImmutableComplexCommand implements ActionListener {
         commands1.add(new SetPositionCommand(0,0));
         commands1.add(new OperateToCommand(50,50));
 
-        CompoundCommand compoundCommand = new CompoundCommand(commands);
+        CompoundCommand compoundCommand = new CompoundCommand(commands.iterator());
 
         commands1.add(compoundCommand);
 
-        CompoundCommand compoundCommand1 = new CompoundCommand(commands1);
+        CompoundCommand nestedCompoundCommand = new CompoundCommand(commands1.iterator());
 
         commands.add(new OperateToCommand(500, 500));
 
-        //compoundCommand.execute(driverManager.getCurrentDriver());
-        compoundCommand1.execute(driverManager.getCurrentDriver());
+        nestedCompoundCommand.execute(driverManager.getCurrentDriver());
 
     }
 }
