@@ -8,7 +8,7 @@ import org.json.JSONArray;
 
 public class CommandFromJson extends CommandImporter
 {
-    CommandFromJson()
+    public CommandFromJson()
     {
 
     }
