@@ -9,7 +9,7 @@ public class SetPositionCommand implements DriverCommand {
 
 	@Override
 	public DriverCommand createDeepCopy() {
-		return null;
+		return new SetPositionCommand(posX, posY);
 	}
 
 	private int posX, posY;

@@ -25,8 +25,9 @@ public class CompoundCommand implements ICompoundCommand {
     public ICompoundCommand createDeepCopy() {
         List<DriverCommand> copySubCommands = new ArrayList<>();
 
-        for (DriverCommand subCommand : commands)
+        for (DriverCommand subCommand : commands) {
             copySubCommands.add(subCommand.createDeepCopy());
+        }
 
         return new CompoundCommand(copySubCommands);
     }

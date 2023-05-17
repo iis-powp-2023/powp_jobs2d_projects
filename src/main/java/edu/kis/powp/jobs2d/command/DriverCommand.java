@@ -13,6 +13,6 @@ public interface DriverCommand {
 	 * @param driver driver.
 	 */
 	public void execute(Job2dDriver driver);
-	DriverCommand createDeepCopy();
+	public DriverCommand createDeepCopy();
 
 }

@@ -22,7 +22,7 @@ public class OperateToCommand implements DriverCommand {
 
 	@Override
 	public DriverCommand createDeepCopy() {
-		return null;
+		return new OperateToCommand(posX, posY);
 	}
 
 }
