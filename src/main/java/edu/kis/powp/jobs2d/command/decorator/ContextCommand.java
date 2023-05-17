@@ -1,8 +1,7 @@
 package edu.kis.powp.jobs2d.command.decorator;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ICommandVisitor;
+import edu.kis.powp.jobs2d.command.*;
 
 public class ContextCommand implements DriverCommand {
     private final DriverCommand command;
@@ -23,6 +22,11 @@ public class ContextCommand implements DriverCommand {
 
     @Override
     public void accept(ICommandVisitor visitor) {
-        command.execute(this.executor);
+        if(command instanceof ICompoundCommand)
+            visitor.visit((ICompoundCommand) command);
+        if(command instanceof SetPositionCommand)
+            visitor.visit((SetPositionCommand) command);
+        if(command instanceof OperateToCommand)
+            visitor.visit((OperateToCommand) command);
     }
 }
