@@ -18,10 +18,7 @@ public abstract class CommandImporter
         return name;
     }
 
-    public boolean parseText (String input)
-    {
-        return false;
-    }    
+    abstract public boolean parseText (String input);
 
     protected static DriverCommand createCommand(String commandIdentifier, Integer x, Integer y) throws NoSuchCommandIdentifierException
     {
