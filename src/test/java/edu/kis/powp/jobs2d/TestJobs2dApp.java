@@ -5,16 +5,15 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
 import edu.kis.powp.jobs2d.events.*;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DrawerFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
-import edu.kis.powp.jobs2d.features.RecordFeature;
+import edu.kis.powp.jobs2d.features.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -66,16 +65,22 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Logger driver", loggerDriver);
         composite.addDriver(loggerDriver);
 
+        DeviceUsageManager deviceUsageManager;
+
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        DriverFeature.addDriver("Line Simulator", driver);
+        DistanceCountingDriver driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic")));
+        deviceUsageManager = driver.getDeviceUsageManager();
+        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
 
-        driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
-        DriverFeature.addDriver("Special line Simulator", driver);
-        DriverFeature.addDriver("Logger + line driver", composite);
+        driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special")));
+        deviceUsageManager = driver.getDeviceUsageManager();
+        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        DriverFeature.addDriver("Special line Simulator + distance log", driver);
+        DriverFeature.addDriver("Logger + line driver + distance log", composite);
     }
 
     private static void setupWindows(Application application) {
