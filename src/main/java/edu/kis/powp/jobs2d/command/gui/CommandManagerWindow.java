@@ -31,9 +31,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private DrawPanelController iconDraw;
     private JTextArea textInput;
     private String defaultTextInputMessage = "Write here for command import";
+    private BookmarksWindow bookmarks = null;
     private static final long serialVersionUID = 9204679248304669948L;
     private final Job2dDriver driverCommandPreview;
-    public CommandManagerWindow(CommandManager commandManager) {
+    public CommandManagerWindow(CommandManager commandManager) 
+    {
         this.setTitle("Command Manager");
 
         this.setSize(400, 400);
@@ -115,6 +117,21 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridy = 5;
         c.weighty = 1;
         content.add(btnClearObservers, c);
+
+        JButton btnBookmarks = new JButton("Bookmarks");
+        btnBookmarks.addActionListener((ActionEvent e) -> this.openBookmarks());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 6;
+        c.weighty = 1;
+        content.add(btnBookmarks, c);
+    }
+
+    private void openBookmarks() 
+    {
+        bookmarks = new BookmarksWindow(commandManager);
+        bookmarks.HideIfVisibleAndShowIfHidden();
     }
 
     private void importCommand() {
