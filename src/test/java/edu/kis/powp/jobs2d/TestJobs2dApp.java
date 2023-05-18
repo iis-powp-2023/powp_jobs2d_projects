@@ -15,6 +15,8 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.features.RecordFeature;
+import edu.kis.powp.jobs2d.transformations.Rotation;
+import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,22 +78,22 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Special line Simulator", driver);
         DriverFeature.addDriver("Logger + line driver", composite);
 
-        Job2dDriver verticalFlipDriver = new VerticalFlipDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        Job2dDriver verticalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHorizontalFlip());
         DriverFeature.addDriver("Vertical flip driver", verticalFlipDriver);
 
-        Job2dDriver horizontalFlipDriver = new HorizontalFlipDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        Job2dDriver horizontalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getVerticalFlip());
         DriverFeature.addDriver("Horizontal flip driver", horizontalFlipDriver);
 
-        Job2dDriver halfScaleDriver = new HalfScaleDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        Job2dDriver halfScaleDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHalfScale());
         DriverFeature.addDriver("Half scale driver", halfScaleDriver);
 
-        Job2dDriver doubleScaleDriver = new DoubleScaleDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        Job2dDriver doubleScaleDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getDoubleScale());
         DriverFeature.addDriver("Double scale driver", doubleScaleDriver);
 
-        Job2dDriver clockwiseRotationDriver = new ClockwiseRotationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        Job2dDriver clockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getClockwiseRotation());
         DriverFeature.addDriver("Clockwise rotation driver", clockwiseRotationDriver);
 
-        Job2dDriver counterClockwiseRotationDriver = new CounterclockwiseRotationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
 
         DriverFeature.updateDriverInfo();
