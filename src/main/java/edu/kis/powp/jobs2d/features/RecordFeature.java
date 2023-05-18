@@ -6,9 +6,11 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.recorder.CommandRecorder;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
+import edu.kis.powp.jobs2d.events.RecordingDriverDecoratingSubscriber;
 import edu.kis.powp.jobs2d.events.SelectStartRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectStopRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
+import edu.kis.powp.observer.Subscriber;
 
 import java.util.List;
 
@@ -38,12 +40,7 @@ public class RecordFeature {
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Stop Recording", selectStopRecordingOptionListener);
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Clear Recording", selectClearRecordingOptionListener);
 
-        DriverManager driverManager = DriverFeature.getDriverManager();
-
-        driverManager.addSubscriber(() -> {
-            Job2dDriver currentDriver = driverManager.getCurrentDriver();
-            driverManager.setCurrentDriver(new RecordingDriver(currentDriver));
-        });
+        DriverFeature.getDriverManager().addSubscriber(new RecordingDriverDecoratingSubscriber());
     }
 
     public static void recordCommand(DriverCommand command){
