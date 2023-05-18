@@ -1,29 +1,35 @@
 package edu.kis.powp.deepCopy;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 public class DeepCopyTest {
     public static void main(String[] args) {
+        LinkedList<DriverCommand> list1 = new LinkedList<>();
+        list1.add(new SetPositionCommand(3, 1));
+        list1.add(new OperateToCommand(1, 1));
 
+        LinkedList<DriverCommand> list2 = new LinkedList<>();
+        list2.add(new OperateToCommand(1, 1));
+        list2.add(new SetPositionCommand(15, 1));
 
-        DriverCommand driverCommand1 = new CompoundCommand(new LinkedList<>());
-        DriverCommand driverCommand2 = new CompoundCommand(new LinkedList<>());
-        DriverCommand driverCommand3 = new CompoundCommand(new LinkedList<>());
+        LinkedList<DriverCommand> list3 = new LinkedList<>();
+        list3.add(new OperateToCommand(1, 1));
+        list3.add(new SetPositionCommand(15, 1));
 
-        CompoundCommand originalCommand = new CompoundCommand(
-                new ArrayList<>(List.of(
-                        driverCommand1,
-                        driverCommand2,
-                        driverCommand3
-                ))
-        );
+        DriverCommand driverCommand1 = new CompoundCommand(list1);
+        DriverCommand driverCommand2 = new CompoundCommand(list2);
+        DriverCommand driverCommand3 = new CompoundCommand(list3);
+
+        ArrayList<DriverCommand> iCompoundCommands = new ArrayList<>();
+        iCompoundCommands.add(driverCommand1);
+        iCompoundCommands.add(driverCommand2);
+        iCompoundCommands.add(driverCommand3);
+
+        CompoundCommand originalCommand = new CompoundCommand(iCompoundCommands);
 
         ICompoundCommand copiedCommand = originalCommand.createDeepCopy();
 
