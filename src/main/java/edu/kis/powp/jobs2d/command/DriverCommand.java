@@ -14,5 +14,6 @@ public interface DriverCommand {
 	 */
 	public void execute(Job2dDriver driver);
 	public DriverCommand createDeepCopy();
+	public void accept(ICommandVisitor visitor);
 
 }

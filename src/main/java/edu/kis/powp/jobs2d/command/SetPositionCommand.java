@@ -7,11 +7,6 @@ import edu.kis.powp.jobs2d.Job2dDriver;
  */
 public class SetPositionCommand implements DriverCommand {
 
-	@Override
-	public DriverCommand createDeepCopy() {
-		return new SetPositionCommand(posX, posY);
-	}
-
 	private int posX, posY;
 
 	public SetPositionCommand(int posX, int posY) {
@@ -23,6 +18,16 @@ public class SetPositionCommand implements DriverCommand {
 	@Override
 	public void execute(Job2dDriver driver) {
 		driver.setPosition(posX, posY);
+	}
+
+	@Override
+	public DriverCommand createDeepCopy() {
+		return new SetPositionCommand(posX, posY);
+	}
+
+	@Override
+	public void accept(ICommandVisitor visitor){
+		visitor.visit(this);
 	}
 
 }
