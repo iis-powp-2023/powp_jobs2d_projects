@@ -2,7 +2,7 @@ package edu.kis.powp.jobs2d.features.HeadUsage;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
-public class HeadUsageManager implements Job2dDriver {
+public class HeadUsageManager implements Job2dDriver,HeadUsageStats {
     private int x;
     private int y;
     private double headDistance;
@@ -14,11 +14,11 @@ public class HeadUsageManager implements Job2dDriver {
         this.headDistance = 0.0;
         this.operationDistance = 0.0;
     }
-
+    @Override
     public double getHeadDistance() {
         return headDistance;
     }
-
+    @Override
     public double getOperationDistance() {
         return operationDistance;
     }
