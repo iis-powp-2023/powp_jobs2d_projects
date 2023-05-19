@@ -11,7 +11,6 @@ import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
-import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
@@ -63,21 +62,22 @@ public class TestJobs2dApp {
     private static void setupDrivers(Application application) {
         DriverComposite composite = new DriverComposite();
 
-        Job2dDriver loggerDriver = new RecordingDriver(new PositionLoggingDriver());
+        Job2dDriver loggerDriver = new PositionLoggingDriver();
         DriverFeature.addDriver("Logger driver", loggerDriver);
         composite.addDriver(loggerDriver);
 
         DeviceUsageManager deviceUsageManager;
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        DistanceCountingDriver driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic")));
+        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         deviceUsageManager = driver.getDeviceUsageManager();
         deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
         DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
-        driver = new DistanceCountingDriver(new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special")));
+        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
+
         deviceUsageManager = driver.getDeviceUsageManager();
         deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
         DriverFeature.addDriver("Special line Simulator + distance log", driver);
