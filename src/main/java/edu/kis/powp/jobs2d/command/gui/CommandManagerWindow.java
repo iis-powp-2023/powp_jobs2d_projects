@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.sound.sampled.Line;
@@ -164,12 +165,17 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         currentCommandField.setText(commandManager.getCurrentCommandString());
     }
     public void updateCurrentCommandStatsField() {
-        CountingCommandVisitor temp = commandManager.getCountingVisitor();
+        CountingCommandVisitor countingVisitor = commandManager.getCountingVisitor();
         currentCommandStatsField.setText("Command stats:\n");
-        currentCommandStatsField.append("Operations count: " + temp.getCompoundCommandsCount() +"\n");
-        currentCommandStatsField.append("Operations length: " + Math.round(temp.getTotalLength()*100)/100.0 + "\n");
-        currentCommandStatsField.append("OperateTo length: " + Math.round(temp.getOperateToLength()*100)/100.0 + "\n");
-        currentCommandStatsField.append("Operation time: XXs\n");
+        currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() +"\n");
+        currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");
+        currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength()*100)/100.0 + "\n");
+        currentCommandStatsField.append("Operation time: ");
+        if (countingVisitor.getExecutionTime() == null) {
+            currentCommandStatsField.append("\n");
+        } else {
+            currentCommandStatsField.append(countingVisitor.getExecutionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+        }
     }
 
     public void updateCurrentCommandPreview()

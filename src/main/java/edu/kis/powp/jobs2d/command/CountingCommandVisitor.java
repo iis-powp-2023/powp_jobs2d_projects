@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.command;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 public class CountingCommandVisitor implements ICommandVisitor {
@@ -12,6 +13,7 @@ public class CountingCommandVisitor implements ICommandVisitor {
     private int start = 0;
     private double totalLength = 0;
     private double operateToLength = 0;
+    LocalDateTime executionTime;
 
     public int getCompoundCommandsCount() {
         return this.compoundCommandsCount;
@@ -33,10 +35,15 @@ public class CountingCommandVisitor implements ICommandVisitor {
         return operateToLength;
     }
 
+    public LocalDateTime getExecutionTime() {
+        return executionTime;
+    }
+
     public CountingCommandVisitor() {}
 
     @Override
     public void visit(ICompoundCommand command) {
+        executionTime = LocalDateTime.now();
         Iterator<DriverCommand> iterator = command.iterator();
 
         while(iterator.hasNext()) {
