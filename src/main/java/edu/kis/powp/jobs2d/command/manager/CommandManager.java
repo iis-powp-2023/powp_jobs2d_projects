@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICommandVisitor;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
@@ -16,6 +17,7 @@ public class CommandManager {
     private DriverCommand currentCommand = null;
 
     private Publisher changePublisher = new Publisher();
+    private CountingCommandVisitor countingVisitor = new CountingCommandVisitor();
 
     /**
      * Set current command.
@@ -24,6 +26,7 @@ public class CommandManager {
      */
     public synchronized void setCurrentCommand(DriverCommand commandList) {
         this.currentCommand = commandList;
+        commandList.accept(countingVisitor);
         changePublisher.notifyObservers();
     }
 
@@ -58,6 +61,11 @@ public class CommandManager {
             }
         });
 
+        getCurrentCommand().accept(countingVisitor);
+    }
+
+    public synchronized CountingCommandVisitor getCountingVisitor(){
+        return countingVisitor;
     }
 
     /**

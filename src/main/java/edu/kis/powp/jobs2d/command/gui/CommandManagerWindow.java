@@ -12,6 +12,7 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -24,6 +25,7 @@ import edu.kis.powp.observer.Subscriber;
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private CommandManager commandManager;
+    private JTextArea currentCommandStatsField;
     private JTextArea currentCommandField;
     private String observerListString;
     private JTextArea observerListField;
@@ -36,7 +38,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     public CommandManagerWindow(CommandManager commandManager) {
         this.setTitle("Command Manager");
 
-        this.setSize(400, 400);
+        this.setSize(500, 600);
         Container content = this.getContentPane();
         content.setLayout(new GridBagLayout());
 
@@ -54,13 +56,23 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(observerListField, c);
         updateObserverListField();
 
+        currentCommandStatsField = new JTextArea("PLACEHOLDER");
+        currentCommandStatsField.setEditable(false);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 1;
+        c.weighty = 1;
+        content.add(currentCommandStatsField, c);
+        updateCurrentCommandStatsField();
+
 
         currentCommandField = new JTextArea("");
         currentCommandField.setEditable(false);
         c.fill = GridBagConstraints.CENTER;
         c.gridwidth = 1;
-        c.gridy = 1;
-        c.weighty = 2;
+        c.gridy = 2;
+        c.weighty = 4;
         c.weightx=0.5;
         content.add(currentCommandField, c);
         updateCurrentCommandField();
@@ -69,7 +81,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
-        c.gridy = 1;
+        c.gridy = 2;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
         updateObserverListField();
@@ -85,14 +97,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 2;
+        c.gridy = 3;
         c.weighty = 1;
         content.add(textInput, c);
 
         JButton btnImportCommand = new JButton("Import command");
         btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
         c.fill = GridBagConstraints.BOTH;
-        c.gridy = 3;
+        c.gridy = 4;
         c.weightx = 1;
         c.weighty = 1;
         content.add(btnImportCommand, c);
@@ -103,7 +115,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 4;
+        c.gridy = 5;
         c.weighty = 1;
         content.add(btnClearCommand, c);
 
@@ -112,7 +124,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 5;
+        c.gridy = 6;
         c.weighty = 1;
         content.add(btnClearObservers, c);
     }
@@ -150,6 +162,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
+    }
+    public void updateCurrentCommandStatsField() {
+        CountingCommandVisitor temp = commandManager.getCountingVisitor();
+        currentCommandStatsField.setText("Command stats:\n");
+        currentCommandStatsField.append("Operations count: " + temp.getCompoundCommandsCount() +"\n");
+        currentCommandStatsField.append("Operations length: " + Math.round(temp.getTotalLength()*100)/100.0 + "\n");
+        currentCommandStatsField.append("OperateTo length: " + Math.round(temp.getOperateToLength()*100)/100.0 + "\n");
+        currentCommandStatsField.append("Operation time: XXs\n");
     }
 
     public void updateCurrentCommandPreview()
