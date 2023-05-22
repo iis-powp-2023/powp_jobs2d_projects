@@ -1,7 +1,6 @@
 package edu.kis.powp.jobs2d;
 
 import edu.kis.powp.jobs2d.command.*;
-import edu.kis.powp.jobs2d.features.DriverFeature;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,15 +17,15 @@ public class TestVisitorCommand {
 
 
         List<DriverCommand> commands =  Arrays.asList(setPositionCommand, operateToCommand1, operateToCommand2, operateToCommand3, operateToCommand4);
-        CommandVisitorCommander visitor = new CommandVisitorCommander();
+        CountingCommandVisitor visitor = new CountingCommandVisitor();
 
 
         for (DriverCommand command : commands) {
             command.accept(visitor);
         }
 
-        int operateToCount = visitor.getOperateToCount();
-        int setPositionCount = visitor.getSetPositionCount();
+        int operateToCount = visitor.getOperateToCommandsCount();
+        int setPositionCount = visitor.getSetPositionCommandsCount();
 
         System.out.println("operateToCount: " + operateToCount + "\nsetPositionCount: " + setPositionCount);
     }
