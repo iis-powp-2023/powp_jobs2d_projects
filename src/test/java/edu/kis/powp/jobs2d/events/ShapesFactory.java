@@ -1,6 +1,9 @@
 package edu.kis.powp.jobs2d.events;
 
-import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
+import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
@@ -10,13 +13,12 @@ import java.util.List;
 
 public class ShapesFactory {
 
-    static public ImmutableCompoundCommand triangle(Point2D p1, Point2D p2, Point2D p3)
-    {
+    static public ImmutableCompoundCommand triangle(Point2D p1, Point2D p2, Point2D p3) {
         List<DriverCommand> commands = new ArrayList<DriverCommand>();
-        commands.add(new SetPositionCommand((int)p1.getX(), (int) p1.getY()));
-        commands.add(new OperateToCommand((int)p2.getX(), (int) p2.getY()));
-        commands.add(new OperateToCommand((int)p3.getX(), (int) p3.getY()));
-        commands.add(new OperateToCommand((int)p1.getX(),(int) p1.getY()));
+        commands.add(new SetPositionCommand((int) p1.getX(), (int) p1.getY()));
+        commands.add(new OperateToCommand((int) p2.getX(), (int) p2.getY()));
+        commands.add(new OperateToCommand((int) p3.getX(), (int) p3.getY()));
+        commands.add(new OperateToCommand((int) p1.getX(), (int) p1.getY()));
         ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("triangle");
         builder.addCommands(commands);
 
@@ -24,13 +26,12 @@ public class ShapesFactory {
     }
 
 
-    static public ImmutableCompoundCommand rectangle(Point2D leftBottomPoint, Point2D rightUpperPoint)
-    {
+    static public ImmutableCompoundCommand rectangle(Point2D leftBottomPoint, Point2D rightUpperPoint) {
         List<DriverCommand> commands = new ArrayList<DriverCommand>();
-        commands.add(new SetPositionCommand((int)leftBottomPoint.getX(), (int) leftBottomPoint.getY()));
-        commands.add(new OperateToCommand((int)rightUpperPoint.getX(), (int) leftBottomPoint.getY()));
-        commands.add(new OperateToCommand((int)rightUpperPoint.getX(), (int) rightUpperPoint.getY()));
-        commands.add(new OperateToCommand((int)leftBottomPoint.getX(),(int) rightUpperPoint.getY()));
+        commands.add(new SetPositionCommand((int) leftBottomPoint.getX(), (int) leftBottomPoint.getY()));
+        commands.add(new OperateToCommand((int) rightUpperPoint.getX(), (int) leftBottomPoint.getY()));
+        commands.add(new OperateToCommand((int) rightUpperPoint.getX(), (int) rightUpperPoint.getY()));
+        commands.add(new OperateToCommand((int) leftBottomPoint.getX(), (int) rightUpperPoint.getY()));
 
         ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("rectangle");
         builder.addCommands(commands);
@@ -39,26 +40,22 @@ public class ShapesFactory {
     }
 
 
-
-    static public ImmutableCompoundCommand quadrangle(List<Point2D> point2DList)
-    {
+    static public ImmutableCompoundCommand quadrangle(List<Point2D> point2DList) {
 
         List<DriverCommand> commands = new ArrayList<DriverCommand>();
 
-        commands.add(new SetPositionCommand((int)point2DList.get(0).getX(), (int) point2DList.get(0).getY()));
-        for(Point2D point : point2DList.subList(1,point2DList.size()))
-        {
-            commands.add(new OperateToCommand((int)point.getX(), (int) point.getY()));
+        commands.add(new SetPositionCommand((int) point2DList.get(0).getX(), (int) point2DList.get(0).getY()));
+        for (Point2D point : point2DList.subList(1, point2DList.size())) {
+            commands.add(new OperateToCommand((int) point.getX(), (int) point.getY()));
         }
-        commands.add(new OperateToCommand((int)point2DList.get(0).getX(),(int) point2DList.get(0).getY()));
+        commands.add(new OperateToCommand((int) point2DList.get(0).getX(), (int) point2DList.get(0).getY()));
         ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("quadrangle");
         builder.addCommands(commands);
 
         return builder.build();
     }
 
-    static public void topSecretCommand()
-    {
+    static public void topSecretCommand() {
         List<DriverCommand> commands = new ArrayList<DriverCommand>();
         commands.add(new SetPositionCommand(-20, -50));
         commands.add(new OperateToCommand(-20, -50));
@@ -77,7 +74,7 @@ public class ShapesFactory {
 
 
         CommandManager manager = CommandsFeature.getDriverCommandManager();
-        manager.setCurrentCommand(commands,"topSecretCommand");
+        manager.setCurrentCommand(commands, "topSecretCommand");
 
     }
 
