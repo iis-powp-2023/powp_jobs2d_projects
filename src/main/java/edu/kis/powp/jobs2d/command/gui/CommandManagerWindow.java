@@ -27,6 +27,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
     private JPanel iconJPanel;
     private DrawPanelController iconDraw;
+    private JTextArea textInput;
+    private String defaultTextInputMessage = "Write here for command import";
     /**
      *
      */
@@ -77,14 +79,29 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         driverCommandPreview = new ScaledLineDriverAdapter(new LineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic")).setScale(0.25);
 
+        textInput = new JTextArea(defaultTextInputMessage);
+        textInput.setEditable(true);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 2;
+        c.weighty = 1;
+        content.add(textInput, c);
 
+        JButton btnImportCommand = new JButton("Import command");
+        btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
+        c.fill = GridBagConstraints.BOTH;
+        c.gridy = 3;
+        c.weightx = 1;
+        c.weighty = 1;
+        content.add(btnImportCommand, c);
 
         JButton btnClearCommand = new JButton("Clear command");
         btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 2;
+        c.gridy = 4;
         c.weighty = 1;
         content.add(btnClearCommand, c);
 
@@ -93,12 +110,32 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 3;
+        c.gridy = 5;
         c.weighty = 1;
         content.add(btnClearObservers, c);
     }
 
-    private void clearCommand() {
+    private void importCommand() {
+        String input = textInput.getText();
+        if (input.equals("")) {
+            textInput.setText(defaultTextInputMessage);
+            return;
+        } else if (input.equals(defaultTextInputMessage)) {
+            return;
+        }
+
+        CommandImporter importedCommand = CommandFactory.interpretInput(input);
+
+        if (importedCommand == null) {
+            input = "Could not import command:\n" + input;
+            textInput.setText(input);
+        } else {
+            commandManager.setCurrentCommand(importedCommand.getCommand(), importedCommand.getName());
+            textInput.setText(defaultTextInputMessage);
+        }
+    }
+
+        private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
     }
