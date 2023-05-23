@@ -22,7 +22,7 @@ import edu.kis.powp.observer.Subscriber;
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private CommandManager commandManager;
-    private JTextArea commandCurrentDriver;
+    private JTextArea currentCommandField;
     private String observerListString;
     private JTextArea observerListField;
     private JPanel iconJPanel;
@@ -56,14 +56,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         updateObserverListField();
 
 
-        commandCurrentDriver = new JTextArea("");
-        commandCurrentDriver.setEditable(false);
+        currentCommandField = new JTextArea("");
+        currentCommandField.setEditable(false);
         c.fill = GridBagConstraints.CENTER;
         c.gridwidth = 1;
         c.gridy = 1;
         c.weighty = 2;
         c.weightx=0.5;
-        content.add(commandCurrentDriver, c);
+        content.add(currentCommandField, c);
         updateCurrentCommandField();
 
 
@@ -141,7 +141,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     public void updateCurrentCommandField() {
-        commandCurrentDriver.setText(commandManager.getCurrentCommandString());
+        currentCommandField.setText(commandManager.getCurrentCommandString());
     }
 
     public void updateCurrentCommandPreview()
