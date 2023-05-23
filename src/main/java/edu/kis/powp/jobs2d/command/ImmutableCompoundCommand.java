@@ -10,7 +10,7 @@ import java.util.List;
 public class ImmutableCompoundCommand implements ICompoundCommand {
 	private final List<DriverCommand> commands;
 
-	private ImmutableCompoundCommand(List<DriverCommand> commands) {
+	public ImmutableCompoundCommand(List<DriverCommand> commands) {
 		this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
 	}
 
