@@ -24,10 +24,7 @@ public class ScaledLineDriverAdapter extends LineDriverAdapter{
     }
     public LineDriverAdapter setScale(double k)
     {
-        if (k>=0)
-        {
-            this.scale=k;
-        }
+        this.scale=k;
         return this;
     }
 }

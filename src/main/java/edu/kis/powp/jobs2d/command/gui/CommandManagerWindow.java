@@ -33,7 +33,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
      *
      */
     private static final long serialVersionUID = 9204679248304669948L;
-    private final LineDriverAdapter driverCommandPreview;
+    private final LineDriverAdapter commandPreviewDriver;
     public CommandManagerWindow(CommandManager commandManager) {
         this.setTitle("Command Manager");
 
@@ -77,7 +77,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         iconDraw=new DrawPanelController();
         iconDraw.initialize(panel);
 
-        driverCommandPreview = new ScaledLineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic").setScale(0.25);
+        commandPreviewDriver = new ScaledLineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic").setScale(0.25);
 
         textInput = new JTextArea(defaultTextInputMessage);
         textInput.setEditable(true);
@@ -148,7 +148,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     {
         iconDraw.clearPanel();
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        command.execute(driverCommandPreview);
+        command.execute(commandPreviewDriver);
     }
     public void deleteObservers() {
         commandManager.getChangePublisher().clearObservers();
