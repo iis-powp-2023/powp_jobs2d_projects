@@ -4,19 +4,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.sound.sampled.Line;
 import javax.swing.*;
 
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.adapter.LineFactoryWithThinLine;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Subscriber;
 
 
@@ -31,8 +29,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private DrawPanelController iconDraw;
     private JTextArea textInput;
     private String defaultTextInputMessage = "Write here for command import";
+    /**
+     *
+     */
     private static final long serialVersionUID = 9204679248304669948L;
-    private final Job2dDriver driverCommandPreview;
+    private final LineDriverAdapter commandPreviewDriver;
     public CommandManagerWindow(CommandManager commandManager) {
         this.setTitle("Command Manager");
 
@@ -66,7 +67,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         updateCurrentCommandField();
 
 
-
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
         c.gridy = 1;
@@ -76,9 +76,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(panel, c);
         iconDraw=new DrawPanelController();
         iconDraw.initialize(panel);
-        driverCommandPreview = new LineDriverAdapter(iconDraw, LineFactory.getBasicLine(), "basic");
 
-
+        commandPreviewDriver = new ScaledLineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic").setScale(0.25);
 
         textInput = new JTextArea(defaultTextInputMessage);
         textInput.setEditable(true);
@@ -96,7 +95,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.weighty = 1;
         content.add(btnImportCommand, c);
-
 
         JButton btnClearCommand = new JButton("Clear command");
         btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
@@ -119,31 +117,25 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private void importCommand() {
         String input = textInput.getText();
-        if (input.equals(""))
-        {
+        if (input.equals("")) {
             textInput.setText(defaultTextInputMessage);
             return;
-        }
-        else if (input.equals(defaultTextInputMessage))
-        {
+        } else if (input.equals(defaultTextInputMessage)) {
             return;
         }
 
         CommandImporter importedCommand = CommandFactory.interpretInput(input);
 
-        if (importedCommand == null)
-        {
+        if (importedCommand == null) {
             input = "Could not import command:\n" + input;
             textInput.setText(input);
-        }
-        else
-        {
+        } else {
             commandManager.setCurrentCommand(importedCommand.getCommand(), importedCommand.getName());
             textInput.setText(defaultTextInputMessage);
-        }        
+        }
     }
 
-    private void clearCommand() {
+        private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
     }
@@ -156,7 +148,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     {
         iconDraw.clearPanel();
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        command.execute(driverCommandPreview);
+        command.execute(commandPreviewDriver);
     }
     public void deleteObservers() {
         commandManager.getChangePublisher().clearObservers();
