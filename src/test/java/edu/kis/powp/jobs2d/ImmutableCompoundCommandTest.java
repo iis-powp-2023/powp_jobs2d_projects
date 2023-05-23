@@ -28,7 +28,7 @@ public class ImmutableCompoundCommandTest {
         commands.add(mockCommand);
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("test");
         builder.addCommand(mockCommand);
         builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
@@ -45,7 +45,7 @@ public class ImmutableCompoundCommandTest {
     public void testImmutableCompoundCommandImmutable() {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
-        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("test");
         builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
@@ -59,7 +59,7 @@ public class ImmutableCompoundCommandTest {
     @Test
     public void testImmutableCompoundCommandAddingEmptyList() {
         List<DriverCommand> commands = new ArrayList<>();
-        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("test");
         builder.addCommands(commands);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
@@ -75,7 +75,7 @@ public class ImmutableCompoundCommandTest {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("test");
         builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
@@ -94,7 +94,7 @@ public class ImmutableCompoundCommandTest {
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(mockCommand);
 
-        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("test");
         builder.addCommand(mockCommand);
         ImmutableCompoundCommand compoundCommand = builder.build();
 
