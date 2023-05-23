@@ -4,8 +4,6 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class ShapesFactory {
         return builder.build();
     }
 
-    static public void topSecretCommand() {
+    static public ImmutableCompoundCommand topSecretCommand() {
         List<DriverCommand> commands = new ArrayList<DriverCommand>();
         commands.add(new SetPositionCommand(-20, -50));
         commands.add(new OperateToCommand(-20, -50));
@@ -73,8 +71,10 @@ public class ShapesFactory {
         commands.add(new OperateToCommand(20, 50));
 
 
-        CommandManager manager = CommandsFeature.getDriverCommandManager();
-        manager.setCurrentCommand(commands, "topSecretCommand");
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("topSecretCommand");
+        builder.addCommands(commands);
+
+        return builder.build();
 
     }
 
