@@ -12,20 +12,20 @@ public class MoveFigureCommandVisitor extends FigureCommandVisitor {
         this.offY = offY;
     }
 
-    private void setMove(int x, int y){
+    private void setMoved(int x, int y){
         posX = x + offX;
         posY = y + offY;
     }
 
     @Override
     public void visit(SetPositionCommand command) {
-        setMove(command.getPosX(), command.getPosY());
+        setMoved(command.getPosX(), command.getPosY());
         this.command = new SetPositionCommand(posX, posY);
     }
 
     @Override
     public void visit(OperateToCommand command) {
-        setMove(command.getPosX(), command.getPosY());
+        setMoved(command.getPosX(), command.getPosY());
         this.command = new OperateToCommand(posX, posY);
     }
 }

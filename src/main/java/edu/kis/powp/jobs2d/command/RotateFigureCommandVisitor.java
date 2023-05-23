@@ -11,10 +11,8 @@ public class RotateFigureCommandVisitor extends FigureCommandVisitor {
     }
 
     private void setRotated(int x, int y){
-        double pom = Math.cos(degree) * x - Math.sin(degree) * y;
-        posX = (int)(pom);
-        pom = Math.sin(degree) * x + Math.cos(degree) * y;
-        posY = (int)(pom);
+        posX = (int) ((int)Math.cos(degree) * x - Math.sin(degree) * y);
+        posY = (int) ((int)Math.sin(degree) * x + Math.cos(degree) * y);
     }
 
     @Override
