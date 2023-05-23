@@ -77,7 +77,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         iconDraw=new DrawPanelController();
         iconDraw.initialize(panel);
 
-        driverCommandPreview = new ScaledLineDriverAdapter(new LineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic")).setScale(0.25);
+        driverCommandPreview = new ScaledLineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic").setScale(0.25);
 
         textInput = new JTextArea(defaultTextInputMessage);
         textInput.setEditable(true);

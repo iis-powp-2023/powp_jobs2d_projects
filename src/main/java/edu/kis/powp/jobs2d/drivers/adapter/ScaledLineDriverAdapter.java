@@ -1,9 +1,12 @@
 package edu.kis.powp.jobs2d.drivers.adapter;
 
+import edu.kis.legacy.drawer.panel.DrawPanelController;
+import edu.kis.legacy.drawer.shape.ILine;
+
 public class ScaledLineDriverAdapter extends LineDriverAdapter{
 
-    public ScaledLineDriverAdapter(LineDriverAdapter lineDriverAdapter) {
-        super(lineDriverAdapter.getDrawController(), lineDriverAdapter.getLine(), lineDriverAdapter.getName());
+    public ScaledLineDriverAdapter(DrawPanelController drawController, ILine line, String name) {
+        super(drawController,line,name);
     }
 
     private double scale=1;
