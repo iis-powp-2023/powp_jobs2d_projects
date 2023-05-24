@@ -161,11 +161,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     @Override
     public void HideIfVisibleAndShowIfHidden() {
         updateObserverListField();
-        if (this.isVisible()) {
-            this.setVisible(false);
-        } else {
-            this.setVisible(true);
-        }
+        this.setVisible(!this.isVisible());
     }
 
 }
