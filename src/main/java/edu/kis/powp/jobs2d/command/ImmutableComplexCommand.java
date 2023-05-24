@@ -22,7 +22,7 @@ public final class ImmutableComplexCommand implements ICompoundCommand{
                 SetPositionCommand setPositionCommand = new SetPositionCommand( (SetPositionCommand) command);
                 tempList.add(setPositionCommand);
             }
-            else if(command instanceof ImmutableComplexCommand){
+            else if(command instanceof ICompoundCommand){
                 ImmutableComplexCommand immutableComplexCommand = new ImmutableComplexCommand(((ImmutableComplexCommand) command).iterator());
                 tempList.add(immutableComplexCommand);
             }
