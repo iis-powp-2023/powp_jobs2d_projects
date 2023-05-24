@@ -7,6 +7,8 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICommandVisitor;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -14,6 +16,7 @@ import edu.kis.powp.observer.Publisher;
  */
 public class CommandManager {
     private DriverCommand currentCommand = null;
+    private DriverManager driverManager = DriverFeature.getDriverManager();
 
     private Publisher changePublisher = new Publisher();
 
@@ -82,5 +85,11 @@ public class CommandManager {
 
     public Publisher getChangePublisher() {
         return changePublisher;
+    }
+    public DriverManager getDriverManager() {
+        return driverManager;
+    }
+    public void setLoggerCommandChangeObserver() {
+        getChangePublisher().addSubscriber(new LoggerCommandChangeObserver());
     }
 }
