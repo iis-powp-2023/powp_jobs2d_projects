@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.command;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public final class ImmutableComplexCommand implements ICompoundCommand{
                 tempList.add(immutableComplexCommand);
             }
         }
-        this.ListOfCommands = List.copyOf(tempList);
+        this.ListOfCommands = Collections.unmodifiableList(tempList);
     }
     @Override
     public void execute(Job2dDriver driver) {
