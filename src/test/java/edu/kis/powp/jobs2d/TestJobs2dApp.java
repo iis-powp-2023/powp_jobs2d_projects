@@ -15,7 +15,9 @@ import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
+import edu.kis.powp.jobs2d.transformations.WindowSizeVisitor;
 
+import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
@@ -133,6 +135,11 @@ public class TestJobs2dApp {
         application.addComponentMenuElement(Logger.class, "OFF logging", (ActionEvent e) -> logger.setLevel(Level.OFF));
     }
 
+    private static void setWindowSize(Application application, WindowSizeVisitor visitor) {
+        JPanel drawPanel = application.getFreePanel();
+        drawPanel.setPreferredSize(visitor.getSize());
+    }
+
     /**
      * Launch the application.
      */
@@ -156,6 +163,9 @@ public class TestJobs2dApp {
                                 app.getFreePanel().getWidth(),
                                 app.getFreePanel().getHeight())
                 );
+                WindowSizeVisitor visitor = new WindowSizeVisitor();
+                visitor.visitA5();
+                setWindowSize(app, visitor);
             }
         });
     }
