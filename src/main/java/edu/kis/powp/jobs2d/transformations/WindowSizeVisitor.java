@@ -14,6 +14,10 @@ public class WindowSizeVisitor {
         size = new Dimension(559, 794);
     }
 
+    public void visitDefault() {
+        size = new Dimension(537, 457);
+    }
+
     public Dimension getSize() {
         return size;
     }
