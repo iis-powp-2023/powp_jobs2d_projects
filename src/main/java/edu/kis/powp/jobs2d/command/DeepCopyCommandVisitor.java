@@ -1,44 +1,43 @@
 package edu.kis.powp.jobs2d.command;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class DeepCopyCommandVisitor implements ICommandVisitor {
     private DriverCommand deepCopiedCommand;
-    private List<DriverCommand> deepCopiedCompoundCommand;
+    private ImmutableCompoundCommand immutableCompoundCommand;
+
     @Override
     public void visit(ICompoundCommand command) {
         Iterator<DriverCommand> iterator = command.iterator();
+        List<DriverCommand> deepCopiedCompoundCommands = new ArrayList<>();
 
         while(iterator.hasNext()) {
             iterator.next().accept(this);
-            this.deepCopiedCompoundCommand.add(this.deepCopiedCommand);
+            deepCopiedCompoundCommands.add(this.deepCopiedCommand);
         }
+
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder();
+        builder.addCommands(deepCopiedCompoundCommands);
+        this.immutableCompoundCommand = builder.build();
     }
 
     @Override
     public void visit(OperateToCommand command) {
-        try {
-            this.deepCopiedCommand = (DriverCommand) command.clone();
-        } catch (CloneNotSupportedException ex) {
-            System.out.println(ex.getMessage());
-        }
+        this.deepCopiedCommand = new OperateToCommand(command);
     }
 
     @Override
     public void visit(SetPositionCommand command) {
-        try {
-            this.deepCopiedCommand = (DriverCommand) command.clone();
-        } catch (CloneNotSupportedException ex) {
-            System.out.println(ex.getMessage());
-        }
+        this.deepCopiedCommand = new SetPositionCommand(command);
     }
 
     public DriverCommand getDeepCopiedCommand() {
-        return deepCopiedCommand;
+        return this.deepCopiedCommand;
     }
 
-    public List<DriverCommand> getDeepCopiedCompoundCommand() {
-        return deepCopiedCompoundCommand;
+    public ImmutableCompoundCommand getImmutableCompoundCommand() {
+        return this.immutableCompoundCommand;
     }
 }

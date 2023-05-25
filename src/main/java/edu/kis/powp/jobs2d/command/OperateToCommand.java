@@ -15,6 +15,10 @@ public class OperateToCommand implements DriverCommand {
         this.posY = posY;
     }
 
+    public OperateToCommand(OperateToCommand prototype) {
+        this(prototype.posX, prototype.posY);
+    }
+
     @Override
     public void execute(Job2dDriver driver) {
         driver.operateTo(posX, posY);
@@ -23,10 +27,5 @@ public class OperateToCommand implements DriverCommand {
     @Override
     public void accept(ICommandVisitor visitor){
         visitor.visit(this);
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }

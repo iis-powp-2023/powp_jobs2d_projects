@@ -15,6 +15,10 @@ public class SetPositionCommand implements DriverCommand {
         this.posY = posY;
     }
 
+    public SetPositionCommand(SetPositionCommand prototype) {
+        this(prototype.posX, prototype.posY);
+    }
+
     @Override
     public void execute(Job2dDriver driver) {
         driver.setPosition(posX, posY);
@@ -25,8 +29,4 @@ public class SetPositionCommand implements DriverCommand {
         visitor.visit(this);
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
