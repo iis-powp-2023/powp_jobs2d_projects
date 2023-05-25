@@ -15,8 +15,8 @@ public class SetPositionCommand implements DriverCommand {
         this.posY = posY;
     }
 
-    public SetPositionCommand(SetPositionCommand prototype) {
-        this(prototype.posX, prototype.posY);
+    public SetPositionCommand(SetPositionCommand setPositionCommand){
+        this(setPositionCommand.posX, setPositionCommand.posY);
     }
 
     @Override

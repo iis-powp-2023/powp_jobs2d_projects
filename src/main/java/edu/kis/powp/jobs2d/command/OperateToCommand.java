@@ -15,8 +15,8 @@ public class OperateToCommand implements DriverCommand {
         this.posY = posY;
     }
 
-    public OperateToCommand(OperateToCommand prototype) {
-        this(prototype.posX, prototype.posY);
+    public OperateToCommand(OperateToCommand operateToCommand){
+        this(operateToCommand.posX, operateToCommand.posY);
     }
 
     @Override
