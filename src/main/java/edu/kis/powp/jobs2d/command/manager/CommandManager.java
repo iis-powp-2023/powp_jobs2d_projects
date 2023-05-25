@@ -16,13 +16,13 @@ import edu.kis.powp.observer.Subscriber;
 /**
  * Driver command Manager.
  */
-public class CommandManager {
+public class CommandManager implements ICommandManager{
     private DriverCommand currentCommand = null;
     private DriverManager driverManager = DriverFeature.getDriverManager();
 
     private Publisher changePublisher = new Publisher();
 
-    private List<Subscriber> observers = new ArrayList<>();
+    private List<Subscriber> deletedObservers = new ArrayList<>();
 
     /**
      * Set current command.
@@ -90,16 +90,16 @@ public class CommandManager {
     public Publisher getChangePublisher() {
         return changePublisher;
     }
-    public DriverManager getDriverManager() {
-        return driverManager;
-    }
     public void deleteObservers() {
-        observers = new ArrayList<>(changePublisher.getSubscribers());
+        deletedObservers = new ArrayList<>(changePublisher.getSubscribers());
         changePublisher.clearObservers();
     }
     public void resetObservers() {
-        for(Subscriber observer : observers){
+        for(Subscriber observer : deletedObservers){
             changePublisher.addSubscriber(observer);
         }
+    }
+    public void runCommand() {
+        currentCommand.execute(driverManager.getCurrentDriver());
     }
 }

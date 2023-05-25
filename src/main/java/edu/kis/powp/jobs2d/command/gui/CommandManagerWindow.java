@@ -12,7 +12,7 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
@@ -20,7 +20,7 @@ import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
-    private CommandManager commandManager;
+    private ICommandManager commandManager;
     private JTextArea currentCommandField;
     private String observerListString;
     private JTextArea observerListField;
@@ -32,7 +32,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
      */
     private static final long serialVersionUID = 9204679248304669948L;
     private final Job2dDriver driverCommandPreview;
-    public CommandManagerWindow(CommandManager commandManager) {
+    public CommandManagerWindow(ICommandManager commandManager) {
         this.setTitle("Command Manager");
 
         this.setSize(400, 400);
@@ -77,7 +77,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         driverCommandPreview = new LineDriverAdapter(iconDraw, LineFactory.getBasicLine(), "basic");
 
         JButton btnRunCommand = new JButton("Run command");
-        btnRunCommand.addActionListener((ActionEvent e) -> this.runCommand());
+        btnRunCommand.addActionListener((ActionEvent e) -> commandManager.runCommand());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
@@ -114,9 +114,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         btnResetObservers.setEnabled(false);
 
     }
-    private void runCommand() {
-        commandManager.getCurrentCommand().execute(commandManager.getDriverManager().getCurrentDriver());
-    }
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
@@ -135,11 +132,13 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public void deleteObservers() {
         btnResetObservers.setEnabled(true);
+        btnClearObservers.setEnabled(false);
         commandManager.deleteObservers();
         this.updateObserverListField();
     }
     public void resetObservers() {
         btnResetObservers.setEnabled(false);
+        btnClearObservers.setEnabled(true);
         commandManager.resetObservers();
         this.updateObserverListField();
     }
