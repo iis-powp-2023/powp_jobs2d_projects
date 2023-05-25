@@ -29,4 +29,20 @@ public class SetPositionCommand implements DriverCommand {
         visitor.visit(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof SetPositionCommand)) {
+            return false;
+        }
+
+        SetPositionCommand c = (SetPositionCommand) o;
+
+        return Integer.compare(posX, c.posX) == 0
+                && Integer.compare(posY, c.posY) == 0;
+    }
+
 }
