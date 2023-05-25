@@ -114,7 +114,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         btnResetObservers.setEnabled(false);
 
     }
-
     private void runCommand() {
         commandManager.getCurrentCommand().execute(commandManager.getDriverManager().getCurrentDriver());
     }
@@ -136,13 +135,12 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public void deleteObservers() {
         btnResetObservers.setEnabled(true);
-        commandManager.getChangePublisher().clearObservers();
+        commandManager.deleteObservers();
         this.updateObserverListField();
     }
     public void resetObservers() {
         btnResetObservers.setEnabled(false);
-        commandManager.setLoggerCommandChangeObserver();
-        commandManager.getChangePublisher().addSubscriber(new CommandManagerWindowCommandChangeObserver(this));
+        commandManager.resetObservers();
         this.updateObserverListField();
     }
 

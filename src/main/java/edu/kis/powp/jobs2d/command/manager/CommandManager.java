@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.command.manager;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
+import edu.kis.powp.observer.Subscriber;
 
 /**
  * Driver command Manager.
@@ -19,6 +21,8 @@ public class CommandManager {
     private DriverManager driverManager = DriverFeature.getDriverManager();
 
     private Publisher changePublisher = new Publisher();
+
+    private List<Subscriber> observers = new ArrayList<>();
 
     /**
      * Set current command.
@@ -89,7 +93,13 @@ public class CommandManager {
     public DriverManager getDriverManager() {
         return driverManager;
     }
-    public void setLoggerCommandChangeObserver() {
-        getChangePublisher().addSubscriber(new LoggerCommandChangeObserver());
+    public void deleteObservers() {
+        observers = new ArrayList<>(changePublisher.getSubscribers());
+        changePublisher.clearObservers();
+    }
+    public void resetObservers() {
+        for(Subscriber observer : observers){
+            changePublisher.addSubscriber(observer);
+        }
     }
 }
