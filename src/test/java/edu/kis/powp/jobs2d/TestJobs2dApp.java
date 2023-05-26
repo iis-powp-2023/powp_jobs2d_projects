@@ -54,6 +54,8 @@ public class TestJobs2dApp {
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
 
+        application.addTest("CommandTransformVisitor test", new SelectTransformVisitorOptionListener());
+
     }
 
     /**
