@@ -10,6 +10,7 @@ import edu.kis.powp.jobs2d.command.ICommandVisitor;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.observer.Publisher;
 import edu.kis.powp.observer.Subscriber;
 
@@ -41,29 +42,9 @@ public class CommandManager implements ICommandManager{
      * @param name        name of the command.
      */
     public synchronized void setCurrentCommand(List<DriverCommand> commandList, String name) {
-        setCurrentCommand(new ICompoundCommand() {
-            List<DriverCommand> driverCommands = commandList;
-
-            @Override
-            public void execute(Job2dDriver driver) {
-                driverCommands.forEach((c) -> c.execute(driver));
-            }
-
-            @Override
-            public Iterator<DriverCommand> iterator() {
-                return driverCommands.iterator();
-            }
-
-            @Override
-            public String toString() {
-                return name;
-            }
-
-            @Override
-            public void accept(ICommandVisitor visitor){
-                visitor.visit(this);
-            }
-        });
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder(name);
+        builder.addCommands(commandList);
+        setCurrentCommand(builder.build());
 
     }
 

@@ -5,16 +5,16 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
+import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
+import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DrawerFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
-import edu.kis.powp.jobs2d.features.RecordFeature;
+import edu.kis.powp.jobs2d.features.*;
+import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -51,6 +51,8 @@ public class TestJobs2dApp {
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
 
+        application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
+
     }
 
     /**
@@ -61,20 +63,46 @@ public class TestJobs2dApp {
     private static void setupDrivers(Application application) {
         DriverComposite composite = new DriverComposite();
 
-        Job2dDriver loggerDriver = new RecordingDriver(new PositionLoggingDriver());
+        Job2dDriver loggerDriver = new PositionLoggingDriver();
         DriverFeature.addDriver("Logger driver", loggerDriver);
         composite.addDriver(loggerDriver);
 
+        DeviceUsageManager deviceUsageManager;
+
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        DriverFeature.addDriver("Line Simulator", driver);
+        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        deviceUsageManager = driver.getDeviceUsageManager();
+        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
+        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
 
-        driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
-        DriverFeature.addDriver("Special line Simulator", driver);
-        DriverFeature.addDriver("Logger + line driver", composite);
+        deviceUsageManager = driver.getDeviceUsageManager();
+        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        DriverFeature.addDriver("Special line Simulator + distance log", driver);
+        DriverFeature.addDriver("Logger + line driver + distance log", composite);
+
+        Job2dDriver verticalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHorizontalFlip());
+        DriverFeature.addDriver("Vertical flip driver", verticalFlipDriver);
+
+        Job2dDriver horizontalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getVerticalFlip());
+        DriverFeature.addDriver("Horizontal flip driver", horizontalFlipDriver);
+
+        Job2dDriver halfScaleDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHalfScale());
+        DriverFeature.addDriver("Half scale driver", halfScaleDriver);
+
+        Job2dDriver doubleScaleDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getDoubleScale());
+        DriverFeature.addDriver("Double scale driver", doubleScaleDriver);
+
+        Job2dDriver clockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getClockwiseRotation());
+        DriverFeature.addDriver("Clockwise rotation driver", clockwiseRotationDriver);
+
+        Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
+        DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
+
+        DriverFeature.updateDriverInfo();
     }
 
     private static void setupWindows(Application application) {
