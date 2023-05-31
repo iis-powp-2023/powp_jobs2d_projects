@@ -143,6 +143,7 @@ public class TestJobs2dApp {
                 Application app = new Application("Jobs 2D");
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
+                TransformationsFeature.setupTransformationPlugin(app);
 
                 DriverFeature.setupDriverPlugin(app);
                 RecordFeature.setupRecorderPlugin(app);
