@@ -48,7 +48,6 @@ public class TestJobs2dApp {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
         application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
-        application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
 
