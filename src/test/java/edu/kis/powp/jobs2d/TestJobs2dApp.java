@@ -10,8 +10,16 @@ import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+
+import edu.kis.powp.jobs2d.drivers.observer.DriverLabelUpdateObserver;
+import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
+import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
+import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
+import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
+import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
@@ -101,6 +109,13 @@ public class TestJobs2dApp {
 
         Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
+
+        driver = new RecordingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
+        DriverFeature.addDriver("Special line Simulator", driver);
+        DriverFeature.addDriver("Logger + line driver", composite);
+
+        DriverLabelUpdateObserver driverLabelUpdateObserver = new DriverLabelUpdateObserver();
+        DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverLabelUpdateObserver);
 
         DriverFeature.updateDriverInfo();
     }
