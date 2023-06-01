@@ -1,15 +1,16 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.recorder.CommandRecorder;
-import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
-import edu.kis.powp.jobs2d.events.SelectClearPanelOptionListener;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
+import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
+import edu.kis.powp.jobs2d.events.RecordingDriverDecoratingSubscriber;
 import edu.kis.powp.jobs2d.events.SelectStartRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectStopRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
+import edu.kis.powp.observer.Subscriber;
 
 import java.util.List;
 
@@ -39,12 +40,14 @@ public class RecordFeature {
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Stop Recording", selectStopRecordingOptionListener);
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Clear Recording", selectClearRecordingOptionListener);
 
+        DriverFeature.getDriverManager().addSubscriber(new RecordingDriverDecoratingSubscriber());
     }
 
     public static void recordCommand(DriverCommand command){
         if(isRecording){
             commandRecorder.addCommand(command);
         }
+        commandRecorder.addTransformCommand(command);
     }
 
     public static void setRecording(){
@@ -61,6 +64,14 @@ public class RecordFeature {
 
     public static List<DriverCommand> getCommands(){
         return commandRecorder.getCommands();
+    }
+
+    public static void clearTransformRecording(){
+        commandRecorder.clearTransformCommand();
+    }
+
+    public static List<DriverCommand> getTransformCommands(){
+        return commandRecorder.getTransformCommands();
     }
 
 }

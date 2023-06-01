@@ -8,61 +8,69 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ImmutableCompoundCommand implements ICompoundCommand {
-    private final List<DriverCommand> commands;
+	private final List<DriverCommand> commands;
 
-    private ImmutableCompoundCommand(List<DriverCommand> commands) {
-        this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
-    }
+	private final String name;
 
-    public List<DriverCommand> getCommands() {
-        return commands;
-    }
+	private ImmutableCompoundCommand(List<DriverCommand> commands, String name) {
+		this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
+		this.name = name;
+	}
 
-    @Override
-    public void execute(Job2dDriver driver) {
-        commands.forEach(command -> command.execute(driver));
-    }
+	public List<DriverCommand> getCommands() {
+		return commands;
+	}
 
-    @Override
-    public Iterator<DriverCommand> iterator() {
-        return commands.iterator();
-    }
+	@Override
+	public void execute(Job2dDriver driver) {
+		commands.forEach(command -> command.execute(driver));
+	}
 
-    @Override
-    public ICompoundCommand createDeepCopy() {
-        List<DriverCommand> copySubCommands = new ArrayList<>();
+	@Override
+	public Iterator<DriverCommand> iterator() {
+		return commands.iterator();
+	}
 
-        for (DriverCommand subCommand : commands) {
-            copySubCommands.add(subCommand.createDeepCopy());
-        }
 
-        return new ImmutableCompoundCommand(copySubCommands);
-    }
+	@Override
+	public ICompoundCommand createDeepCopy() {
+		List<DriverCommand> copySubCommands = new ArrayList<>();
 
-    @Override
-    public void accept(ICommandVisitor visitor) {
-        ICompoundCommand.super.accept(visitor);
-    }
-
-    public static class Builder {
-        private final List<DriverCommand> commands;
-
-        public Builder() {
-            this.commands = new ArrayList<>();
-        }
-
-        public ImmutableCompoundCommand build() {
-            return new ImmutableCompoundCommand(commands);
-        }
-
-        public void addCommand(DriverCommand command) {
-            commands.add(command);
+		for (DriverCommand subCommand : commands) {
+			copySubCommands.add(subCommand.createDeepCopy());
 		}
 
-        public void addCommands(List<DriverCommand> commands) {
-            this.commands.addAll(commands);
-        }
+		return new ImmutableCompoundCommand(copySubCommands, name);
+	}
 
-    };
-  
+	@Override
+	public void accept(ICommandVisitor visitor) {
+		ICompoundCommand.super.accept(visitor);
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	public static class Builder {
+		private final List<DriverCommand> commands;
+		private final String name;
+
+		public Builder(String name) {
+			this.name = name;
+			this.commands = new ArrayList<>();
+		}
+
+		public ImmutableCompoundCommand build() {
+			return new ImmutableCompoundCommand(commands, name);
+		}
+		public void addCommands(List<DriverCommand> commands) {
+			this.commands.addAll(commands);
+		}
+
+		public void addCommand(DriverCommand mockCommand) {
+			this.commands.addAll(commands);
+		}
+	}
 }

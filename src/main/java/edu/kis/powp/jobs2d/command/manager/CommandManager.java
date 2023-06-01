@@ -9,19 +9,26 @@ import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICommandVisitor;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
+import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.observer.Publisher;
+import edu.kis.powp.observer.Subscriber;
 
 /**
  * Driver command Manager.
  */
-public class CommandManager {
+public class CommandManager implements ICommandManager{
     private DriverCommand currentCommand = null;
+    private DriverManager driverManager = DriverFeature.getDriverManager();
 
     private Publisher changePublisher = new Publisher();
 
+    private List<Subscriber> deletedObservers = new ArrayList<>();
+
     /**
      * Set current command.
-     * 
+     *
      * @param commandList Set the command as current.
      */
     public synchronized void setCurrentCommand(DriverCommand commandList) {
@@ -31,7 +38,7 @@ public class CommandManager {
 
     /**
      * Set current command.
-     * 
+     *
      * @param commandList list of commands representing a compound command.
      * @param name        name of the command.
      */
@@ -71,12 +78,15 @@ public class CommandManager {
                 visitor.visit(this);
             }
         });
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder(name);
+        builder.addCommands(commandList);
+        setCurrentCommand(builder.build());
 
     }
 
     /**
      * Return current command.
-     * 
+     *
      * @return Current command.
      */
     public synchronized DriverCommand getCurrentCommand() {
@@ -96,5 +106,17 @@ public class CommandManager {
 
     public Publisher getChangePublisher() {
         return changePublisher;
+    }
+    public void deleteObservers() {
+        deletedObservers = new ArrayList<>(changePublisher.getSubscribers());
+        changePublisher.clearObservers();
+    }
+    public void resetObservers() {
+        for(Subscriber observer : deletedObservers){
+            changePublisher.addSubscriber(observer);
+        }
+    }
+    public void runCommand() {
+        currentCommand.execute(driverManager.getCurrentDriver());
     }
 }
