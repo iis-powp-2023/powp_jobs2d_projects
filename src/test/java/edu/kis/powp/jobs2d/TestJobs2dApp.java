@@ -6,6 +6,7 @@ import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.gui.UsageManagerWindow;
+import edu.kis.powp.jobs2d.command.gui.UsageManagerWindowChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
@@ -73,8 +74,8 @@ public class TestJobs2dApp {
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
         DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        deviceUsageManager = driver.getDeviceUsageManager();
-        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        UsageFeature.setupDeviceUsageManager(driver.getDeviceUsageManager());
+        UsageFeature.getDriverDeviceUsageManager().getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(UsageFeature.getDriverDeviceUsageManager()));
         DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
@@ -112,12 +113,14 @@ public class TestJobs2dApp {
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
 
+        CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(commandManager);
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
+
         UsageManagerWindow usageManager = new UsageManagerWindow();
         application.addWindowComponent("Usage Manager", usageManager);
 
-        CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-                commandManager);
-        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
+        UsageManagerWindowChangeObserver usageObserver = new UsageManagerWindowChangeObserver(usageManager);
+        UsageFeature.getDriverDeviceUsageManager().getDistanceChangePublisher().addSubscriber(usageObserver);
     }
 
     /**

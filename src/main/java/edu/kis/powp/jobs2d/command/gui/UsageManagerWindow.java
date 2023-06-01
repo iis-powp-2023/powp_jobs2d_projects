@@ -14,6 +14,14 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
     private JLabel messageField;
     private JButton btnRefill;
 
+    public void updateHeadDistanceField(String headDistance){
+        this.headDistanceField.setText(headDistance);
+    }
+
+    public void updateOperatingDistanceField(String operatingDistance){
+        this.operatingDistanceField.setText(operatingDistance);
+    }
+
     public UsageManagerWindow() {
         this.setTitle("Usage Manager");
         this.setSize(400, 200);
