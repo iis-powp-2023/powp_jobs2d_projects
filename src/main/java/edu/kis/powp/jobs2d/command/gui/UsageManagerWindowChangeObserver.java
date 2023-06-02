@@ -18,8 +18,8 @@ public class UsageManagerWindowChangeObserver implements Subscriber {
 
     @Override
     public void update() {
-        usageManagerWindow.updateHeadDistanceField(Double.toString(UsageFeature.getDriverDeviceUsageManager().getHeadDistance()));
-        usageManagerWindow.updateOperatingDistanceField(Double.toString(UsageFeature.getDriverDeviceUsageManager().getOperatingDistance()));
+        usageManagerWindow.updateHeadDistanceField(Double.toString(Math.round(UsageFeature.getDriverDeviceUsageManager().getHeadDistance())));
+        usageManagerWindow.updateOperatingDistanceField(Double.toString(Math.round(UsageFeature.getDriverDeviceUsageManager().getOperatingDistance())));
     }
 
 }

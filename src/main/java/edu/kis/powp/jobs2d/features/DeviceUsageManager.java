@@ -9,6 +9,12 @@ public class DeviceUsageManager{
     private int xLastPosition = 0;
     private int yLastPosition = 0;
 
+    private int serviceInterval = 10000;
+
+    public int getServiceInterval(){
+        return this.serviceInterval;
+    }
+
     private final Publisher distanceChangePublisher = new Publisher();
 
     private double calculateDistance(int x, int y){
@@ -27,6 +33,7 @@ public class DeviceUsageManager{
         double distance = calculateDistance(x, y);
         headDistance += distance;
         operatingDistance += distance;
+        this.serviceInterval -= distance;
         distanceChangePublisher.notifyObservers();
     }
 
