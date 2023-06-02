@@ -7,11 +7,11 @@ import java.util.Iterator;
  */
 public interface ICompoundCommand extends DriverCommand {
 
-	public Iterator<DriverCommand> iterator();
+    public Iterator<DriverCommand> iterator();
     public ICompoundCommand createDeepCopy();
 
-	@Override
-	public default void accept(ICommandVisitor visitor){
-		visitor.visit(this);
-	}
+    @Override
+    public default void accept(ICommandVisitor visitor){
+        visitor.visit(this);
+    }
 }
