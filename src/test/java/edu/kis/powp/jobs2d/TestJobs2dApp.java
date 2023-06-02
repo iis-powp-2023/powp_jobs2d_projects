@@ -5,8 +5,9 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.command.gui.UsageManagerWindow;
-import edu.kis.powp.jobs2d.command.gui.UsageManagerWindowChangeObserver;
+import edu.kis.powp.jobs2d.usage.UsageManager;
+import edu.kis.powp.jobs2d.usage.UsageManagerWindow;
+import edu.kis.powp.jobs2d.usage.UsageManagerWindowChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
@@ -70,7 +71,7 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Logger driver", loggerDriver);
         composite.addDriver(loggerDriver);
 
-        DeviceUsageManager deviceUsageManager;
+        UsageManager usageManager;
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
         DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
@@ -82,8 +83,8 @@ public class TestJobs2dApp {
 
         driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
 
-        deviceUsageManager = driver.getDeviceUsageManager();
-        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
+        usageManager = driver.getDeviceUsageManager();
+        usageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(usageManager));
         DriverFeature.addDriver("Special line Simulator + distance log", driver);
         DriverFeature.addDriver("Logger + line driver + distance log", composite);
 

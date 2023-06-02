@@ -1,13 +1,13 @@
 package edu.kis.powp.jobs2d.drivers.decorator;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.features.DeviceUsageManager;
+import edu.kis.powp.jobs2d.usage.UsageManager;
 
 public class DistanceCountingDriver extends DriverDecorator {
-    private final DeviceUsageManager deviceUsageManager = new DeviceUsageManager();
+    private final UsageManager usageManager = new UsageManager();
 
-    public DeviceUsageManager getDeviceUsageManager() {
-        return this.deviceUsageManager;
+    public UsageManager getDeviceUsageManager() {
+        return this.usageManager;
     }
 
     public DistanceCountingDriver(Job2dDriver driver) {
@@ -17,13 +17,13 @@ public class DistanceCountingDriver extends DriverDecorator {
     @Override
     public void setPosition(int x, int y) {
         super.setPosition(x,y);
-        deviceUsageManager.calculateMovingDistance(x,y);
+        usageManager.calculateMovingDistance(x,y);
     }
 
     @Override
     public void operateTo(int x, int y) {
         super.operateTo(x,y);
-        deviceUsageManager.calculateOperatingDistance(x,y);
+        usageManager.calculateOperatingDistance(x,y);
     }
 
     @Override

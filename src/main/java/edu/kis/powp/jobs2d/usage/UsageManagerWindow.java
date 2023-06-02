@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.command.gui;
+package edu.kis.powp.jobs2d.usage;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 
@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 
 public class UsageManagerWindow extends JFrame implements WindowComponent {
     private JProgressBar usageBar;
-    private JLabel usageLabel;
     private JTextField headDistanceField;
     private JTextField operatingDistanceField;
     private JLabel messageField;
@@ -41,6 +40,8 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.HORIZONTAL;
         usageBar = new JProgressBar(0, 100);
         usageBar.setValue(100);
+        usageBar.setStringPainted(true);
+        usageBar.setForeground(Color.green);
         content.add(usageBar, c);
 
         c.gridy = 2;
@@ -79,16 +80,32 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
 
         c.gridx = 2;
         c.gridwidth = 1;
-        btnRefill = new JButton("REFILL");
-        btnRefill.addActionListener((ActionEvent e) -> this.refill());
+        btnRefill = new JButton("SERVICE");
+        btnRefill.addActionListener((ActionEvent e) -> this.service());
         btnRefill.setEnabled(false);
         content.add(btnRefill, c);
 
         this.add(content, BorderLayout.CENTER);
     }
 
-    private void refill(){
+    private void service(){
 
+    }
+
+    private void updateUsageBar(Double deviceUsage){
+        if(deviceUsage >= 0.75){
+            usageBar.setForeground(Color.green);
+        }
+        else if(deviceUsage >= 0.5){
+            usageBar.setForeground(Color.yellow);
+
+        }
+        else if(deviceUsage >= 0.25){
+            usageBar.setForeground(Color.orange);
+        }
+        else {
+            usageBar.setForeground(Color.red);
+        }
     }
 
     @Override

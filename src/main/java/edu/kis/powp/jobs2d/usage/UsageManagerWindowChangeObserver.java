@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.command.gui;
+package edu.kis.powp.jobs2d.usage;
 
 import edu.kis.powp.jobs2d.features.UsageFeature;
 import edu.kis.powp.observer.Subscriber;
@@ -13,7 +13,7 @@ public class UsageManagerWindowChangeObserver implements Subscriber {
     }
 
     public String toString() {
-        return "---";
+        return "Current usage change observer for usage manager window";
     }
 
     @Override

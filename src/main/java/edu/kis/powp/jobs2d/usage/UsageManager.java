@@ -1,8 +1,8 @@
-package edu.kis.powp.jobs2d.features;
+package edu.kis.powp.jobs2d.usage;
 
 import edu.kis.powp.observer.Publisher;
 
-public class DeviceUsageManager{
+public class UsageManager {
     private double headDistance = 0;
     private double operatingDistance = 0;
 

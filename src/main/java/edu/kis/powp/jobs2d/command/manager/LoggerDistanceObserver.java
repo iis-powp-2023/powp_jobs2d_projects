@@ -1,21 +1,21 @@
 package edu.kis.powp.jobs2d.command.manager;
 
-import edu.kis.powp.jobs2d.features.DeviceUsageManager;
+import edu.kis.powp.jobs2d.usage.UsageManager;
 import edu.kis.powp.observer.Subscriber;
 import java.util.logging.Logger;
 
 public class LoggerDistanceObserver implements Subscriber {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private final DeviceUsageManager deviceUsageManager;
+    private final UsageManager usageManager;
 
-    public LoggerDistanceObserver(DeviceUsageManager deviceUsageManager){
-        this.deviceUsageManager = deviceUsageManager;
+    public LoggerDistanceObserver(UsageManager usageManager){
+        this.usageManager = usageManager;
     }
 
     @Override
     public void update() {
-        logger.info("HeadDistance: " + deviceUsageManager.getHeadDistance());
-        logger.info("OperatingDistance: " + deviceUsageManager.getOperatingDistance());
+        logger.info("HeadDistance: " + usageManager.getHeadDistance());
+        logger.info("OperatingDistance: " + usageManager.getOperatingDistance());
     }
 
     public String toString() {
