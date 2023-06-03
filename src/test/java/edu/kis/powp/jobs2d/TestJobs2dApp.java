@@ -11,10 +11,16 @@ import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
+import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
+import edu.kis.powp.jobs2d.features.CommandsFeature;
+import edu.kis.powp.jobs2d.features.DrawerFeature;
+import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.features.HeadUsage.HeadUsageFeature;
+import edu.kis.powp.jobs2d.features.RecordFeature;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -76,7 +82,7 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
-
+        
         driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
 
         deviceUsageManager = driver.getDeviceUsageManager();
@@ -101,6 +107,12 @@ public class TestJobs2dApp {
 
         Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
+
+        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
+        DriverFeature.addDriver("Special line Simulator", driver);
+        DriverFeature.addDriver("Logger + line driver", composite);
+
+        composite.addDriver(HeadUsageFeature.initHeadUsageFeature());
 
         DriverFeature.updateDriverInfo();
     }
