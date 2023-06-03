@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.features.InkUsage.InkUsageFeature;
+import edu.kis.powp.jobs2d.features.InkUsage.InkUsageFeatureManager;
 
 public class DriverComposite implements Job2dDriver {
 
-    private List<Job2dDriver> drivers;
+    private final List<Job2dDriver> drivers;
     public DriverComposite() {
-        drivers = new ArrayList<Job2dDriver>();
+        drivers = new ArrayList<>();
     }
     public void addDriver(Job2dDriver driver) {
         drivers.add(driver);
