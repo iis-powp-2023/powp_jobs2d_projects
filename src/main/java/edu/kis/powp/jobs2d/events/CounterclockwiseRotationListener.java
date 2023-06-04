@@ -1,9 +1,10 @@
-package edu.kis.powp.jobs2d.features;
+package edu.kis.powp.jobs2d.events;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.features.AdditionalFeatures;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 import java.awt.event.ActionEvent;
@@ -13,15 +14,22 @@ public class CounterclockwiseRotationListener implements ActionListener {
     private DriverManager driverManager;
     private DriverComposite composite = null;
 
+    private final Job2dDriver counterclockwiseRotationDriver;
+
     public CounterclockwiseRotationListener(DriverManager driverManager, DriverComposite composite) {
         this.driverManager = driverManager;
         this.composite = composite;
+        this.counterclockwiseRotationDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getCounterclockwiseRotation());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Job2dDriver counterclockwiseRotationDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getCounterclockwiseRotation());
-        composite.addDriver(counterclockwiseRotationDriver);
+        if (composite.containsDriver(counterclockwiseRotationDriver)) {
+            composite.removeDriver(counterclockwiseRotationDriver);
+        }
+        else{
+            composite.addDriver(counterclockwiseRotationDriver);
+        }
         driverManager.setCurrentDriver(composite);
     }
 }

@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.features;
+package edu.kis.powp.jobs2d.events;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
@@ -13,15 +13,22 @@ public class VerticalFlipListener implements ActionListener {
         private DriverManager driverManager;
         private DriverComposite composite = null;
 
+        private final Job2dDriver verticalFlipDriver;
+
         public VerticalFlipListener(DriverManager driverManager, DriverComposite composite) {
                 this.driverManager = driverManager;
                 this.composite = composite;
+                this.verticalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getVerticalFlip());
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-                Job2dDriver verticalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getVerticalFlip());
-                composite.addDriver(verticalFlipDriver);
+                if(composite.containsDriver(verticalFlipDriver)){
+                        composite.removeDriver(verticalFlipDriver);
+                }
+                else{
+                        composite.addDriver(verticalFlipDriver);
+                }
                 driverManager.setCurrentDriver(composite);
         }
 }

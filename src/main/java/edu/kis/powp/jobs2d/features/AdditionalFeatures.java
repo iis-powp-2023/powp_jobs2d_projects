@@ -2,10 +2,11 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
+import edu.kis.powp.jobs2d.events.*;
 
 public class AdditionalFeatures {
     private static Application app;
-    static DriverComposite driverComposite = new DriverComposite();
+    public static DriverComposite driverComposite = new DriverComposite();
 
     public static void setupAdditionalFeaturesPlugin(Application application) {
 
