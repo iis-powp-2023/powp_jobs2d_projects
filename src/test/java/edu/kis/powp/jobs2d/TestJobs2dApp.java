@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static edu.kis.powp.jobs2d.features.AdditionalFeatures.setupAdditionalFeaturesPlugin;
+
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -152,6 +154,7 @@ public class TestJobs2dApp {
                 setupCommandTests(app);
                 setupLogger(app);
                 setupWindows(app);
+                setupAdditionalFeaturesPlugin(app);
                 app.setVisibility(true);
                 app.getFreePanel().addMouseListener(
                         new MouseDrawerListener(DriverFeature.getDriverManager(),

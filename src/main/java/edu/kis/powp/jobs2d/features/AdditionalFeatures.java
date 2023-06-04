@@ -7,17 +7,15 @@ public class AdditionalFeatures {
     private static Application app;
 
     public static void setupAdditionalFeaturesPlugin(Application application) {
-        SelectStartRecordingOptionListener selectStartRecordingOptionListener = new SelectStartRecordingOptionListener();
-        SelectStopRecordingOptionListener selectStopRecordingOptionListener = new SelectStopRecordingOptionListener();
-        SelectClearRecordingOptionListener selectClearRecordingOptionListener = new SelectClearRecordingOptionListener();
-
 
         app = application;
         app.addComponentMenu(AdditionalFeatures.class, "Additional features");
-        app.addComponentMenuElementWithCheckBox(edu.kis.powp.jobs2d.features.RecordFeature.class, "distance log", selectStartRecordingOptionListener,false);
-        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Lines", null);
-        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Flip", null);
-        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Scale", null);
-        app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Rotation", null);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Distance log", null,false);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Vertical flip", null,false);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Horizontal flip", null,false);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Half scale", null,false);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Double scale", null,false);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Clockwise rotation", null,false);
+        app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Counterclockwise rotation", null,false);
     }
 }
