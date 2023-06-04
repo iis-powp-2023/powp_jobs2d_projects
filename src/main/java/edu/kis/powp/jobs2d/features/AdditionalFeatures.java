@@ -19,13 +19,5 @@ public class AdditionalFeatures {
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Flip", null);
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Scale", null);
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Rotation", null);
-        SelectTestFigureOptionListener selectTestFigureOptionListener = new SelectTestFigureOptionListener(
-                DriverFeature.getDriverManager());
-        SelectTestFigure2OptionListener selectTestFigure2OptionListener = new SelectTestFigure2OptionListener(
-                DriverFeature.getDriverManager());
-
-        application.addTest("Figure Joe 1", selectTestFigureOptionListener);
-        application.addTest("Figure Joe 2", selectTestFigure2OptionListener);
-        DriverFeature.getDriverManager().addSubscriber(new RecordingDriverDecoratingSubscriber());
     }
 }
