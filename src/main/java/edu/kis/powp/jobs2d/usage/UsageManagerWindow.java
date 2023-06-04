@@ -92,7 +92,7 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
 
     }
 
-    private void updateUsageBar(Double deviceUsage){
+    public void updateUsageBar(Double deviceUsage){
         if(deviceUsage >= 0.75){
             usageBar.setForeground(Color.green);
         }

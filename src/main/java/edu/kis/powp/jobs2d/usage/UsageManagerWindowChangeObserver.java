@@ -4,12 +4,11 @@ import edu.kis.powp.jobs2d.features.UsageFeature;
 import edu.kis.powp.observer.Subscriber;
 
 public class UsageManagerWindowChangeObserver implements Subscriber {
+    private final UsageManager usageManager;
 
-    private UsageManagerWindow usageManagerWindow;
-
-    public UsageManagerWindowChangeObserver(UsageManagerWindow usageManagerWindow) {
+    public UsageManagerWindowChangeObserver(UsageManager usageManager) {
         super();
-        this.usageManagerWindow = usageManagerWindow;
+        this.usageManager = usageManager;
     }
 
     public String toString() {
@@ -18,8 +17,9 @@ public class UsageManagerWindowChangeObserver implements Subscriber {
 
     @Override
     public void update() {
-        usageManagerWindow.updateHeadDistanceField(Double.toString(Math.round(UsageFeature.getDriverDeviceUsageManager().getHeadDistance())));
-        usageManagerWindow.updateOperatingDistanceField(Double.toString(Math.round(UsageFeature.getDriverDeviceUsageManager().getOperatingDistance())));
+        UsageFeature.getUsageManagerWindow().updateHeadDistanceField(Double.toString(Math.round(this.usageManager.getHeadDistance())));
+        UsageFeature.getUsageManagerWindow().updateOperatingDistanceField(Double.toString(Math.round(this.usageManager.getOperatingDistance())));
+        UsageFeature.getUsageManagerWindow().updateUsageBar((double) this.usageManager.getServiceInterval() / this.usageManager.getMaxServiceInterval());
     }
 
 }

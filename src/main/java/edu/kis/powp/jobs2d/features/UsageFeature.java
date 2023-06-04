@@ -1,16 +1,15 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.jobs2d.usage.UsageManager;
+import edu.kis.powp.jobs2d.usage.UsageManagerWindow;
 
 public class UsageFeature {
+    private static UsageManagerWindow usageManagerWindow;
 
-    private static UsageManager usageManager;
-
-    public static void setupDeviceUsageManager(UsageManager dum) {
-        usageManager = dum;
+    public static UsageManagerWindow getUsageManagerWindow(){
+        return usageManagerWindow;
     }
 
-    public static UsageManager getDriverDeviceUsageManager() {
-        return usageManager;
+    public static void setUsageManagerWindow(UsageManagerWindow usageManagerWindow){
+        UsageFeature.usageManagerWindow = usageManagerWindow;
     }
 }

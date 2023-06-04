@@ -10,12 +10,17 @@ public class UsageManager {
     private int yLastPosition = 0;
 
     private int serviceInterval = 10000;
+    private int maxServiceInterval = 10000;
 
     public int getServiceInterval(){
         return this.serviceInterval;
     }
+    public int getMaxServiceInterval(){
+        return this.maxServiceInterval;
+    }
 
     private final Publisher distanceChangePublisher = new Publisher();
+    private final Publisher windowChangePublisher = new Publisher();
 
     private double calculateDistance(int x, int y){
         double distance = Math.sqrt(Math.pow(y - yLastPosition, 2) + Math.pow(x - xLastPosition, 2));
@@ -27,6 +32,7 @@ public class UsageManager {
     public void calculateMovingDistance(int x, int y){
         headDistance += calculateDistance(x, y);
         distanceChangePublisher.notifyObservers();
+        windowChangePublisher.notifyObservers();
     }
 
     public void calculateOperatingDistance(int x, int y){
@@ -35,6 +41,7 @@ public class UsageManager {
         operatingDistance += distance;
         this.serviceInterval -= distance;
         distanceChangePublisher.notifyObservers();
+        windowChangePublisher.notifyObservers();
     }
 
     public double getHeadDistance() {
@@ -47,5 +54,8 @@ public class UsageManager {
 
     public Publisher getDistanceChangePublisher() {
         return distanceChangePublisher;
+    }
+    public Publisher getWindowChangePublisher() {
+        return windowChangePublisher;
     }
 }
