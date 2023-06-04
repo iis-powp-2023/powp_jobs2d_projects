@@ -22,8 +22,8 @@ public class DistanceCountingDriver extends DriverDecorator {
 
     @Override
     public void operateTo(int x, int y) {
-        super.operateTo(x,y);
         usageManager.calculateOperatingDistance(x,y);
+        if(usageManager.canOperate()) super.operateTo(x,y);
     }
 
     @Override

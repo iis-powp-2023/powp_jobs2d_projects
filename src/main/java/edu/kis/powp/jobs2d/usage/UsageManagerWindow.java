@@ -106,6 +106,7 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         else {
             usageBar.setForeground(Color.red);
         }
+        usageBar.setValue((int) (deviceUsage * 100));
     }
 
     @Override

@@ -15,7 +15,8 @@ public class LoggerDistanceObserver implements Subscriber {
     @Override
     public void update() {
         logger.info("HeadDistance: " + usageManager.getHeadDistance());
-        logger.info("OperatingDistance: " + usageManager.getOperatingDistance());
+        if(usageManager.canOperate()) logger.info("OperatingDistance: " + usageManager.getOperatingDistance());
+        else logger.info("WARNING: The device requires service !!!");
     }
 
     public String toString() {

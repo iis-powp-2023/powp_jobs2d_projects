@@ -10,14 +10,17 @@ public class UsageManager {
     private int yLastPosition = 0;
 
     private int serviceInterval = 10000;
-    private int maxServiceInterval = 10000;
+    private final int maxServiceInterval = 10000;
+
+    private boolean isOperational = true;
 
     public int getServiceInterval(){
         return this.serviceInterval;
     }
-    public int getMaxServiceInterval(){
-        return this.maxServiceInterval;
-    }
+    public void setServiceInterval(int serviceInterval){ this.serviceInterval = serviceInterval; }
+    public int getMaxServiceInterval(){ return this.maxServiceInterval; }
+
+    public Boolean canOperate(){ return this.isOperational; }
 
     private final Publisher distanceChangePublisher = new Publisher();
     private final Publisher windowChangePublisher = new Publisher();
@@ -37,9 +40,14 @@ public class UsageManager {
 
     public void calculateOperatingDistance(int x, int y){
         double distance = calculateDistance(x, y);
+        if(distance > this.serviceInterval)
+            this.isOperational = false;
+        else{
+            this.isOperational = true;
+            this.serviceInterval -= distance;
+            operatingDistance += distance;
+        }
         headDistance += distance;
-        operatingDistance += distance;
-        this.serviceInterval -= distance;
         distanceChangePublisher.notifyObservers();
         windowChangePublisher.notifyObservers();
     }
