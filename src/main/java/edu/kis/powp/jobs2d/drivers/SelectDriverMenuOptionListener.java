@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.features.AdditionalFeatures;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 
 public class SelectDriverMenuOptionListener implements ActionListener {
@@ -18,5 +19,8 @@ public class SelectDriverMenuOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         driverManager.setCurrentDriver(driver);
+        AdditionalFeatures.mainDriver=driver;
+        AdditionalFeatures.driverComposite.clearDrivers();
+        AdditionalFeatures.driverComposite.addDriver(driver);
     }
 }

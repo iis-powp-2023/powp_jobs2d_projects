@@ -6,6 +6,7 @@ import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
@@ -104,9 +105,13 @@ public class TestJobs2dApp {
 //        DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
         Job2dDriver basicLine = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
-        DriverFeature.addDriver("Basic Line", basicLine);
+        DriverComposite driverComposite = new DriverComposite();
+        driverComposite.addDriver(basicLine);
+        DriverFeature.addDriver("Basic Line", driverComposite);
+        driverComposite = new DriverComposite();
         Job2dDriver specialLine = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-        DriverFeature.addDriver("Special Line", specialLine);
+        driverComposite.addDriver(specialLine);
+        DriverFeature.addDriver("Special Line", driverComposite);
 
         DriverFeature.updateDriverInfo();
     }
