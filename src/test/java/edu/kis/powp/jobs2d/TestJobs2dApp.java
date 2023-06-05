@@ -5,6 +5,8 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.drivers.usage.DriverChangeObserver;
+import edu.kis.powp.jobs2d.drivers.usage.DriverUsageWindow;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
@@ -12,6 +14,7 @@ import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.drivers.usage.DeviceUsageManager;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
@@ -61,6 +64,7 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
+        DriverFeature.getDriverManager().addSubscriber(DriverFeature.getDriverUsageObserver());
         DriverComposite composite = new DriverComposite();
 
         Job2dDriver loggerDriver = new PositionLoggingDriver();
@@ -109,6 +113,7 @@ public class TestJobs2dApp {
 
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
+        application.addWindowComponent("Driver Usage", DriverFeature.getDriverUsageWindow());
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
