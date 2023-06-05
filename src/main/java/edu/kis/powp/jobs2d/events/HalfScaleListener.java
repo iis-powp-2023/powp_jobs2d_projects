@@ -15,21 +15,25 @@ public class HalfScaleListener implements ActionListener {
     private DriverManager driverManager;
     private DriverComposite composite = null;
 
-    private final Job2dDriver halfScaleDriver;
+    private Job2dDriver halfScaleDriver;
+
+    private boolean checked;
 
     public HalfScaleListener(DriverManager driverManager, DriverComposite composite) {
         this.driverManager = driverManager;
         this.composite = composite;
-        this.halfScaleDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getHalfScale());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(composite.containsDriver(halfScaleDriver)){
+        if(checked){
             composite.removeDriver(halfScaleDriver);
+            this.checked = false;
         }
         else{
+            this.halfScaleDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getHalfScale());
             composite.addDriver(halfScaleDriver);
+            this.checked = true;
         }
         driverManager.setCurrentDriver(composite);
     }

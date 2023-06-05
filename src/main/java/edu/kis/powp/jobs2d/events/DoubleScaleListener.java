@@ -15,21 +15,26 @@ public class DoubleScaleListener implements ActionListener {
     private DriverManager driverManager;
     private DriverComposite composite = null;
 
-    private final Job2dDriver doubleScaleDriver;
+    private Job2dDriver doubleScaleDriver;
+
+    private boolean checked;
 
     public DoubleScaleListener(DriverManager driverManager, DriverComposite composite) {
         this.driverManager = driverManager;
         this.composite = composite;
-        this.doubleScaleDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getDoubleScale());
+        this.checked = false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(composite.containsDriver(doubleScaleDriver)){
+        if(checked){
             composite.removeDriver(doubleScaleDriver);
+            this.checked = false;
         }
         else{
+            this.doubleScaleDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getDoubleScale());
             composite.addDriver(doubleScaleDriver);
+            this.checked = true;
         }
         driverManager.setCurrentDriver(composite);
     }

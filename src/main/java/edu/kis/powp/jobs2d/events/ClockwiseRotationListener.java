@@ -16,21 +16,26 @@ public class ClockwiseRotationListener implements ActionListener {
     private DriverManager driverManager;
     private DriverComposite composite = null;
 
-    private final Job2dDriver clockwiseRotationDriver;
+    private Job2dDriver clockwiseRotationDriver;
+
+    private boolean checked;
 
     public ClockwiseRotationListener(DriverManager driverManager, DriverComposite composite) {
         this.driverManager = driverManager;
         this.composite = composite;
-        this.clockwiseRotationDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getClockwiseRotation());
+        this.checked = false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(composite.containsDriver(clockwiseRotationDriver)) {
+        if(checked) {
             composite.removeDriver(clockwiseRotationDriver);
+            this.checked = false;
         }
         else{
+            this.clockwiseRotationDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getClockwiseRotation());
             composite.addDriver(clockwiseRotationDriver);
+            this.checked = true;
         }
         driverManager.setCurrentDriver(composite);
     }

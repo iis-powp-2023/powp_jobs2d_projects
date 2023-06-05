@@ -10,25 +10,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class VerticalFlipListener implements ActionListener {
-        private DriverManager driverManager;
-        private DriverComposite composite = null;
+    private DriverManager driverManager;
+    private DriverComposite composite = null;
 
-        private final Job2dDriver verticalFlipDriver;
+    private Job2dDriver verticalFlipDriver;
 
-        public VerticalFlipListener(DriverManager driverManager, DriverComposite composite) {
-                this.driverManager = driverManager;
-                this.composite = composite;
-                this.verticalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getVerticalFlip());
+    private boolean checked;
+
+    public VerticalFlipListener(DriverManager driverManager, DriverComposite composite) {
+        this.driverManager = driverManager;
+        this.composite = composite;
+        this.checked = false;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(checked){
+            composite.removeDriver(verticalFlipDriver);
+            this.checked = false;
         }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-                if(composite.containsDriver(verticalFlipDriver)){
-                        composite.removeDriver(verticalFlipDriver);
-                }
-                else{
-                        composite.addDriver(verticalFlipDriver);
-                }
-                driverManager.setCurrentDriver(composite);
+        else{
+            this.verticalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getVerticalFlip());
+            composite.addDriver(verticalFlipDriver);
+            this.checked = true;
         }
+        driverManager.setCurrentDriver(composite);
+    }
 }

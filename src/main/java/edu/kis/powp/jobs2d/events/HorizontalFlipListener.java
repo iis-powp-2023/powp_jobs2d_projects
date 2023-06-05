@@ -15,21 +15,26 @@ public class HorizontalFlipListener implements ActionListener {
     private DriverManager driverManager;
     private DriverComposite composite = null;
 
-    private final Job2dDriver horizontalFlipDriver;
+    private Job2dDriver horizontalFlipDriver;
+
+    private boolean checked;
 
     public HorizontalFlipListener(DriverManager driverManager, DriverComposite composite) {
         this.driverManager = driverManager;
         this.composite = composite;
-        this.horizontalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getHorizontalFlip());
+        this.checked = false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(composite.containsDriver(horizontalFlipDriver)){
+        if(checked){
             composite.removeDriver(horizontalFlipDriver);
+            this.checked = false;
         }
         else{
+            this.horizontalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getHorizontalFlip());
             composite.addDriver(horizontalFlipDriver);
+            this.checked = true;
         }
         driverManager.setCurrentDriver(composite);
     }

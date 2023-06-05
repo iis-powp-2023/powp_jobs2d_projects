@@ -11,20 +11,26 @@ import java.awt.event.ActionListener;
 public class LoggerListener implements ActionListener {
     private DriverManager driverManager;
     private DriverComposite composite = null;
-    private final Job2dDriver loggerDriver;
+    private Job2dDriver loggerDriver;
+
+    private boolean checked;
     public LoggerListener(DriverManager driverManager, DriverComposite composite) {
         this.driverManager = driverManager;
         this.composite = composite;
-        this.loggerDriver = new PositionLoggingDriver();
+        this.checked = false;
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(composite.containsDriver(loggerDriver)){
+        if(checked){
             composite.removeDriver(loggerDriver);
+            this.checked = false;
         }
         else{
+            this.loggerDriver = new PositionLoggingDriver();
             composite.addDriver(loggerDriver);
+            this.checked = true;
         }
         driverManager.setCurrentDriver(composite);
 
