@@ -48,9 +48,12 @@ public class TestJobs2dApp {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
         application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
-        application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
+
+        application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
+
+        application.addTest("CommandTransformVisitor test", new SelectTransformVisitorOptionListener());
 
     }
 
@@ -142,6 +145,7 @@ public class TestJobs2dApp {
                 Application app = new Application("Jobs 2D");
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
+                TransformationsFeature.setupTransformationPlugin(app);
 
                 DriverFeature.setupDriverPlugin(app);
                 RecordFeature.setupRecorderPlugin(app);

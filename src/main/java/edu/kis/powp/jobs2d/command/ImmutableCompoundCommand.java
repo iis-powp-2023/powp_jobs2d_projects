@@ -10,8 +10,11 @@ import java.util.List;
 public class ImmutableCompoundCommand implements ICompoundCommand {
 	private final List<DriverCommand> commands;
 
-	private ImmutableCompoundCommand(List<DriverCommand> commands) {
+	private final String name;
+
+	private ImmutableCompoundCommand(List<DriverCommand> commands, String name) {
 		this.commands = Collections.unmodifiableList(new ArrayList<>(commands));
+		this.name = name;
 	}
 
 	public List<DriverCommand> getCommands() {
@@ -28,15 +31,22 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		return commands.iterator();
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
 	public static class Builder {
 		private final List<DriverCommand> commands;
+		private final String name;
 
-		public Builder() {
+		public Builder(String name) {
+			this.name = name;
 			this.commands = new ArrayList<>();
 		}
 
 		public ImmutableCompoundCommand build() {
-			return new ImmutableCompoundCommand(commands);
+			return new ImmutableCompoundCommand(commands, name);
 		}
 
 		public void addCommand(DriverCommand command) {

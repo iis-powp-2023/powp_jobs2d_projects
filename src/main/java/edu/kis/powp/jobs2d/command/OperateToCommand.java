@@ -15,11 +15,15 @@ public class OperateToCommand implements DriverCommand {
         this.posY = posY;
     }
 
-    public int getPosX(){
+    public OperateToCommand(OperateToCommand operateToCommand){
+        this(operateToCommand.posX, operateToCommand.posY);
+    }
+
+    public int getPosX() {
         return posX;
     }
 
-    public int getPosY(){
+    public int getPosY() {
         return posY;
     }
 
