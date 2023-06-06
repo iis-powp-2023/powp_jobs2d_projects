@@ -2,11 +2,10 @@ package edu.kis.powp.jobs2d.transformations;
 
 import edu.kis.powp.jobs2d.command.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class TransformationCommandVisitor implements ICommandVisitor {
+
+public class TransformationCommandVisitor implements ICommandVisitor  {
 
     protected DriverCommand command;
     private Transformation transformation;
@@ -18,15 +17,17 @@ public class TransformationCommandVisitor implements ICommandVisitor {
 
     @Override
     public void visit(ICompoundCommand commands) {
-        List<DriverCommand> modifiedCommands = new ArrayList<>();
+        ImmutableCompoundCommand.Builder immutableCompoundCommandBuilder = new ImmutableCompoundCommand.Builder(transformation.toString());
         Iterator<DriverCommand> iterator = commands.iterator();
+
         while(iterator.hasNext()) {
             DriverCommand command = iterator.next();
             command.accept(this);
             command = this.getResult();
-            modifiedCommands.add(command);
+            immutableCompoundCommandBuilder.addCommand(command);
         }
-        this.command = new ImmutableCompoundCommand(modifiedCommands);
+
+        this.command = immutableCompoundCommandBuilder.build();
     }
 
     @Override
@@ -44,5 +45,5 @@ public class TransformationCommandVisitor implements ICommandVisitor {
     public DriverCommand getResult() {
         return this.command;
     }
-}
 
+}
