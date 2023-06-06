@@ -4,6 +4,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.features.AdditionalFeatures;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 import java.awt.event.ActionEvent;
@@ -27,10 +28,11 @@ public class VerticalFlipListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(checked){
             composite.removeDriver(verticalFlipDriver);
+            verticalFlipDriver = null;
             this.checked = false;
         }
         else{
-            this.verticalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getVerticalFlip());
+            this.verticalFlipDriver = new TransformationDriver(AdditionalFeatures.mainDriver, TransformationFactory.getVerticalFlip());
             composite.addDriver(verticalFlipDriver);
             this.checked = true;
         }

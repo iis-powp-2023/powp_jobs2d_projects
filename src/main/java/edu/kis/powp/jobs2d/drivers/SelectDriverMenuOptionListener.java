@@ -21,6 +21,5 @@ public class SelectDriverMenuOptionListener implements ActionListener {
         driverManager.setCurrentDriver(driver);
         AdditionalFeatures.mainDriver=driver;
         AdditionalFeatures.driverComposite.clearDrivers();
-        AdditionalFeatures.driverComposite.addDriver(driver);
     }
 }

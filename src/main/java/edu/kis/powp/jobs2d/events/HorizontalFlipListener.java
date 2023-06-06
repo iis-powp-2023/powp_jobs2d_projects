@@ -6,6 +6,7 @@ import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.features.AdditionalFeatures;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 import java.awt.event.ActionEvent;
@@ -29,10 +30,11 @@ public class HorizontalFlipListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(checked){
             composite.removeDriver(horizontalFlipDriver);
+            horizontalFlipDriver = null;
             this.checked = false;
         }
         else{
-            this.horizontalFlipDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getHorizontalFlip());
+            this.horizontalFlipDriver = new TransformationDriver(AdditionalFeatures.mainDriver, TransformationFactory.getHorizontalFlip());
             composite.addDriver(horizontalFlipDriver);
             this.checked = true;
         }

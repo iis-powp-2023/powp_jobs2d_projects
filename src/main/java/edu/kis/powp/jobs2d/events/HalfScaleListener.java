@@ -6,6 +6,7 @@ import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.features.AdditionalFeatures;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 import java.awt.event.ActionEvent;
@@ -28,10 +29,11 @@ public class HalfScaleListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(checked){
             composite.removeDriver(halfScaleDriver);
+            halfScaleDriver = null;
             this.checked = false;
         }
         else{
-            this.halfScaleDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getHalfScale());
+            this.halfScaleDriver = new TransformationDriver(AdditionalFeatures.mainDriver, TransformationFactory.getHalfScale());
             composite.addDriver(halfScaleDriver);
             this.checked = true;
         }

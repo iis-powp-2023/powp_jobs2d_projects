@@ -28,10 +28,11 @@ public class CounterclockwiseRotationListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (checked) {
             composite.removeDriver(counterclockwiseRotationDriver);
+            counterclockwiseRotationDriver = null;
             this.checked = false;
         }
         else{
-            this.counterclockwiseRotationDriver = new TransformationDriver(driverManager.getCurrentDriver(), TransformationFactory.getCounterclockwiseRotation());
+            this.counterclockwiseRotationDriver = new TransformationDriver(AdditionalFeatures.mainDriver, TransformationFactory.getCounterclockwiseRotation());
             composite.addDriver(counterclockwiseRotationDriver);
             this.checked = true;
         }
