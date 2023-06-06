@@ -47,6 +47,7 @@ public class RecordFeature {
         if(isRecording){
             commandRecorder.addCommand(command);
         }
+        commandRecorder.addTransformCommand(command);
     }
 
     public static void setRecording(){
@@ -63,6 +64,14 @@ public class RecordFeature {
 
     public static List<DriverCommand> getCommands(){
         return commandRecorder.getCommands();
+    }
+
+    public static void clearTransformRecording(){
+        commandRecorder.clearTransformCommand();
+    }
+
+    public static List<DriverCommand> getTransformCommands(){
+        return commandRecorder.getTransformCommands();
     }
 
 }
