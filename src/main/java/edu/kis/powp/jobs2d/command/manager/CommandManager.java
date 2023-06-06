@@ -23,8 +23,6 @@ public class CommandManager implements ICommandManager{
     private DriverManager driverManager = DriverFeature.getDriverManager();
 
     private Publisher changePublisher = new Publisher();
-    private CountingCommandVisitor countingVisitor = new CountingCommandVisitor();
-
     private List<Subscriber> deletedObservers = new ArrayList<>();
 
     /**
@@ -34,7 +32,6 @@ public class CommandManager implements ICommandManager{
      */
     public synchronized void setCurrentCommand(DriverCommand commandList) {
         this.currentCommand = commandList;
-        commandList.accept(countingVisitor);
         changePublisher.notifyObservers();
     }
 
@@ -48,12 +45,6 @@ public class CommandManager implements ICommandManager{
         ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder(name);
         builder.addCommands(commandList);
         setCurrentCommand(builder.build());
-
-        getCurrentCommand().accept(countingVisitor);
-    }
-
-    public synchronized CountingCommandVisitor getCountingVisitor(){
-        return countingVisitor;
     }
 
     /**

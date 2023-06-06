@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.Driver;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private static final long serialVersionUID = 9204679248304669948L;
 
     private final LineDriverAdapter commandPreviewDriver;
+    private CountingCommandVisitor countingVisitor;
     public CommandManagerWindow(ICommandManager commandManager) {
+        countingVisitor = new CountingCommandVisitor();
         this.setTitle("Command Manager");
 
         this.setSize(500, 600);
@@ -177,17 +180,21 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         currentCommandField.setText(commandManager.getCurrentCommandString());
     }
     public void updateCurrentCommandStatsField() {
-        CountingCommandVisitor countingVisitor = commandManager.getCountingVisitor();
-        currentCommandStatsField.setText("Command stats:\n");
-        currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() +"\n");
-        currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");
-        currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength()*100)/100.0 + "\n");
-        currentCommandStatsField.append("Operation time: ");
-        if (countingVisitor.getExecutionTime() == null) {
-            currentCommandStatsField.append("\n");
-        } else {
-            currentCommandStatsField.append(countingVisitor.getExecutionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+        DriverCommand currentCommand = commandManager.getCurrentCommand();
+        if(currentCommand != null){
+            currentCommand.accept(countingVisitor);
+            currentCommandStatsField.setText("Command stats:\n");
+            currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() +"\n");
+            currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");
+            currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength()*100)/100.0 + "\n");
+            currentCommandStatsField.append("Operation time: ");
+            if (countingVisitor.getExecutionTime() == null) {
+                currentCommandStatsField.append("\n");
+            } else {
+                currentCommandStatsField.append(countingVisitor.getExecutionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+            }
         }
+
     }
 
     public void updateCurrentCommandPreview()
