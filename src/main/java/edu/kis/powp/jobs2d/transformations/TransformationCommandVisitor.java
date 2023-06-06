@@ -32,15 +32,15 @@ public class TransformationCommandVisitor implements ICommandVisitor  {
 
     @Override
     public void visit(OperateToCommand command) {
-        transformation.calculateNewX(command.getPosX(), command.getPosX());
-        transformation.calculateNewY(command.getPosY(), command.getPosY());
+        command.setPosX(transformation.calculateNewX(command.getPosX(), command.getPosX()));
+        command.setPosY(transformation.calculateNewY(command.getPosY(), command.getPosY()));
         this.command = command;
     }
 
     @Override
     public void visit(SetPositionCommand command) {
-        transformation.calculateNewX(command.getPosX(), command.getPosX());
-        transformation.calculateNewY(command.getPosY(), command.getPosY());
+        command.setPosX(transformation.calculateNewX(command.getPosX(), command.getPosX()));
+        command.setPosY(transformation.calculateNewY(command.getPosY(), command.getPosY()));
         this.command = command;
     }
 
