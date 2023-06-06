@@ -9,6 +9,7 @@ import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
 import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
 import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
@@ -23,6 +24,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static edu.kis.powp.jobs2d.features.AdditionalFeatures.setupAdditionalFeaturesPlugin;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -66,47 +69,11 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        DriverComposite composite = new DriverComposite();
-
-        Job2dDriver loggerDriver = new PositionLoggingDriver();
-        DriverFeature.addDriver("Logger driver", loggerDriver);
-        composite.addDriver(loggerDriver);
-
-        DeviceUsageManager deviceUsageManager;
-
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        deviceUsageManager = driver.getDeviceUsageManager();
-        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
-        DriverFeature.addDriver("Line Simulator + distance log", driver);
-        DriverFeature.getDriverManager().setCurrentDriver(driver);
-        composite.addDriver(driver);
-
-        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
-
-        deviceUsageManager = driver.getDeviceUsageManager();
-        deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
-        DriverFeature.addDriver("Special line Simulator + distance log", driver);
-        DriverFeature.addDriver("Logger + line driver + distance log", composite);
-
-        Job2dDriver verticalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHorizontalFlip());
-        DriverFeature.addDriver("Vertical flip driver", verticalFlipDriver);
-
-        Job2dDriver horizontalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getVerticalFlip());
-        DriverFeature.addDriver("Horizontal flip driver", horizontalFlipDriver);
-
-        Job2dDriver halfScaleDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHalfScale());
-        DriverFeature.addDriver("Half scale driver", halfScaleDriver);
-
-        Job2dDriver doubleScaleDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getDoubleScale());
-        DriverFeature.addDriver("Double scale driver", doubleScaleDriver);
-
-        Job2dDriver clockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getClockwiseRotation());
-        DriverFeature.addDriver("Clockwise rotation driver", clockwiseRotationDriver);
-
-        Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
-        DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
-
+        Job2dDriver basicLine = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        DriverFeature.addDriver("Basic Line", basicLine);
+        Job2dDriver specialLine = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+        DriverFeature.addDriver("Special Line", specialLine);
         DriverFeature.updateDriverInfo();
     }
 
@@ -164,6 +131,7 @@ public class TestJobs2dApp {
                 setupCommandTests(app);
                 setupLogger(app);
                 setupWindows(app);
+                setupAdditionalFeaturesPlugin(app);
                 app.setVisibility(true);
                 app.getFreePanel().addMouseListener(
                         new MouseDrawerListener(DriverFeature.getDriverManager(),
