@@ -40,4 +40,9 @@ public final class ImmutableComplexCommand implements ICompoundCommand{
     public Iterator<DriverCommand> iterator() {
         return this.ListOfCommands.iterator();
     }
+
+    @Override
+    public ICompoundCommand createDeepCopy() {
+        return null;
+    }
 }

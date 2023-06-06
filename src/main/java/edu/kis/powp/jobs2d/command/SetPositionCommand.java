@@ -33,6 +33,11 @@ public class SetPositionCommand implements DriverCommand {
     }
 
     @Override
+    public DriverCommand createDeepCopy() {
+        return new SetPositionCommand(posX, posY);
+    }
+
+    @Override
     public void accept(ICommandVisitor visitor){
         visitor.visit(this);
     }

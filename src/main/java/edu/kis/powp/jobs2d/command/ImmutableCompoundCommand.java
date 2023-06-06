@@ -31,6 +31,23 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		return commands.iterator();
 	}
 
+
+	@Override
+	public ICompoundCommand createDeepCopy() {
+		List<DriverCommand> copySubCommands = new ArrayList<>();
+
+		for (DriverCommand subCommand : commands) {
+			copySubCommands.add(subCommand.createDeepCopy());
+		}
+
+		return new ImmutableCompoundCommand(copySubCommands, name);
+	}
+
+	@Override
+	public void accept(ICommandVisitor visitor) {
+		ICompoundCommand.super.accept(visitor);
+	}
+
 	@Override
 	public String toString() {
 		return name;
@@ -48,15 +65,12 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 		public ImmutableCompoundCommand build() {
 			return new ImmutableCompoundCommand(commands, name);
 		}
-
-		public void addCommand(DriverCommand command) {
-			commands.add(command);
-		}
-
 		public void addCommands(List<DriverCommand> commands) {
 			this.commands.addAll(commands);
 		}
 
-	};
-  
+		public void addCommand(DriverCommand mockCommand) {
+			this.commands.addAll(commands);
+		}
+	}
 }
