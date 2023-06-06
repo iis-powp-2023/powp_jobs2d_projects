@@ -28,11 +28,11 @@ public class FeatureManager {
         return featureList.get(index);
     }
 
-    public static void setup(Application application) {
+    public static void setupFeatures(Application application) {
         for (Class<? extends FeatureObject> feature : featureList) {
             try {
                 FeatureObject featureInstance = feature.getDeclaredConstructor().newInstance();
-                featureInstance.setup();
+                featureInstance.setup(application);
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                      InvocationTargetException e) {
                 e.printStackTrace();

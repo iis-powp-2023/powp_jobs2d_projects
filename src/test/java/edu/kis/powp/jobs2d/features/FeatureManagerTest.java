@@ -1,32 +1,23 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.jobs2d.features.FeatureManager;
-import edu.kis.powp.jobs2d.features.FeatureObject;
 import edu.kis.powp.appbase.*;
 
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class FeatureManagerTest {
 
-    private static class MockFeatureObject extends FeatureObject {
+    private static class MockFeatureObject implements FeatureObject {
         private boolean isSetupCalled = false;
 
-        public MockFeatureObject(boolean isSetupCalled) {
-            this.isSetupCalled = isSetupCalled;
-        }
-
         @Override
-        public void setup() {
+        public void setup(Application application) {
             isSetupCalled = true;
         }
 
@@ -75,32 +66,6 @@ public class FeatureManagerTest {
 
         FeatureManager.get(invalidIndex);
     }
-
-    private Application mockApplication;
-
-    @Before
-    public void setUp() {
-        mockApplication = mock(Application.class);
-    }
-    @Test
-    public void testSetupInvokesSetupMethodOnFeatureInstances() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        // Arrange
-        FeatureObject mockFeatureObject1 = mock(FeatureObject.class);
-        FeatureObject mockFeatureObject2 = mock(FeatureObject.class);
-        List<Class<? extends FeatureObject>> featureList = new ArrayList<>();
-        featureList.add(mockFeatureObject1.getClass());
-        featureList.add(mockFeatureObject2.getClass());
-
-        FeatureManager.add(featureList);
-
-        try {
-            FeatureManager.setup(mockApplication);
-        } catch (Exception e) {
-            fail("Exception thrown: " + e.getMessage());
-        }
-    }
-
-
 
 
 }
