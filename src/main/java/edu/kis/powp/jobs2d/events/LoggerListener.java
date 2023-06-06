@@ -24,6 +24,7 @@ public class LoggerListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(checked){
             composite.removeDriver(loggerDriver);
+            loggerDriver = null;
             this.checked = false;
         }
         else{
