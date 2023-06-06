@@ -17,28 +17,30 @@ public class TransformationCommandVisitor implements ICommandVisitor  {
 
     @Override
     public void visit(ICompoundCommand commands) {
-        ImmutableCompoundCommand.Builder immutableCompoundCommandBuilder = new ImmutableCompoundCommand.Builder(transformation.toString());
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder(transformation.toString());
         Iterator<DriverCommand> iterator = commands.iterator();
 
         while(iterator.hasNext()) {
             DriverCommand command = iterator.next();
             command.accept(this);
             command = this.getResult();
-            immutableCompoundCommandBuilder.addCommand(command);
+            builder.addCommand(command);
         }
 
-        this.command = immutableCompoundCommandBuilder.build();
+        this.command = builder.build();
     }
 
     @Override
     public void visit(OperateToCommand command) {
         transformation.calculateNewX(command.getPosX(), command.getPosX());
+        transformation.calculateNewY(command.getPosY(), command.getPosY());
         this.command = command;
     }
 
     @Override
     public void visit(SetPositionCommand command) {
         transformation.calculateNewX(command.getPosX(), command.getPosX());
+        transformation.calculateNewY(command.getPosY(), command.getPosY());
         this.command = command;
     }
 
