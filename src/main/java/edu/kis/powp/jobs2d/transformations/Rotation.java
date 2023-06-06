@@ -1,6 +1,11 @@
 package edu.kis.powp.jobs2d.transformations;
 
-public class Rotation implements Transformation {
+import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ICommandVisitor;
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
+
+public class Rotation implements Transformation, DriverCommand {
 
     private final int xCoefficient;
     private final int yCoefficient;
@@ -18,5 +23,15 @@ public class Rotation implements Transformation {
     @Override
     public int calculateNewY(int x, int y) {
         return yCoefficient * x;
+    }
+
+    @Override
+    public void execute(Job2dDriver driver) {
+        driver.setPosition(xCoefficient, yCoefficient);
+    }
+
+    @Override
+    public void accept(ICommandVisitor visitor){
+        visitor.visit((ICompoundCommand) this);
     }
 }

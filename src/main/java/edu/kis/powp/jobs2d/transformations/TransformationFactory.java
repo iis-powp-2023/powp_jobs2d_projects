@@ -18,10 +18,10 @@ public class TransformationFactory {
     }
 
     public static Transformation getDoubleScale() {
-        return new Scale(2);
+        return new Scale(2, 2);
     }
 
     public static Transformation getHalfScale() {
-        return new Scale(0.5D);
+        return new Scale(0.50, 0.50);
     }
 }
