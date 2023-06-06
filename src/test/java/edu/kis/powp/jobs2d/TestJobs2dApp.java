@@ -15,6 +15,7 @@ import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
+import edu.kis.powp.jobs2d.transformations.Scale;
 import edu.kis.powp.jobs2d.transformations.TransformationCommandVisitor;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
@@ -52,7 +53,7 @@ public class TestJobs2dApp {
 
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
-        application.addTest("Transformation Visitor Test", new SelectTransformationVisitorTestOptionListener());
+        application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
 
