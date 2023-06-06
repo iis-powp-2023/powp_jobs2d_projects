@@ -4,15 +4,18 @@ import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
 import edu.kis.powp.observer.Subscriber;
 
 public class HistoryOfUsedCommandsSubscriber implements Subscriber {
-    HistoryOfUsedCommandsWindow historyOfUsedCommandsWindow;
+    final private HistoryOfUsedCommandsWindow historyOfUsedCommandsWindow;
+    final private HistoryOfUsedCommandsManager historyOfUsedCommandsManager;
     public HistoryOfUsedCommandsSubscriber(HistoryOfUsedCommandsWindow historyOfUsedCommandsWindow){
         this.historyOfUsedCommandsWindow = historyOfUsedCommandsWindow;
+        this.historyOfUsedCommandsManager = historyOfUsedCommandsWindow.getHistoryOfUsedCommandsManager();
     }
+
 
     @Override
     public void update() {
 
-        HistoryOfUsedCommandsManager.addCommand();
+        historyOfUsedCommandsManager.addCommand();
         historyOfUsedCommandsWindow.updateHistoryOfUsedCommandsField();
 
     }

@@ -11,13 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 public class HistoryOfUsedCommandsManager {
-    private static List<DriverCommand> historyOfUsedCommands = new ArrayList<>();
-    private static List<Date> dateOfUsedCommands = new ArrayList<>();
+    private  List<DriverCommand> historyOfUsedCommands = new ArrayList<>();
+    private  List<Date> dateOfUsedCommands = new ArrayList<>();
     private static CommandManager commandManager;
 
 
 
-    public static List<DriverCommand> getHistoryOfUsedCommands() {
+    public List<DriverCommand> getHistoryOfUsedCommands() {
         return historyOfUsedCommands;
     }
 
@@ -25,11 +25,11 @@ public class HistoryOfUsedCommandsManager {
         this.commandManager = commandManager;
     }
 
-    public static List<Date> getDateOfUsedCommands() {
+    public  List<Date> getDateOfUsedCommands() {
         return dateOfUsedCommands;
     }
 
-    static synchronized void addCommand() {
+    synchronized void addCommand() {
         historyOfUsedCommands.add(commandManager.getCurrentCommand());
         dateOfUsedCommands.add(new Date());
     }
