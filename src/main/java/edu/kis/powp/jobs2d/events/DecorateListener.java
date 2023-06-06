@@ -13,6 +13,7 @@ import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.features.AdditionalFeatures;
 import edu.kis.powp.jobs2d.features.DeviceUsageManager;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.transformations.Transformation;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
@@ -35,11 +36,28 @@ public class DecorateListener implements ActionListener {
         this.checked = false;
         this.name = name;
     }
+    private static void removeTransformation(String transformationName){
+        System.out.println("Removing transformation: "+transformationName);
+        AdditionalFeatures.activeTransformation.remove(transformationName);
+        AdditionalFeatures.driverComposite.removeDriver(AdditionalFeatures.currentDriver);
+        AdditionalFeatures.currentDriver =  AdditionalFeatures.mainDriver;
+        for (String s :  AdditionalFeatures.activeTransformation) {
+            Method method;
+            try {
+                method = TransformationFactory.class.getMethod("get"+s);
+                AdditionalFeatures.currentDriver = new TransformationDriver(AdditionalFeatures.currentDriver, (Transformation) method.invoke(null));
 
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        AdditionalFeatures.driverComposite.addDriver( AdditionalFeatures.currentDriver);
+        DriverFeature.getDriverManager().setCurrentDriver( AdditionalFeatures.driverComposite);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(checked){
-            AdditionalFeatures.removeTransformation(name);
+            removeTransformation(name);
             this.checked = false;
         }
         else{

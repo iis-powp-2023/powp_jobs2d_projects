@@ -5,8 +5,11 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
+import edu.kis.powp.jobs2d.transformations.Transformation;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,35 +33,5 @@ public class AdditionalFeatures {
         app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Double scale", new DecorateListener(DriverFeature.getDriverManager(),driverComposite,"DoubleScale"),false);
         app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Clockwise rotation", new DecorateListener(DriverFeature.getDriverManager(),driverComposite,"ClockwiseRotation"),false);
         app.addComponentMenuElementWithCheckBox(AdditionalFeatures.class, "Counterclockwise rotation", new DecorateListener(DriverFeature.getDriverManager(),driverComposite,"CounterclockwiseRotation"),false);
-    }
-    public static void removeTransformation(String transformationName){
-        System.out.println("Removing transformation: "+transformationName);
-        activeTransformation.remove(transformationName);
-        driverComposite.removeDriver(AdditionalFeatures.currentDriver);
-        currentDriver = mainDriver;
-        for (String s : activeTransformation) {
-            switch (s) {
-                case "HalfScale":
-                    currentDriver = new TransformationDriver(currentDriver, TransformationFactory.getHalfScale());
-                    break;
-                case "DoubleScale":
-                    currentDriver = new TransformationDriver(currentDriver, TransformationFactory.getDoubleScale());
-                    break;
-                case "VerticalFlip":
-                    currentDriver = new TransformationDriver(currentDriver, TransformationFactory.getVerticalFlip());
-                    break;
-                case "HorizontalFlip":
-                    currentDriver = new TransformationDriver(currentDriver, TransformationFactory.getHorizontalFlip());
-                    break;
-                case "ClockwiseRotation":
-                    currentDriver = new TransformationDriver(currentDriver, TransformationFactory.getClockwiseRotation());
-                    break;
-                case "CounterclockwiseRotation":
-                    currentDriver = new TransformationDriver(currentDriver, TransformationFactory.getCounterclockwiseRotation());
-                    break;
-            }
-        }
-        driverComposite.addDriver(currentDriver);
-        DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
     }
 }
