@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.command.manager;
+package edu.kis.powp.jobs2d.usage;
 
 import edu.kis.powp.jobs2d.usage.UsageManager;
 import edu.kis.powp.observer.Subscriber;
@@ -14,9 +14,8 @@ public class LoggerDistanceObserver implements Subscriber {
 
     @Override
     public void update() {
-        logger.info("HeadDistance: " + usageManager.getHeadDistance());
-        if(usageManager.canOperate()) logger.info("OperatingDistance: " + usageManager.getOperatingDistance());
-        else logger.info("WARNING: The device requires service !!!");
+        if(!usageManager.canOperate())
+            logger.info("WARNING: The device requires service !!!");
     }
 
     public String toString() {

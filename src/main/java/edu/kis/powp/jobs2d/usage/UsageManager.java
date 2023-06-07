@@ -9,21 +9,26 @@ public class UsageManager {
     private int xLastPosition = 0;
     private int yLastPosition = 0;
 
-    private int serviceInterval = 10000;
-    private final int maxServiceInterval = 10000;
+    private double serviceInterval = 10000;
+    private int maxServiceInterval = 10000;
 
     private boolean isOperational = true;
 
-    public int getServiceInterval(){
+    private final Publisher distanceChangePublisher = new Publisher();
+    private final Publisher windowChangePublisher = new Publisher();
+
+    public double getServiceInterval(){
         return this.serviceInterval;
     }
     public void setServiceInterval(int serviceInterval){ this.serviceInterval = serviceInterval; }
     public int getMaxServiceInterval(){ return this.maxServiceInterval; }
+    public void setMaxServiceInterval(int serviceInterval){ this.maxServiceInterval = serviceInterval; }
 
     public Boolean canOperate(){ return this.isOperational; }
 
-    private final Publisher distanceChangePublisher = new Publisher();
-    private final Publisher windowChangePublisher = new Publisher();
+    public double getDeviceUsage(){
+        return this.getServiceInterval() / this.getMaxServiceInterval();
+    }
 
     private double calculateDistance(int x, int y){
         double distance = Math.sqrt(Math.pow(y - yLastPosition, 2) + Math.pow(x - xLastPosition, 2));

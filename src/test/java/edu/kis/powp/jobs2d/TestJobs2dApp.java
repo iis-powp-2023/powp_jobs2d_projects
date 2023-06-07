@@ -8,7 +8,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.usage.UsageManager;
 import edu.kis.powp.jobs2d.usage.UsageManagerWindow;
 import edu.kis.powp.jobs2d.usage.UsageManagerWindowChangeObserver;
-import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
+import edu.kis.powp.jobs2d.usage.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
