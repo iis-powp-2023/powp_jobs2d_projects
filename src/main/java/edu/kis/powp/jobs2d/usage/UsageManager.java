@@ -22,12 +22,17 @@ public class UsageManager {
     }
     public void setServiceInterval(int serviceInterval){ this.serviceInterval = serviceInterval; }
     public int getMaxServiceInterval(){ return this.maxServiceInterval; }
-    public void setMaxServiceInterval(int serviceInterval){ this.maxServiceInterval = serviceInterval; }
+    public void setMaxServiceInterval(int maxServiceInterval){
+        this.maxServiceInterval = maxServiceInterval;
+        if(serviceInterval > maxServiceInterval){
+            serviceInterval = maxServiceInterval;
+        }
+    }
 
     public Boolean canOperate(){ return this.isOperational; }
 
     public double getDeviceUsage(){
-        return this.getServiceInterval() / this.getMaxServiceInterval();
+        return serviceInterval / maxServiceInterval;
     }
 
     private double calculateDistance(int x, int y){

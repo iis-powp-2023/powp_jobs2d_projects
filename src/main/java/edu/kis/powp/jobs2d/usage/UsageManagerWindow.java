@@ -111,7 +111,7 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         NumberFormat format = NumberFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setValueClass(Integer.class);
-        formatter.setMinimum(1);
+        formatter.setMinimum(0);
         formatter.setMaximum(Integer.MAX_VALUE);
         formatter.setAllowsInvalid(false);
         formatter.setCommitsOnValidEdit(true);
@@ -125,10 +125,16 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         btnSetInterval.addActionListener((ActionEvent e) -> {
             if(currentUsageManager == null)
                 return;
-            int newServiceInterval = Integer.parseInt(newServiceIntervalField.getText());
+            String textFromField = newServiceIntervalField.getText().replaceAll(",","");
+            int newServiceInterval = Integer.parseInt(textFromField);
+            if(newServiceInterval == 0){
+                JOptionPane.showMessageDialog(this,
+                        "Please enter value greater than 0",
+                        "Input error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
             currentUsageManager.setMaxServiceInterval(newServiceInterval);
             currentServiceIntervalField.setText(String.valueOf(newServiceInterval));
-            usageBar.setMaximum(newServiceInterval);
             updateUsageBar(currentUsageManager.getDeviceUsage());
         });
         content.add(btnSetInterval, c);
@@ -144,33 +150,29 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
     }
 
     public void updateUsageBar(Double deviceUsage){
+        btnService.setEnabled(deviceUsage != 1);
         if(deviceUsage >= 0.75){
             usageBar.setForeground(Color.green);
             warningField.setVisible(false);
-            btnService.setEnabled(false);
         }
         else if(deviceUsage >= 0.5){
             usageBar.setForeground(Color.yellow);
             warningField.setVisible(false);
-            btnService.setEnabled(true);
         }
         else if(deviceUsage >= 0.25){
             usageBar.setForeground(Color.orange);
             warningField.setText("Will need service soon");
             warningField.setVisible(true);
-            btnService.setEnabled(true);
         }
         else if(deviceUsage == 0){
             usageBar.setForeground(Color.red);
             warningField.setText("Needs service - Device stopped");
             warningField.setVisible(true);
-            btnService.setEnabled(true);
         }
         else {
             usageBar.setForeground(Color.red);
             warningField.setText("Needs service");
             warningField.setVisible(true);
-            btnService.setEnabled(true);
         }
         usageBar.setValue((int) (deviceUsage * 100));
     }
