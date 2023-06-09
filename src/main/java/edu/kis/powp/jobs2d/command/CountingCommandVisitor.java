@@ -75,12 +75,6 @@ public class CountingCommandVisitor implements ICommandVisitor {
     }
 
     private double getDistance(int newX, int newY){
-        if(start == 0){
-            start = 1;
-            previousX = newX;
-            previousY = newY;
-            return -1;
-        }
         double distX = (newX - previousX);
         double distY = (newY - previousY);
         previousY = newY;
