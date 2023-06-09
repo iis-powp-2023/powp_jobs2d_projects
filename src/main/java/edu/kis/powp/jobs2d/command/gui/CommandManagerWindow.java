@@ -180,7 +180,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     public void updateCurrentCommandStatsField() {
         DriverCommand currentCommand = commandManager.getCurrentCommand();
         if(currentCommand != null){
-            currentCommand.accept(countingVisitor);
+            currentCommand.accept(countingVisitor = new CountingCommandVisitor());
             currentCommandStatsField.setText("Command stats:\n");
             currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() +"\n");
             currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");

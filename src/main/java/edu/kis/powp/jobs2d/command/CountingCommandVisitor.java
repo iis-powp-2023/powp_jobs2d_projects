@@ -44,14 +44,6 @@ public class CountingCommandVisitor implements ICommandVisitor {
     @Override
     public void visit(ICompoundCommand command) {
         visitTime = LocalDateTime.now();
-        this.compoundCommandsCount = 0;
-        this.operateToCommandsCount = 0;
-        this.setPositionCommandsCount = 0;
-        this.totalLength = 0;
-        this.operateToLength = 0;
-        this.start = 0;
-        this.previousX = 0;
-        this.previousY = 0;
         Iterator<DriverCommand> iterator = command.iterator();
 
         while(iterator.hasNext()) {
