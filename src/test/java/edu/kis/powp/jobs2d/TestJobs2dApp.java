@@ -53,6 +53,7 @@ public class TestJobs2dApp {
 
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
+        application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
 
@@ -106,6 +107,7 @@ public class TestJobs2dApp {
 
         Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
+
 
         DriverFeature.updateDriverInfo();
     }
