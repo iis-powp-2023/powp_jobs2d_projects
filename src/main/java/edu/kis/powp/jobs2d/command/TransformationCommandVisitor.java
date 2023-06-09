@@ -1,6 +1,6 @@
-package edu.kis.powp.jobs2d.transformations;
+package edu.kis.powp.jobs2d.command;
 
-import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.transformations.Transformation;
 
 import java.util.Iterator;
 
@@ -10,8 +10,7 @@ public class TransformationCommandVisitor implements ICommandVisitor  {
     protected DriverCommand command;
     private Transformation transformation;
 
-    public TransformationCommandVisitor(DriverCommand command, Transformation transformation) {
-        this.command = command;
+    public TransformationCommandVisitor(Transformation transformation) {
         this.transformation = transformation;
     }
 
@@ -31,17 +30,19 @@ public class TransformationCommandVisitor implements ICommandVisitor  {
     }
 
     @Override
-    public void visit(OperateToCommand command) {
-        command.setPosX(transformation.calculateNewX(command.getPosX(), command.getPosX()));
-        command.setPosY(transformation.calculateNewY(command.getPosY(), command.getPosY()));
-        this.command = command;
+    public void visit(OperateToCommand command){
+        int newPosX = transformation.calculateNewX(command.getPosX(), command.getPosY());
+        int newPoxY = transformation.calculateNewY(command.getPosX(), command.getPosY());
+
+        this.command = new OperateToCommand(newPosX, newPoxY);
     }
 
     @Override
-    public void visit(SetPositionCommand command) {
-        command.setPosX(transformation.calculateNewX(command.getPosX(), command.getPosX()));
-        command.setPosY(transformation.calculateNewY(command.getPosY(), command.getPosY()));
-        this.command = command;
+    public void visit(SetPositionCommand command){
+        int newPosX = transformation.calculateNewX(command.getPosX(), command.getPosY());
+        int newPoxY = transformation.calculateNewY(command.getPosX(), command.getPosY());
+
+        this.command = new SetPositionCommand(newPosX, newPoxY);
     }
 
     public DriverCommand getResult() {
