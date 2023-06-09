@@ -2,7 +2,6 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.Driver;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import javax.swing.*;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
@@ -188,10 +186,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");
             currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength()*100)/100.0 + "\n");
             currentCommandStatsField.append("Operation time: ");
-            if (countingVisitor.getExecutionTime() == null) {
+            if (countingVisitor.getVisitTime() == null) {
                 currentCommandStatsField.append("\n");
             } else {
-                currentCommandStatsField.append(countingVisitor.getExecutionTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+                currentCommandStatsField.append(countingVisitor.getVisitTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
             }
         }
 
