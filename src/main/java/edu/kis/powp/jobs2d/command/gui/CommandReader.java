@@ -1,5 +1,7 @@
 package edu.kis.powp.jobs2d.command.gui;
 
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
+
 public interface CommandReader {
-    CommandReaderManager readCommandFromFile(String command, String name);
+    ImmutableCompoundCommand parseCommand(String input, String commandName);
 }

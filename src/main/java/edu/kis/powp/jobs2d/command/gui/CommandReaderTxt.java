@@ -31,12 +31,13 @@ public class CommandReaderTxt implements CommandReader {
     }
 
     @Override
-    public CommandReaderManager readCommandFromFile(String command, String name) {
-        List<DriverCommand> tempList = new ArrayList<>();
-        List<String> commandList = Arrays.asList(command.split("\\n"));
+    public ImmutableCompoundCommand parseCommand(String input, String commandName) {
+
+        ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder(commandName);
+        List<String> commandList = Arrays.asList(input.split("\\n"));
         for (String s : commandList) {
-            tempList.add(parseCommandLine(s));
+            builder.addCommand(parseCommandLine(s));
         }
-        return new CommandReaderManager(tempList, name);
+        return builder.build();
     }
 }

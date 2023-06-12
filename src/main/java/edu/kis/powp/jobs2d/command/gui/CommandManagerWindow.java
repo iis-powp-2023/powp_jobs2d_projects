@@ -14,6 +14,8 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.commandsFromFile.IFileReader;
 import edu.kis.powp.jobs2d.command.commandsFromFile.ReadFromTxtFile;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
@@ -203,8 +205,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         IFileReader testReader = new ReadFromTxtFile();
         String commandText = testReader.readFromFile(filePath);
         CommandReader commandReader = new CommandReaderTxt();
-        CommandReaderManager compoundCommand = commandReader.readCommandFromFile(commandText, commandName);
-        commandManager.setCurrentCommand(compoundCommand.getCommand(), compoundCommand.getName());
+        ImmutableCompoundCommand compoundCommand = commandReader.parseCommand(commandText, commandName);
+        commandManager.setCurrentCommand(compoundCommand.getCommands(), compoundCommand.toString());
     }
 
     private String getPathToFile() {
