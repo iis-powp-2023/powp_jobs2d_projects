@@ -81,6 +81,5 @@ public class CommandManager implements ICommandManager {
     public void runCommand() {
         DrawingThread thread = new DrawingThread(currentCommand, driverManager.getCurrentDriver());
         CompletableFuture<Void> cf = CompletableFuture.runAsync(thread);
-        // currentCommand.execute(driverManager.getCurrentDriver());
     }
 }
