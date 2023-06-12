@@ -31,10 +31,9 @@ public class CommandReaderTxt implements CommandReader {
     }
 
     @Override
-    public ImmutableCompoundCommand parseCommand(String input, String commandName) {
-
+    public ImmutableCompoundCommand parseCommand(String loadedCommand, String commandName) {
         ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder(commandName);
-        List<String> commandList = Arrays.asList(input.split("\\n"));
+        List<String> commandList = Arrays.asList(loadedCommand.split("\\n"));
         for (String s : commandList) {
             builder.addCommand(parseCommandLine(s));
         }
