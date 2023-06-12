@@ -1,6 +1,8 @@
 package edu.kis.powp.jobs2d.drivers.decorator;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+
+import java.awt.Point;
 import java.awt.geom.Point2D;
 
 import java.util.ArrayList;
@@ -64,10 +66,11 @@ public class RealWorldDriver extends DriverDecorator {
                 Thread.sleep((long) (setToOperateDelay * milisecondsInSecond));
             }
             lastOperationType = OperationType.OPERATE_TO;
+
             LinePartitions operationData = calculateDelays(x, y);
             Double delay = operationData.getDelay();
-            for (Point2D.Double point : operationData) {
-                super.operateTo((int) point.x, (int) point.y);
+            for (Point point : operationData) {
+                super.operateTo(point.x, point.y);
                 Thread.sleep(delay.intValue());
             }
             lastX = x;
@@ -83,12 +86,12 @@ public class RealWorldDriver extends DriverDecorator {
     }
 
     private LinePartitions calculateDelays(int destinationX, int destinationY) {
-        ArrayList<Point2D.Double> pointsList = new ArrayList<>();
+        ArrayList<Point> pointsList = new ArrayList<>();
         double delay;
         double distance = Math.sqrt(Math.pow(lastY - destinationY, 2) + Math.pow(lastX - destinationX, 2));
         if (distance < 4) {
             delay = (distance / operateToSpeed);
-            Point2D.Double point = new Point2D.Double();
+            Point point = new Point();
             point.x = destinationX;
             point.y = destinationY;
             pointsList.add(point);
@@ -97,20 +100,20 @@ public class RealWorldDriver extends DriverDecorator {
         int partsNum = (int) distance / 2;
         delay = (distance / operateToSpeed) / partsNum;
         for (int i = 1; i <= partsNum; i++) {
-            Point2D.Double point = new Point2D.Double();
-            point.x = lastX + (double) (destinationX - lastX) / partsNum * i;
-            point.y = lastY + (double) (destinationY - lastY) / partsNum * i;
+            Point point = new Point();
+            point.x = lastX + (destinationX - lastX) / partsNum * i;
+            point.y = lastY + (destinationY - lastY) / partsNum * i;
             pointsList.add(point);
         }
 
         return new LinePartitions(delay * milisecondsInSecond, pointsList);
     }
 
-    private class LinePartitions implements Iterable<Point2D.Double> {
+    private class LinePartitions implements Iterable<Point> {
         private double delay;
-        private ArrayList<Point2D.Double> points;
+        private ArrayList<Point> points;
 
-        public LinePartitions(double delay, ArrayList<Point2D.Double> points) {
+        public LinePartitions(double delay, ArrayList<Point> points) {
             this.delay = delay;
             this.points = points;
         }
@@ -120,7 +123,7 @@ public class RealWorldDriver extends DriverDecorator {
         }
 
         @Override
-        public Iterator<Point2D.Double> iterator() {
+        public Iterator<Point> iterator() {
             return points.iterator();
         }
 
