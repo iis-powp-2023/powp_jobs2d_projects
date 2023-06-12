@@ -92,7 +92,7 @@ public class RealWorldDriver extends DriverDecorator {
             pointsList.add(point);
         }
 
-        return new LinePartitions(delay, pointsList);
+        return new LinePartitions(delay * 1000, pointsList);
     }
 
     private class LinePartitions implements Iterable<Point2D.Double> {
