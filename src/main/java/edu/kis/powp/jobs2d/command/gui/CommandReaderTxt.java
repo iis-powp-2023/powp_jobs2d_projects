@@ -2,13 +2,9 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.jobs2d.command.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CommandReaderTxt implements CommandReader {
     public CommandReaderTxt() {
@@ -34,25 +30,13 @@ public class CommandReaderTxt implements CommandReader {
         return createCommand(command, x, y);
     }
 
-    private List<String> readFromFileTxt(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            Stream<String> stringStream = br.lines();
-            return stringStream
-                    .map(String::toLowerCase)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public ICompoundCommand readCommandFromFile(String filePath) {
+    @Override
+    public CommandReaderManager readCommandFromFile(String command, String name) {
         List<DriverCommand> tempList = new ArrayList<>();
-//        ImmutableCompoundCommand compoundCommand = new ImmutableCompoundCommand(tempList);
-//        List<String> commandsList = readFromFileTxt(filePath);
-//        for (String s : commandsList) {
-//            compoundCommand = (ImmutableCompoundCommand) compoundCommand.addCommandToExistingCommandsList(parseCommandLine(s));
-//        }
-//        return compoundCommand;
-        return null;
+        List<String> commandList = Arrays.asList(command.split("\\n"));
+        for (String s : commandList) {
+            tempList.add(parseCommandLine(s));
+        }
+        return new CommandReaderManager(tempList, name);
     }
 }
