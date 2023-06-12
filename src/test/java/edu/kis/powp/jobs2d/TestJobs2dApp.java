@@ -5,6 +5,9 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
+import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
+import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
@@ -50,9 +53,13 @@ public class TestJobs2dApp {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
         application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
-        application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
+        application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
+
+        application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
+
+        application.addTest("CommandTransformVisitor test", new SelectTransformVisitorOptionListener());
 
     }
 
@@ -103,6 +110,7 @@ public class TestJobs2dApp {
         Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
 
+
         DriverFeature.updateDriverInfo();
     }
 
@@ -114,6 +122,13 @@ public class TestJobs2dApp {
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
+        HistoryOfUsedCommandsManager historyOfUsedCommandsManager = new HistoryOfUsedCommandsManager();
+        historyOfUsedCommandsManager.setCommandManager(CommandsFeature.getDriverCommandManager());
+
+        HistoryOfUsedCommandsWindow historyOfUsedCommandsWindow = new HistoryOfUsedCommandsWindow(historyOfUsedCommandsManager);
+        HistoryOfUsedCommandsSubscriber historyOfUsedCommandsSubscriber = new HistoryOfUsedCommandsSubscriber(historyOfUsedCommandsWindow);
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(historyOfUsedCommandsSubscriber);
+        application.addWindowComponent("History of used commands", historyOfUsedCommandsWindow);
     }
 
     /**
@@ -172,6 +187,7 @@ public class TestJobs2dApp {
                 Application app = new Application("Jobs 2D");
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
+                TransformationsFeature.setupTransformationPlugin(app);
 
                 DriverFeature.setupDriverPlugin(app);
                 RecordFeature.setupRecorderPlugin(app);
