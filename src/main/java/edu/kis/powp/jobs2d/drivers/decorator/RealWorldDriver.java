@@ -3,7 +3,6 @@ package edu.kis.powp.jobs2d.drivers.decorator;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 import java.util.ArrayList;
 import java.util.Iterator;
