@@ -1,15 +1,10 @@
 package edu.kis.powp.jobs2d.command.manager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ICommandVisitor;
-import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
@@ -19,7 +14,7 @@ import edu.kis.powp.observer.Subscriber;
 /**
  * Driver command Manager.
  */
-public class CommandManager implements ICommandManager{
+public class CommandManager implements ICommandManager {
     private DriverCommand currentCommand = null;
     private DriverManager driverManager = DriverFeature.getDriverManager();
 
@@ -71,18 +66,21 @@ public class CommandManager implements ICommandManager{
     public Publisher getChangePublisher() {
         return changePublisher;
     }
+
     public void deleteObservers() {
         deletedObservers = new ArrayList<>(changePublisher.getSubscribers());
         changePublisher.clearObservers();
     }
+
     public void resetObservers() {
-        for(Subscriber observer : deletedObservers){
+        for (Subscriber observer : deletedObservers) {
             changePublisher.addSubscriber(observer);
         }
     }
+
     public void runCommand() {
         DrawingThread thread = new DrawingThread(currentCommand, driverManager.getCurrentDriver());
         CompletableFuture<Void> cf = CompletableFuture.runAsync(thread);
-        //currentCommand.execute(driverManager.getCurrentDriver());
+        // currentCommand.execute(driverManager.getCurrentDriver());
     }
 }
