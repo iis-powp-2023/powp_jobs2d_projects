@@ -218,9 +218,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             File selectedFile = fileChooser.getSelectedFile();
             filePath = selectedFile.getAbsolutePath();
         } else {
-            filePath = null;
+            throw new NullPointerException();
         }
-
 
         return filePath;
     }
