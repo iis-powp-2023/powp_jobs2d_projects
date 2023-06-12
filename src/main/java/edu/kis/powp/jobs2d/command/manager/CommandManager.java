@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.command.manager;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
@@ -80,6 +81,8 @@ public class CommandManager implements ICommandManager{
         }
     }
     public void runCommand() {
-        currentCommand.execute(driverManager.getCurrentDriver());
+        DrawingThread thread = new DrawingThread(currentCommand, driverManager.getCurrentDriver());
+        CompletableFuture<Void> cf = CompletableFuture.runAsync(thread);
+        //currentCommand.execute(driverManager.getCurrentDriver());
     }
 }
