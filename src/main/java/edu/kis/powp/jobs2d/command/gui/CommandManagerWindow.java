@@ -2,16 +2,21 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
+import edu.kis.powp.jobs2d.command.commandsFromFile.IFileReader;
+import edu.kis.powp.jobs2d.command.commandsFromFile.readFromTxtFile;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
@@ -148,6 +153,26 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnResetObservers, c);
         btnResetObservers.setEnabled(false);
+
+        JTextArea commandName = new JTextArea("");
+        TitledBorder commandNameBorder = BorderFactory.createTitledBorder("Command name");
+        commandName.setBorder(commandNameBorder);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 8;
+        c.weighty = 1;
+        content.add(commandName, c);
+
+        JButton btnReadCommand = new JButton("Read commands from file");
+        btnReadCommand.addActionListener((ActionEvent e) -> this.setCommandFromFile(getPathToFile(),commandName.getText()));
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 9;
+        c.weighty = 1;
+        content.add(btnReadCommand, c);
+
     }
 
     private void importCommand() {
@@ -173,6 +198,32 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
     }
+
+    private void setCommandFromFile(String filePath, String commandName) {
+        IFileReader testReader = new readFromTxtFile();
+        String commandText = testReader.readFromFile(filePath);
+        CommandReader commandReader = new CommandReaderTxt();
+        ImmutableCompoundCommand compoundCommand = (ImmutableCompoundCommand) commandReader.readCommandFromFile(commandText);
+        commandManager.setCurrentCommand(compoundCommand.getCommands(), commandName);
+    }
+
+    private String getPathToFile(){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        int result = fileChooser.showOpenDialog(this);
+        String filePath;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath = selectedFile.getAbsolutePath();
+        } else {
+            filePath = null;
+        }
+
+
+        return filePath;
+    }
+
+
 
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
