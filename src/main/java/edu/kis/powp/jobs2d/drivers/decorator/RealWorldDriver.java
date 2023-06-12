@@ -14,7 +14,8 @@ public class RealWorldDriver extends DriverDecorator {
     private double setToOperateDelay;
     private int lastX = 0;
     private int lastY = 0;
-    private int partsNum = 10;
+    final private int partsNum = 10;
+    final private int milisecondsInSecond = 1000;
 
     private enum OperationType {
         OPERATE_TO,
@@ -45,10 +46,10 @@ public class RealWorldDriver extends DriverDecorator {
         super.setPosition(x, y);
         try {
             if (lastOperationType == OperationType.OPERATE_TO) {
-                Thread.sleep((long) (operateToSetDelay * 1000));
+                Thread.sleep((long) (operateToSetDelay * milisecondsInSecond));
             }
             lastOperationType = OperationType.SET_POSITION;
-            Thread.sleep((long) (Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2)) / setPositionSpeed * 1000));
+            Thread.sleep((long) (Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2)) / setPositionSpeed * milisecondsInSecond));
             lastX = x;
             lastY = y;
         } catch (InterruptedException e) {
@@ -60,7 +61,7 @@ public class RealWorldDriver extends DriverDecorator {
     public void operateTo(int x, int y) {
         try {
             if (lastOperationType == OperationType.SET_POSITION) {
-                Thread.sleep((long) (setToOperateDelay * 1000));
+                Thread.sleep((long) (setToOperateDelay * milisecondsInSecond));
             }
             lastOperationType = OperationType.OPERATE_TO;
             LinePartitions operationData = calculateDelays(x, y);
@@ -92,7 +93,7 @@ public class RealWorldDriver extends DriverDecorator {
             pointsList.add(point);
         }
 
-        return new LinePartitions(delay * 1000, pointsList);
+        return new LinePartitions(delay * milisecondsInSecond, pointsList);
     }
 
     private class LinePartitions implements Iterable<Point2D.Double> {
