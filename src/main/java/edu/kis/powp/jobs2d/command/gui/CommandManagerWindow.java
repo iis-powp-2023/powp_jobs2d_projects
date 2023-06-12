@@ -15,7 +15,7 @@ import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.commandsFromFile.IFileReader;
-import edu.kis.powp.jobs2d.command.commandsFromFile.readFromTxtFile;
+import edu.kis.powp.jobs2d.command.commandsFromFile.ReadFromTxtFile;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
@@ -200,7 +200,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     private void setCommandFromFile(String filePath, String commandName) {
-        IFileReader testReader = new readFromTxtFile();
+        IFileReader testReader = new ReadFromTxtFile();
         String commandText = testReader.readFromFile(filePath);
         CommandReader commandReader = new CommandReaderTxt();
         CommandReaderManager compoundCommand = commandReader.readCommandFromFile(commandText, commandName);

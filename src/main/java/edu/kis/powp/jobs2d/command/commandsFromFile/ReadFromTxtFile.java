@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class readFromTxtFile implements IFileReader{
+public class ReadFromTxtFile implements IFileReader{
 
     @Override
     public String readFromFile(String filePath) {
