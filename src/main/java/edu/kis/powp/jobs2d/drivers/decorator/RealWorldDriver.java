@@ -14,7 +14,6 @@ public class RealWorldDriver extends DriverDecorator {
     private double setToOperateDelay;
     private int lastX = 0;
     private int lastY = 0;
-    final private int partsNum = 10;
     final private int milisecondsInSecond = 1000;
 
     private enum OperationType {
@@ -36,9 +35,9 @@ public class RealWorldDriver extends DriverDecorator {
     public RealWorldDriver(Job2dDriver driver, double operateToSpeed) {
         super(driver);
         this.operateToSpeed = operateToSpeed;
-        this.setPositionSpeed = 3 * operateToSpeed;
-        this.operateToSetDelay = 1.0;
-        this.setToOperateDelay = 1.0;
+        this.setPositionSpeed = 5 * operateToSpeed;
+        this.operateToSetDelay = 0.4;
+        this.setToOperateDelay = 0.4;
     }
 
     @Override
@@ -49,7 +48,8 @@ public class RealWorldDriver extends DriverDecorator {
                 Thread.sleep((long) (operateToSetDelay * milisecondsInSecond));
             }
             lastOperationType = OperationType.SET_POSITION;
-            Thread.sleep((long) (Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2)) / setPositionSpeed * milisecondsInSecond));
+            Thread.sleep((long) (Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2)) / setPositionSpeed
+                    * milisecondsInSecond));
             lastX = x;
             lastY = y;
         } catch (InterruptedException e) {
@@ -67,8 +67,8 @@ public class RealWorldDriver extends DriverDecorator {
             LinePartitions operationData = calculateDelays(x, y);
             Double delay = operationData.getDelay();
             for (Point2D.Double point : operationData) {
-                Thread.sleep(delay.intValue());
                 super.operateTo((int) point.x, (int) point.y);
+                Thread.sleep(delay.intValue());
             }
             lastX = x;
             lastY = y;
@@ -84,8 +84,18 @@ public class RealWorldDriver extends DriverDecorator {
 
     private LinePartitions calculateDelays(int destinationX, int destinationY) {
         ArrayList<Point2D.Double> pointsList = new ArrayList<>();
+        double delay;
         double distance = Math.sqrt(Math.pow(lastY - destinationY, 2) + Math.pow(lastX - destinationX, 2));
-        double delay = (distance / operateToSpeed) / partsNum;
+        if (distance < 4) {
+            delay = (distance / operateToSpeed);
+            Point2D.Double point = new Point2D.Double();
+            point.x = destinationX;
+            point.y = destinationY;
+            pointsList.add(point);
+            return new LinePartitions(delay * milisecondsInSecond, pointsList);
+        }
+        int partsNum = (int) distance / 2;
+        delay = (distance / operateToSpeed) / partsNum;
         for (int i = 1; i <= partsNum; i++) {
             Point2D.Double point = new Point2D.Double();
             point.x = lastX + (double) (destinationX - lastX) / partsNum * i;

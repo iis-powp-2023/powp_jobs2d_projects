@@ -2,14 +2,14 @@ package edu.kis.powp.jobs2d.command;
 
 import java.util.Iterator;
 
-public class CommandVisitorCommander implements CommandVisitor{
+public class CommandVisitorCommander implements ICommandVisitor {
 
     private int operateToCount = 0;
     private int setPositionCount = 0;
     private int compoundCommandCount = 0;
 
     @Override
-    public void visitICompoundCommand(ICompoundCommand compoundCommand) {
+    public void visit(ICompoundCommand compoundCommand) {
         compoundCommandCount++;
         Iterator<DriverCommand> iterator = compoundCommand.iterator();
         while (iterator.hasNext()) {
@@ -19,12 +19,12 @@ public class CommandVisitorCommander implements CommandVisitor{
     }
 
     @Override
-    public void visitOperateToCommand(OperateToCommand operateToCommand) {
+    public void visit(OperateToCommand operateToCommand) {
         operateToCount++;
     }
 
     @Override
-    public void visitSetPositionCommand(SetPositionCommand setPositionCommand) {
+    public void visit(SetPositionCommand setPositionCommand) {
         setPositionCount++;
     }
 
