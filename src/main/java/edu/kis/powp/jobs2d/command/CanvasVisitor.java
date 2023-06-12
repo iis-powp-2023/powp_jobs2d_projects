@@ -11,6 +11,9 @@ public class CanvasVisitor implements ICommandVisitor{
         this.canvas = shape;
     }
 
+    public void setCanvasShape(Shape shape) {
+        this.canvas = shape;
+    }
     @Override
     public void visit(ICompoundCommand command) {
         Iterator<DriverCommand> iterator = command.iterator();
@@ -23,14 +26,14 @@ public class CanvasVisitor implements ICommandVisitor{
     @Override
     public void visit(OperateToCommand command) {
         if (!canvas.contains(command.getPosX(), command.getPosY())) {
-            throw new IllegalArgumentException("Command exceeds canvas boundaries!");
+            throw new IllegalArgumentException("Command at position (" + command.getPosX() + "," + command.getPosY() + ") exceeds canvas boundaries!");
         }
     }
 
     @Override
     public void visit(SetPositionCommand command) {
         if (!canvas.contains(command.getPosX(), command.getPosY())) {
-            throw new IllegalArgumentException("Command exceeds canvas boundaries!");
+            throw new IllegalArgumentException("Command at position (" + command.getPosX() + "," + command.getPosY() + ") exceeds canvas boundaries!");
         }
     }
 }

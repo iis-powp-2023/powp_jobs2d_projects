@@ -18,7 +18,6 @@ import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
-import edu.kis.powp.jobs2d.transformations.WindowSizeVisitor;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -150,34 +149,6 @@ public class TestJobs2dApp {
         application.addComponentMenuElement(Logger.class, "OFF logging", (ActionEvent e) -> logger.setLevel(Level.OFF));
     }
 
-    private static void setupVisitor(Application application, WindowSizeVisitor visitor) {
-
-        application.addComponentMenu(WindowSizeVisitor.class, "Panel Format", 6);
-        application.addComponentMenuElement(WindowSizeVisitor.class, "Default",
-                (ActionEvent e) -> {
-                    visitor.visitDefault();
-                    setWindowSize(application, visitor);
-
-                });
-        application.addComponentMenuElement(WindowSizeVisitor.class, "A4",
-                (ActionEvent e) -> {
-                    visitor.visitA4();
-                    setWindowSize(application, visitor);
-
-                });
-        application.addComponentMenuElement(WindowSizeVisitor.class, "A5",
-                (ActionEvent e) -> {
-                    visitor.visitA5();
-                    setWindowSize(application, visitor);
-                });
- }
-
-    private static void setWindowSize(Application application, WindowSizeVisitor visitor) {
-        JPanel drawPanel = application.getFreePanel();
-        drawPanel.setPreferredSize(visitor.getSize());
-        drawPanel.revalidate();
-    }
-
     /**
      * Launch the application.
      */
@@ -202,8 +173,6 @@ public class TestJobs2dApp {
                                 app.getFreePanel().getWidth(),
                                 app.getFreePanel().getHeight())
                 );
-                WindowSizeVisitor visitor = new WindowSizeVisitor();
-                setupVisitor(app,visitor);
             }
         });
     }
