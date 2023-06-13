@@ -41,7 +41,7 @@ public class TestCanvasVisitor {
         OperateToCommand pointOutside4 = new OperateToCommand(30, 90);
         OperateToCommand pointOutside5 = new OperateToCommand(90, 30);
         List<DriverCommand> commandsCircle =  Arrays.asList(pointInside1,pointInside2,pointInside3,pointInside4,pointInside5,pointOutside1,pointOutside2,pointOutside3,pointOutside4,pointOutside5);
-        visitor.setCanvasShape(circle);
+        visitor.setCanvas(circle);
 
         for (DriverCommand command : commandsCircle) {
             try{
