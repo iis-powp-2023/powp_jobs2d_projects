@@ -125,7 +125,7 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
 
         RealWorldDriver realDriver = new RealWorldDriver(
-                new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 10.0);
+                new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 100.0);
         DriverFeature.addDriver("Real world time Driver", realDriver);
 
         DriverFeature.updateDriverInfo();

@@ -96,12 +96,14 @@ public class RealWorldDriver extends DriverDecorator {
             pointsList.add(point);
             return new LinePartitions(delay * milisecondsInSecond, pointsList);
         }
-        int partsNum = (int) distance / 2;
+        int partsNum = (int) distance / 3;
         delay = (distance / operateToSpeed) / partsNum;
         for (int i = 1; i <= partsNum; i++) {
             Point point = new Point();
-            point.x = lastX + (destinationX - lastX) / partsNum * i;
-            point.y = lastY + (destinationY - lastY) / partsNum * i;
+            double diffX = Math.round((double)(destinationX - lastX) / (double)partsNum * i);
+            double diffY = Math.round((double)(destinationY - lastY) / (double)partsNum * i);
+            point.x = lastX + (int)diffX;
+            point.y = lastY + (int)diffY;
             pointsList.add(point);
         }
 
