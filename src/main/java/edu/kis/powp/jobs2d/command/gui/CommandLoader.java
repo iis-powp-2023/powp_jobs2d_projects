@@ -3,16 +3,16 @@ package edu.kis.powp.jobs2d.command.gui;
 import java.awt.event.ActionEvent;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 
 import java.awt.event.*;
 
 public class CommandLoader implements ActionListener
 {
     private DriverCommand driverCommand;
-    private CommandManager commandManager;
+    private ICommandManager commandManager;
 
-    public CommandLoader(DriverCommand driverCommand, CommandManager commandManager)
+    public CommandLoader(DriverCommand driverCommand, ICommandManager commandManager)
     {
         this.driverCommand = driverCommand;
         this.commandManager = commandManager;

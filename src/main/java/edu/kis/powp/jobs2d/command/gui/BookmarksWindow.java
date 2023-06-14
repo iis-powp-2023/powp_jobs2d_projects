@@ -7,11 +7,11 @@ import javax.swing.*;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 
 public class BookmarksWindow extends JFrame implements WindowComponent
 {
-    private CommandManager commandManager;
+    private ICommandManager commandManager;
     private Container content;
     private GridBagConstraints gridBagConstraints;
 
@@ -19,7 +19,7 @@ public class BookmarksWindow extends JFrame implements WindowComponent
     private JTextArea textInput;
     private String defaultTextInputMessage = "Write here to add description to a bookmark";
 
-    public BookmarksWindow(CommandManager commandManager) {
+    public BookmarksWindow(ICommandManager commandManager) {
         this.setTitle("Bookmarks");
         this.setSize(800, 400);
         content = this.getContentPane();
