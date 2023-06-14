@@ -32,15 +32,19 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JButton btnResetObservers;
     private JTextArea textInput;
     private String defaultTextInputMessage = "Write here for command import";
+
     /**
      *
      */
     private static final long serialVersionUID = 9204679248304669948L;
+    private BookmarksWindow bookmarks = null;
 
     private final LineDriverAdapter commandPreviewDriver;
     private CountingCommandVisitor countingVisitor;
     public CommandManagerWindow(ICommandManager commandManager) {
+        bookmarks = new BookmarksWindow(commandManager);
         countingVisitor = new CountingCommandVisitor();
+
         this.setTitle("Command Manager");
 
         this.setSize(500, 600);
@@ -117,7 +121,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 4;
+        c.gridy = 5;
         c.weighty = 1;
         content.add(btnRunCommand, c);
         
@@ -126,7 +130,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 5;
+        c.gridy = 6;
         c.weighty = 1;
         content.add(btnClearCommand, c);
 
@@ -135,19 +139,34 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 6;
+        c.gridy = 7;
         c.weighty = 1;
         content.add(btnClearObservers, c);
-        
+
+
         btnResetObservers = new JButton("Reset observers");
         btnResetObservers.addActionListener((ActionEvent e) -> this.resetObservers());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 7;
+        c.gridy = 8;
         c.weighty = 1;
         content.add(btnResetObservers, c);
         btnResetObservers.setEnabled(false);
+      
+      
+        JButton btnBookmarks = new JButton("Bookmarks");
+        btnBookmarks.addActionListener((ActionEvent e) -> this.openBookmarks());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 9;
+        c.weighty = 1;
+        content.add(btnBookmarks, c);
+    }
+
+    private void openBookmarks() {
+        bookmarks.HideIfVisibleAndShowIfHidden();
     }
 
     private void importCommand() {
