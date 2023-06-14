@@ -130,7 +130,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private void openBookmarks() 
     {
-        bookmarks = new BookmarksWindow(commandManager);
+        if (bookmarks == null)
+        {
+            bookmarks = new BookmarksWindow(commandManager);
+        }
         bookmarks.HideIfVisibleAndShowIfHidden();
     }
 

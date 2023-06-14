@@ -30,15 +30,11 @@ public class BookmarksWindow extends JFrame implements WindowComponent
 
         JButton btnAddBookmark = new JButton("Make a bookmark of the current command");
         btnAddBookmark.addActionListener((ActionEvent e) -> this.addBookmark());
-        gridBagConstraints.weightx = 1;
-        gridBagConstraints.weighty = 1;
         gridBagConstraints.gridy = 0;
         content.add(btnAddBookmark, gridBagConstraints);
 
         textInput = new JTextArea(defaultTextInputMessage);
         textInput.setEditable(true);
-        gridBagConstraints.weightx = 1;
-        gridBagConstraints.weighty = 1;
         gridBagConstraints.gridy = 1;
         content.add(textInput, gridBagConstraints);
     }
@@ -52,24 +48,22 @@ public class BookmarksWindow extends JFrame implements WindowComponent
             JTextArea bookmarkName = new JTextArea(currentCommand.toString());
             gridBagConstraints.weightx = 1;
             gridBagConstraints.gridy = rowNumber + 2;
-            gridBagConstraints.weighty = 1;
             gridBagConstraints.gridx = 0;
+            gridBagConstraints.weighty = 1;
             content.add(bookmarkName, gridBagConstraints);
 
             String description = textInput.getText();
             textInput.setText(defaultTextInputMessage);
+            if (description.equals(defaultTextInputMessage)|| description.equals(""))
+            {
+                description = "No description";
+            }
             JTextArea bookmarkDescription = new JTextArea(description);
-            gridBagConstraints.weightx = 1;
-            gridBagConstraints.gridy = rowNumber + 2;
-            gridBagConstraints.weighty = 1;
             gridBagConstraints.gridx = 1;
             content.add(bookmarkDescription, gridBagConstraints);
 
             JButton btnAddBookmark = new JButton("Load command");
-            btnAddBookmark.addActionListener(new CommandLoader(null, commandManager));  //CHANGE
-            gridBagConstraints.weightx = 1;
-            gridBagConstraints.gridy = rowNumber + 2;
-            gridBagConstraints.weighty = 1;
+            btnAddBookmark.addActionListener(new CommandLoader(currentCommand, commandManager));
             gridBagConstraints.gridx = 2;
             content.add(btnAddBookmark, gridBagConstraints);
             rowNumber++;
@@ -89,6 +83,7 @@ public class BookmarksWindow extends JFrame implements WindowComponent
             this.setVisible(false);
         } else {
             this.setVisible(true);
+            textInput.setText(defaultTextInputMessage);
         }
     }
 }
