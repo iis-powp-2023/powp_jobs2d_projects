@@ -2,45 +2,52 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.sound.sampled.Line;
 import javax.swing.*;
 
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.adapter.LineFactoryWithThinLine;
 import edu.kis.powp.observer.Subscriber;
 
 
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
-    private CommandManager commandManager;
+    private JTextArea currentCommandStatsField;
+    private ICommandManager commandManager;
     private JTextArea currentCommandField;
     private String observerListString;
     private JTextArea observerListField;
-    private JPanel iconJPanel;
     private DrawPanelController iconDraw;
+    private JButton btnClearObservers;
+    private JButton btnResetObservers;
     private JTextArea textInput;
     private String defaultTextInputMessage = "Write here for command import";
-    private BookmarksWindow bookmarks = null;
+
+    /**
+     *
+     */
     private static final long serialVersionUID = 9204679248304669948L;
-    private final Job2dDriver driverCommandPreview;
-    public CommandManagerWindow(CommandManager commandManager) 
-    {
+    private BookmarksWindow bookmarks = null;
+
+    private final LineDriverAdapter commandPreviewDriver;
+    private CountingCommandVisitor countingVisitor;
+    public CommandManagerWindow(ICommandManager commandManager) {
         bookmarks = new BookmarksWindow(commandManager);
-        
+        countingVisitor = new CountingCommandVisitor();
+
         this.setTitle("Command Manager");
 
-        this.setSize(400, 400);
+        this.setSize(500, 600);
         Container content = this.getContentPane();
         content.setLayout(new GridBagLayout());
 
@@ -58,30 +65,38 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(observerListField, c);
         updateObserverListField();
 
+        currentCommandStatsField = new JTextArea("PLACEHOLDER");
+        currentCommandStatsField.setEditable(false);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 1;
+        c.weighty = 1;
+        content.add(currentCommandStatsField, c);
+        updateCurrentCommandStatsField();
+
 
         currentCommandField = new JTextArea("");
         currentCommandField.setEditable(false);
         c.fill = GridBagConstraints.CENTER;
         c.gridwidth = 1;
-        c.gridy = 1;
-        c.weighty = 2;
+        c.gridy = 2;
+        c.weighty = 4;
         c.weightx=0.5;
         content.add(currentCommandField, c);
         updateCurrentCommandField();
 
 
-
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
-        c.gridy = 1;
+        c.gridy = 2;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
         updateObserverListField();
         content.add(panel, c);
         iconDraw=new DrawPanelController();
         iconDraw.initialize(panel);
-        driverCommandPreview = new LineDriverAdapter(iconDraw, LineFactory.getBasicLine(), "basic");
-
+        commandPreviewDriver = new ScaledLineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic").setScale(0.25);
 
 
         textInput = new JTextArea(defaultTextInputMessage);
@@ -89,78 +104,90 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 2;
+        c.gridy = 3;
         c.weighty = 1;
         content.add(textInput, c);
-
+        
         JButton btnImportCommand = new JButton("Import command");
         btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
         c.fill = GridBagConstraints.BOTH;
-        c.gridy = 3;
+        c.gridy = 4;
         c.weightx = 1;
         c.weighty = 1;
         content.add(btnImportCommand, c);
-
-
-        JButton btnClearCommand = new JButton("Clear command");
-        btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
+      
+        JButton btnRunCommand = new JButton("Run command");
+        btnRunCommand.addActionListener((ActionEvent e) -> commandManager.runCommand());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
         c.gridy = 4;
         c.weighty = 1;
-        content.add(btnClearCommand, c);
-
-        JButton btnClearObservers = new JButton("Delete observers");
-        btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers());
+        content.add(btnRunCommand, c);
+        
+        JButton btnClearCommand = new JButton("Clear command");
+        btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
         c.gridy = 5;
         c.weighty = 1;
-        content.add(btnClearObservers, c);
+        content.add(btnClearCommand, c);
 
-        JButton btnBookmarks = new JButton("Bookmarks");
-        btnBookmarks.addActionListener((ActionEvent e) -> this.openBookmarks());
+        btnClearObservers = new JButton("Delete observers");
+        btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers());
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
         c.gridy = 6;
         c.weighty = 1;
+        content.add(btnClearObservers, c);
+
+
+        btnResetObservers = new JButton("Reset observers");
+        btnResetObservers.addActionListener((ActionEvent e) -> this.resetObservers());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 7;
+        c.weighty = 1;
+        content.add(btnResetObservers, c);
+        btnResetObservers.setEnabled(false);
+      
+      
+        JButton btnBookmarks = new JButton("Bookmarks");
+        btnBookmarks.addActionListener((ActionEvent e) -> this.openBookmarks());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 8;
+        c.weighty = 1;
         content.add(btnBookmarks, c);
     }
 
-    private void openBookmarks() 
-    {
+    private void openBookmarks() {
         bookmarks.HideIfVisibleAndShowIfHidden();
     }
 
     private void importCommand() {
         String input = textInput.getText();
-        if (input.equals(""))
-        {
+        if (input.equals("")) {
             textInput.setText(defaultTextInputMessage);
             return;
-        }
-        else if (input.equals(defaultTextInputMessage))
-        {
+        } else if (input.equals(defaultTextInputMessage)) {
             return;
         }
 
         CommandImporter importedCommand = CommandFactory.interpretInput(input);
 
-        if (importedCommand == null)
-        {
+        if (importedCommand == null) {
             input = "Could not import command:\n" + input;
             textInput.setText(input);
-        }
-        else
-        {
+        } else {
             commandManager.setCurrentCommand(importedCommand.getCommand(), importedCommand.getName());
             textInput.setText(defaultTextInputMessage);
-        }        
+        }
     }
-
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
@@ -169,15 +196,41 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
     }
+    public void updateCurrentCommandStatsField() {
+        DriverCommand currentCommand = commandManager.getCurrentCommand();
+        if(currentCommand != null){
+            currentCommand.accept(countingVisitor = new CountingCommandVisitor());
+            currentCommandStatsField.setText("Command stats:\n");
+            currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() +"\n");
+            currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");
+            currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength()*100)/100.0 + "\n");
+            currentCommandStatsField.append("Operation time: ");
+            if (countingVisitor.getVisitTime() == null) {
+                currentCommandStatsField.append("\n");
+            } else {
+                currentCommandStatsField.append(countingVisitor.getVisitTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n");
+            }
+        }
+
+    }
 
     public void updateCurrentCommandPreview()
     {
         iconDraw.clearPanel();
-        DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        command.execute(driverCommandPreview);
+        DriverCommand command = commandManager.getCurrentCommand();
+        command.execute(commandPreviewDriver);
     }
+
     public void deleteObservers() {
-        commandManager.getChangePublisher().clearObservers();
+        btnResetObservers.setEnabled(true);
+        btnClearObservers.setEnabled(false);
+        commandManager.deleteObservers();
+        this.updateObserverListField();
+    }
+    public void resetObservers() {
+        btnResetObservers.setEnabled(false);
+        btnClearObservers.setEnabled(true);
+        commandManager.resetObservers();
         this.updateObserverListField();
     }
 
@@ -196,11 +249,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     @Override
     public void HideIfVisibleAndShowIfHidden() {
         updateObserverListField();
-        if (this.isVisible()) {
-            this.setVisible(false);
-        } else {
-            this.setVisible(true);
-        }
+        this.setVisible(!this.isVisible());
     }
 
 }
