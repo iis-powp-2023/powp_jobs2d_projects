@@ -36,6 +36,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private final Job2dDriver driverCommandPreview;
     public CommandManagerWindow(CommandManager commandManager) 
     {
+        bookmarks = new BookmarksWindow(commandManager);
+        
         this.setTitle("Command Manager");
 
         this.setSize(400, 400);
@@ -130,10 +132,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private void openBookmarks() 
     {
-        if (bookmarks == null)
-        {
-            bookmarks = new BookmarksWindow(commandManager);
-        }
         bookmarks.HideIfVisibleAndShowIfHidden();
     }
 
