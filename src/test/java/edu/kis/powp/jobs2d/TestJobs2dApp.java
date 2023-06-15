@@ -78,7 +78,7 @@ public class TestJobs2dApp {
         usageManager = driver.getDeviceUsageManager();
         usageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(usageManager));
         usageManager.getWindowChangePublisher().addSubscriber(new UsageManagerWindowChangeObserver(usageManager));
-        DriverFeature.addDriver("Line Simulator + distance log", driver);
+        DriverFeature.addUsageDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
@@ -87,7 +87,7 @@ public class TestJobs2dApp {
         usageManager = driver.getDeviceUsageManager();
         usageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(usageManager));
         usageManager.getWindowChangePublisher().addSubscriber(new UsageManagerWindowChangeObserver(usageManager));
-        DriverFeature.addDriver("Special line Simulator + distance log", driver);
+        DriverFeature.addUsageDriver("Special line Simulator + distance log", driver);
         DriverFeature.addDriver("Logger + line driver + distance log", composite);
 
         Job2dDriver verticalFlipDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getHorizontalFlip());
