@@ -1,0 +1,5 @@
+setPosition 0 0
+operateTo 0 50
+operateTo 50 50
+operateTo 50 0
+operateTo 0 0

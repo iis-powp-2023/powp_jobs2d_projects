@@ -2,22 +2,27 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
+import edu.kis.powp.jobs2d.command.commandsFromFile.IFileReader;
+import edu.kis.powp.jobs2d.command.commandsFromFile.ReadFromTxtFile;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.adapter.LineFactoryWithThinLine;
 import edu.kis.powp.observer.Subscriber;
-
 
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -39,6 +44,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private final LineDriverAdapter commandPreviewDriver;
     private CountingCommandVisitor countingVisitor;
+
     public CommandManagerWindow(ICommandManager commandManager) {
         countingVisitor = new CountingCommandVisitor();
         this.setTitle("Command Manager");
@@ -78,7 +84,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridwidth = 1;
         c.gridy = 2;
         c.weighty = 4;
-        c.weightx=0.5;
+        c.weightx = 0.5;
         content.add(currentCommandField, c);
         updateCurrentCommandField();
 
@@ -90,7 +96,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         updateObserverListField();
         content.add(panel, c);
-        iconDraw=new DrawPanelController();
+        iconDraw = new DrawPanelController();
         iconDraw.initialize(panel);
         commandPreviewDriver = new ScaledLineDriverAdapter(iconDraw, LineFactoryWithThinLine.getBasicThinLine(), "basic").setScale(0.25);
 
@@ -103,7 +109,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridy = 3;
         c.weighty = 1;
         content.add(textInput, c);
-        
+
         JButton btnImportCommand = new JButton("Import command");
         btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
         c.fill = GridBagConstraints.BOTH;
@@ -111,7 +117,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.weighty = 1;
         content.add(btnImportCommand, c);
-      
+
         JButton btnRunCommand = new JButton("Run command");
         btnRunCommand.addActionListener((ActionEvent e) -> commandManager.runCommand());
         c.fill = GridBagConstraints.BOTH;
@@ -120,7 +126,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridy = 4;
         c.weighty = 1;
         content.add(btnRunCommand, c);
-        
+
         JButton btnClearCommand = new JButton("Clear command");
         btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
         c.fill = GridBagConstraints.BOTH;
@@ -138,7 +144,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridy = 6;
         c.weighty = 1;
         content.add(btnClearObservers, c);
-        
+
         btnResetObservers = new JButton("Reset observers");
         btnResetObservers.addActionListener((ActionEvent e) -> this.resetObservers());
         c.fill = GridBagConstraints.BOTH;
@@ -148,6 +154,26 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnResetObservers, c);
         btnResetObservers.setEnabled(false);
+
+        JTextArea commandName = new JTextArea("");
+        TitledBorder commandNameBorder = BorderFactory.createTitledBorder("Command name");
+        commandName.setBorder(commandNameBorder);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 8;
+        c.weighty = 1;
+        content.add(commandName, c);
+
+        JButton btnReadCommand = new JButton("Read commands from file");
+        btnReadCommand.addActionListener((ActionEvent e) -> this.setCommandFromFile(getPathToFile(), commandName.getText()));
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 9;
+        c.weighty = 1;
+        content.add(btnReadCommand, c);
+
     }
 
     private void importCommand() {
@@ -169,22 +195,48 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             textInput.setText(defaultTextInputMessage);
         }
     }
+
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
     }
 
+    private void setCommandFromFile(String filePath, String commandName) {
+        IFileReader testReader = new ReadFromTxtFile();
+        String commandText = testReader.readFromFile(filePath);
+        CommandReader commandReader = new CommandReaderTxt();
+        ImmutableCompoundCommand compoundCommand = commandReader.parseCommand(commandText, commandName);
+        commandManager.setCurrentCommand(compoundCommand.getCommands(), compoundCommand.toString());
+    }
+
+    private String getPathToFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        int result = fileChooser.showOpenDialog(this);
+        String filePath;
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath = selectedFile.getAbsolutePath();
+        } else {
+            throw new NullPointerException();
+        }
+
+        return filePath;
+    }
+
+
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
     }
+
     public void updateCurrentCommandStatsField() {
         DriverCommand currentCommand = commandManager.getCurrentCommand();
-        if(currentCommand != null){
+        if (currentCommand != null) {
             currentCommand.accept(countingVisitor = new CountingCommandVisitor());
             currentCommandStatsField.setText("Command stats:\n");
-            currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() +"\n");
-            currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength()*100)/100.0 + "\n");
-            currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength()*100)/100.0 + "\n");
+            currentCommandStatsField.append("Operations count: " + countingVisitor.getCompoundCommandsCount() + "\n");
+            currentCommandStatsField.append("Operations length: " + Math.round(countingVisitor.getTotalLength() * 100) / 100.0 + "\n");
+            currentCommandStatsField.append("OperateTo length: " + Math.round(countingVisitor.getOperateToLength() * 100) / 100.0 + "\n");
             currentCommandStatsField.append("Operation time: ");
             if (countingVisitor.getVisitTime() == null) {
                 currentCommandStatsField.append("\n");
@@ -195,8 +247,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     }
 
-    public void updateCurrentCommandPreview()
-    {
+    public void updateCurrentCommandPreview() {
         iconDraw.clearPanel();
         DriverCommand command = commandManager.getCurrentCommand();
         command.execute(commandPreviewDriver);
@@ -208,6 +259,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         commandManager.deleteObservers();
         this.updateObserverListField();
     }
+
     public void resetObservers() {
         btnResetObservers.setEnabled(false);
         btnClearObservers.setEnabled(true);
