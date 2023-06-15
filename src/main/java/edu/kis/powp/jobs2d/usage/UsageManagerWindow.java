@@ -136,7 +136,7 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
             }
             currentUsageManager.setMaxServiceInterval(newServiceInterval);
             currentServiceIntervalField.setText(String.valueOf(newServiceInterval));
-            updateUsageWindow(currentUsageManager.getDeviceUsage());
+            updateUsageWindow(currentUsageManager.getDeviceUsageState(), currentUsageManager.getDeviceUsage());
         });
         content.add(btnSetInterval, c);
 
@@ -147,12 +147,11 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         if(currentUsageManager == null)
             return;
         currentUsageManager.setServiceInterval(currentUsageManager.getMaxServiceInterval());
-        updateUsageWindow(1.0);
+        updateUsageWindow(DeviceUsageState.UNUSED, 1.0);
     }
 
-    public void updateUsageWindow(Double deviceUsage){
-        btnService.setEnabled(deviceUsage != 1);
-        DeviceUsageState deviceUsageState = getDeviceUsageState(deviceUsage);
+    public void updateUsageWindow(DeviceUsageState deviceUsageState, double deviceUsage){
+        btnService.setEnabled(deviceUsageState != DeviceUsageState.UNUSED);
         switch (deviceUsageState){
             case UNUSED: updateUsageBar(Color.green, null); break;
             case LOW_USED: updateUsageBar(Color.yellow, null); break;
@@ -163,26 +162,12 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         usageBar.setValue((int) (deviceUsage * 100));
     }
 
-    private DeviceUsageState getDeviceUsageState(Double deviceUsage){
-        if(deviceUsage >= 0.75)
-            return DeviceUsageState.UNUSED;
-        else if(deviceUsage >= 0.5)
-            return DeviceUsageState.LOW_USED;
-        else if(deviceUsage >= 0.25)
-            return DeviceUsageState.MEDIUM_USED;
-        else if(deviceUsage == 0)
-            return DeviceUsageState.INOPERABLE;
-        else
-            return DeviceUsageState.HIGH_USED;
-    }
-
     private void updateUsageBar(Color barColor, String warningText){
         usageBar.setForeground(barColor);
         warningField.setVisible(warningText != null);
         if(warningText != null){
             warningField.setText(warningText);
         }
-
     }
 
     void setCurrentUsageManager(UsageManager usageManager){

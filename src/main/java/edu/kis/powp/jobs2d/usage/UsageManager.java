@@ -35,6 +35,20 @@ public class UsageManager {
         return serviceInterval / maxServiceInterval;
     }
 
+    public DeviceUsageState getDeviceUsageState(){
+        double deviceUsage = serviceInterval / maxServiceInterval;
+        if(deviceUsage >= 0.75)
+            return DeviceUsageState.UNUSED;
+        else if(deviceUsage >= 0.5)
+            return DeviceUsageState.LOW_USED;
+        else if(deviceUsage >= 0.25)
+            return DeviceUsageState.MEDIUM_USED;
+        else if(deviceUsage == 0)
+            return DeviceUsageState.INOPERABLE;
+        else
+            return DeviceUsageState.HIGH_USED;
+    }
+
     private double calculateDistance(int x, int y){
         double distance = Math.sqrt(Math.pow(y - yLastPosition, 2) + Math.pow(x - xLastPosition, 2));
         xLastPosition = x;
