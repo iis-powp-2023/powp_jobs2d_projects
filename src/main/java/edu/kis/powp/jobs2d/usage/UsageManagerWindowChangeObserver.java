@@ -5,6 +5,7 @@ import edu.kis.powp.observer.Subscriber;
 
 public class UsageManagerWindowChangeObserver implements Subscriber {
     private final UsageManager usageManager;
+    private UsageManagerWindow usageManagerWindow = null;
 
     public UsageManagerWindowChangeObserver(UsageManager usageManager) {
         super();
@@ -17,10 +18,11 @@ public class UsageManagerWindowChangeObserver implements Subscriber {
 
     @Override
     public void update() {
-        UsageFeature.getUsageManagerWindow().updateHeadDistanceField(Double.toString(Math.round(usageManager.getHeadDistance())));
-        UsageFeature.getUsageManagerWindow().updateOperatingDistanceField(Double.toString(Math.round(usageManager.getOperatingDistance())));
-        UsageFeature.getUsageManagerWindow().setCurrentUsageManager(usageManager);
-        UsageFeature.getUsageManagerWindow().updateUsageBar(usageManager.getDeviceUsage());
+        if(this.usageManagerWindow == null) this.usageManagerWindow = UsageFeature.getUsageManagerWindow();
+        this.usageManagerWindow.updateHeadDistanceField(Double.toString(Math.round(usageManager.getHeadDistance())));
+        this.usageManagerWindow.updateOperatingDistanceField(Double.toString(Math.round(usageManager.getOperatingDistance())));
+        this.usageManagerWindow.setCurrentUsageManager(usageManager);
+        this.usageManagerWindow.updateUsageBar(usageManager.getDeviceUsage());
     }
 
 }
