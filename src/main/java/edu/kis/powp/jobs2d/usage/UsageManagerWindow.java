@@ -132,10 +132,11 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
                         "Please enter value greater than 0",
                         "Input error",
                         JOptionPane.ERROR_MESSAGE);
+                return;
             }
             currentUsageManager.setMaxServiceInterval(newServiceInterval);
             currentServiceIntervalField.setText(String.valueOf(newServiceInterval));
-            updateUsageBar(currentUsageManager.getDeviceUsage());
+            updateUsageWindow(currentUsageManager.getDeviceUsage());
         });
         content.add(btnSetInterval, c);
 
@@ -146,35 +147,42 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
         if(currentUsageManager == null)
             return;
         currentUsageManager.setServiceInterval(currentUsageManager.getMaxServiceInterval());
-        updateUsageBar(1.0);
+        updateUsageWindow(1.0);
     }
 
-    public void updateUsageBar(Double deviceUsage){
+    public void updateUsageWindow(Double deviceUsage){
         btnService.setEnabled(deviceUsage != 1);
-        if(deviceUsage >= 0.75){
-            usageBar.setForeground(Color.green);
-            warningField.setVisible(false);
-        }
-        else if(deviceUsage >= 0.5){
-            usageBar.setForeground(Color.yellow);
-            warningField.setVisible(false);
-        }
-        else if(deviceUsage >= 0.25){
-            usageBar.setForeground(Color.orange);
-            warningField.setText("Will need service soon");
-            warningField.setVisible(true);
-        }
-        else if(deviceUsage == 0){
-            usageBar.setForeground(Color.red);
-            warningField.setText("Needs service - Device stopped");
-            warningField.setVisible(true);
-        }
-        else {
-            usageBar.setForeground(Color.red);
-            warningField.setText("Needs service");
-            warningField.setVisible(true);
+        DeviceUsageState deviceUsageState = getDeviceUsageState(deviceUsage);
+        switch (deviceUsageState){
+            case UNUSED: updateUsageBar(Color.green, null); break;
+            case LOW_USED: updateUsageBar(Color.yellow, null); break;
+            case MEDIUM_USED: updateUsageBar(Color.orange, "Will need service soon"); break;
+            case HIGH_USED: updateUsageBar(Color.red, "Needs service"); break;
+            case INOPERABLE: updateUsageBar(Color.red, "Needs service - Device stopped"); break;
         }
         usageBar.setValue((int) (deviceUsage * 100));
+    }
+
+    private DeviceUsageState getDeviceUsageState(Double deviceUsage){
+        if(deviceUsage >= 0.75)
+            return DeviceUsageState.UNUSED;
+        else if(deviceUsage >= 0.5)
+            return DeviceUsageState.LOW_USED;
+        else if(deviceUsage >= 0.25)
+            return DeviceUsageState.MEDIUM_USED;
+        else if(deviceUsage == 0)
+            return DeviceUsageState.INOPERABLE;
+        else
+            return DeviceUsageState.HIGH_USED;
+    }
+
+    private void updateUsageBar(Color barColor, String warningText){
+        usageBar.setForeground(barColor);
+        warningField.setVisible(warningText != null);
+        if(warningText != null){
+            warningField.setText(warningText);
+        }
+
     }
 
     void setCurrentUsageManager(UsageManager usageManager){

@@ -20,7 +20,7 @@ public class UsageManagerWindowChangeObserver implements Subscriber {
         UsageFeature.getUsageManagerWindow().updateHeadDistanceField(Double.toString(Math.round(usageManager.getHeadDistance())));
         UsageFeature.getUsageManagerWindow().updateOperatingDistanceField(Double.toString(Math.round(usageManager.getOperatingDistance())));
         UsageFeature.getUsageManagerWindow().setCurrentUsageManager(usageManager);
-        UsageFeature.getUsageManagerWindow().updateUsageBar(usageManager.getDeviceUsage());
+        UsageFeature.getUsageManagerWindow().updateUsageWindow(usageManager.getDeviceUsage());
     }
 
 }
