@@ -9,11 +9,11 @@ import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SelectTransformVisitorOptionListener implements ActionListener {
+public class SelectTransformScaleUpVisitorOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        Transformation transformation = TransformationFactory.getCounterclockwiseRotation();
+        Transformation transformation = TransformationFactory.getDoubleScale();
         CommandTransformVisitor commandVisitor = new CommandTransformVisitor(transformation);
         command.accept(commandVisitor);
         CommandManager manager = CommandsFeature.getDriverCommandManager();

@@ -20,7 +20,6 @@ import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
-import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
@@ -60,8 +59,13 @@ public class TestJobs2dApp {
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
 
-        application.addTest("CommandTransformVisitor test", new SelectTransformVisitorOptionListener());
+        application.addTest("Rotate left command", new SelectTransformRotateLeftVisitorOptionListener());
 
+        application.addTest("Rotate right command", new SelectTransformRotateRightVisitorOptionListener());
+
+        application.addTest("Scale x0.5 command", new SelectTransformScaleDownVisitorOptionListener());
+
+        application.addTest("Scale x2 command", new SelectTransformScaleUpVisitorOptionListener());
     }
 
     /**
