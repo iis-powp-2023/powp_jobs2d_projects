@@ -185,7 +185,7 @@ public class UsageManagerWindow extends JFrame implements WindowComponent {
 
     }
 
-    void setCurrentUsageManager(UsageManager usageManager){
+    public void setCurrentUsageManager(UsageManager usageManager){
         currentUsageManager = usageManager;
         currentServiceIntervalField.setText(String.valueOf(usageManager.getMaxServiceInterval()));
     }
