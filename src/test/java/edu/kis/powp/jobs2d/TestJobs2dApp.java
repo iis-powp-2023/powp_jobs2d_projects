@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.StandardShapeFactory;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
@@ -53,12 +54,18 @@ public class TestJobs2dApp {
 
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
+        application.addTest("CanvasVisitor Test",new SelectCanvaVisitorTestOptionListener(new StandardShapeFactory().createCustomRectangle(0,0,537,455)));
         application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
 
-        application.addTest("CommandTransformVisitor test", new SelectTransformVisitorOptionListener());
+        application.addTest("Rotate left command", new SelectTransformRotateLeftVisitorOptionListener());
 
+        application.addTest("Rotate right command", new SelectTransformRotateRightVisitorOptionListener());
+
+        application.addTest("Scale x0.5 command", new SelectTransformScaleDownVisitorOptionListener());
+
+        application.addTest("Scale x2 command", new SelectTransformScaleUpVisitorOptionListener());
     }
 
     /**
