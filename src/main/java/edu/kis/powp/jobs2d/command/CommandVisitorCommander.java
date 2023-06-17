@@ -2,7 +2,7 @@ package edu.kis.powp.jobs2d.command;
 
 import java.util.Iterator;
 
-public class CommandVisitorCommander implements ICommandVisitor {
+public class CommandVisitorCommander implements ICommandVisitor{
 
     private int operateToCount = 0;
     private int setPositionCount = 0;
