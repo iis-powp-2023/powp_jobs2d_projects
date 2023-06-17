@@ -7,12 +7,12 @@ import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 
 import java.awt.event.*;
 
-public class CommandLoader implements ActionListener
+public class CommandLoaderListener implements ActionListener
 {
     private DriverCommand driverCommand;
     private ICommandManager commandManager;
 
-    public CommandLoader(DriverCommand driverCommand, ICommandManager commandManager)
+    public CommandLoaderListener(DriverCommand driverCommand, ICommandManager commandManager)
     {
         this.driverCommand = driverCommand;
         this.commandManager = commandManager;

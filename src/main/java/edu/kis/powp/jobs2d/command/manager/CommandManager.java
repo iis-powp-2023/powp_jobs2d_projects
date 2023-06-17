@@ -12,6 +12,7 @@ import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
+import edu.kis.powp.jobs2d.command.gui.Bookmarks;
 import edu.kis.powp.observer.Publisher;
 import edu.kis.powp.observer.Subscriber;
 
@@ -24,6 +25,11 @@ public class CommandManager implements ICommandManager{
 
     private Publisher changePublisher = new Publisher();
     private List<Subscriber> deletedObservers = new ArrayList<>();
+
+    public CommandManager()
+    {
+        Bookmarks.getInstance().setCommandManager(this);
+    }
 
     /**
      * Set current command.

@@ -11,7 +11,7 @@ import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 
 public class BookmarksWindow extends JFrame implements WindowComponent
 {
-    private ICommandManager commandManager;
+    private Bookmarks bookmarks;
     private Container content;
     private GridBagConstraints gridBagConstraints;
 
@@ -19,17 +19,17 @@ public class BookmarksWindow extends JFrame implements WindowComponent
     private JTextArea textInput;
     private String defaultTextInputMessage = "Write here to add description to a bookmark";
 
-    public BookmarksWindow(ICommandManager commandManager) {
+    public BookmarksWindow() {
+        bookmarks = Bookmarks.getInstance();
         this.setTitle("Bookmarks");
         this.setSize(800, 400);
         content = this.getContentPane();
         content.setLayout(new GridBagLayout());
 
-        this.commandManager = commandManager;
         gridBagConstraints = new GridBagConstraints();
 
         JButton btnAddBookmark = new JButton("Make a bookmark of the current command");
-        btnAddBookmark.addActionListener((ActionEvent e) -> this.addBookmark());
+        btnAddBookmark.addActionListener((ActionEvent e) -> Bookmarks.getInstance().bookmarkCurrentCommand());
         gridBagConstraints.gridy = 0;
         content.add(btnAddBookmark, gridBagConstraints);
 
@@ -39,40 +39,44 @@ public class BookmarksWindow extends JFrame implements WindowComponent
         content.add(textInput, gridBagConstraints);
     }
 
-    private void addBookmark() 
+    public void displayFailiureStatus()
     {
-        DriverCommand currentCommand = commandManager.getCurrentCommand();
+        String errorResponse = "Could not save the current command\n" + defaultTextInputMessage;
+        textInput.setText(errorResponse);
+    }
 
+    public String getDescription()
+    {
+        return textInput.getText();
+    }
+
+    public void addBookmark(String name, String description, CommandLoaderListener action) 
+    {
         try
         {
-            JTextArea bookmarkName = new JTextArea(currentCommand.toString());
+            JTextArea bookmarkName = new JTextArea(name);
             gridBagConstraints.weightx = 1;
             gridBagConstraints.gridy = rowNumber + 2;
             gridBagConstraints.gridx = 0;
             gridBagConstraints.weighty = 1;
             content.add(bookmarkName, gridBagConstraints);
-
-            String description = textInput.getText();
-            textInput.setText(defaultTextInputMessage);
-            if (description.equals(defaultTextInputMessage)|| description.equals(""))
-            {
-                description = "No description";
-            }
+            
             JTextArea bookmarkDescription = new JTextArea(description);
             gridBagConstraints.gridx = 1;
             content.add(bookmarkDescription, gridBagConstraints);
 
             JButton btnAddBookmark = new JButton("Load command");
-            btnAddBookmark.addActionListener(new CommandLoader(currentCommand, commandManager));
+            btnAddBookmark.addActionListener(action);
             gridBagConstraints.gridx = 2;
             content.add(btnAddBookmark, gridBagConstraints);
+
             rowNumber++;
             SwingUtilities.updateComponentTreeUI(this);
+            textInput.setText(defaultTextInputMessage);
         }
         catch (Exception e)
         {
-            String errorResponse = "Could not save the current command\n" + defaultTextInputMessage;
-            textInput.setText(errorResponse);
+            displayFailiureStatus();
         }        
     }
 

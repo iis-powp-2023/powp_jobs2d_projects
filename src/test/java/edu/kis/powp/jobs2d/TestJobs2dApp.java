@@ -4,6 +4,8 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
+import edu.kis.powp.jobs2d.command.gui.Bookmarks;
+import edu.kis.powp.jobs2d.command.gui.BookmarksWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
@@ -134,6 +136,10 @@ public class TestJobs2dApp {
         HistoryOfUsedCommandsSubscriber historyOfUsedCommandsSubscriber = new HistoryOfUsedCommandsSubscriber(historyOfUsedCommandsWindow);
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(historyOfUsedCommandsSubscriber);
         application.addWindowComponent("History of used commands", historyOfUsedCommandsWindow);
+
+        BookmarksWindow bookmarksWindow = Bookmarks.getInstance().getBookmarksWindow();
+         application.addWindowComponent("Bookmarks", bookmarksWindow);
+
     }
 
     /**

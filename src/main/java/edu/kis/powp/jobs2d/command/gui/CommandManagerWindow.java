@@ -9,6 +9,7 @@ import javax.swing.*;
 
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
+import edu.kis.powp.appbase.Application;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
@@ -37,12 +38,12 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
      *
      */
     private static final long serialVersionUID = 9204679248304669948L;
-    private BookmarksWindow bookmarks = null;
+    private Bookmarks bookmarks;
 
     private final LineDriverAdapter commandPreviewDriver;
     private CountingCommandVisitor countingVisitor;
     public CommandManagerWindow(ICommandManager commandManager) {
-        bookmarks = new BookmarksWindow(commandManager);
+        bookmarks = Bookmarks.getInstance();
         countingVisitor = new CountingCommandVisitor();
 
         this.setTitle("Command Manager");
@@ -153,20 +154,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnResetObservers, c);
         btnResetObservers.setEnabled(false);
-      
-      
-        JButton btnBookmarks = new JButton("Bookmarks");
-        btnBookmarks.addActionListener((ActionEvent e) -> this.openBookmarks());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridwidth = 2;
-        c.gridy = 9;
-        c.weighty = 1;
-        content.add(btnBookmarks, c);
-    }
-
-    private void openBookmarks() {
-        bookmarks.HideIfVisibleAndShowIfHidden();
     }
 
     private void importCommand() {
