@@ -67,10 +67,10 @@ public class RealWorldDriver extends DriverDecorator {
             lastOperationType = OperationType.OPERATE_TO;
 
             LinePartitions operationData = calculateDelays(x, y);
-            Double delay = operationData.getDelay();
+            int delay = operationData.getDelay();
             for (Point point : operationData) {
                 super.operateTo(point.x, point.y);
-                Thread.sleep(delay.intValue());
+                Thread.sleep(delay);
             }
             lastX = x;
             lastY = y;
@@ -86,18 +86,18 @@ public class RealWorldDriver extends DriverDecorator {
 
     private LinePartitions calculateDelays(int destinationX, int destinationY) {
         ArrayList<Point> pointsList = new ArrayList<>();
-        double delay;
+        int delay;
         double distance = Math.sqrt(Math.pow(lastY - destinationY, 2) + Math.pow(lastX - destinationX, 2));
         if (distance < 4) {
-            delay = (distance / operateToSpeed);
+            delay = (int)((distance / operateToSpeed)*1000);
             Point point = new Point();
             point.x = destinationX;
             point.y = destinationY;
             pointsList.add(point);
-            return new LinePartitions(delay * milisecondsInSecond, pointsList);
+            return new LinePartitions(delay, pointsList);
         }
         int partsNum = (int) distance / 3;
-        delay = (distance / operateToSpeed) / partsNum;
+        delay = (int)(((distance / operateToSpeed) / partsNum)*milisecondsInSecond);
         for (int i = 1; i <= partsNum; i++) {
             Point point = new Point();
             double diffX = Math.round((double)(destinationX - lastX) / (double)partsNum * i);
@@ -107,19 +107,19 @@ public class RealWorldDriver extends DriverDecorator {
             pointsList.add(point);
         }
 
-        return new LinePartitions(delay * milisecondsInSecond, pointsList);
+        return new LinePartitions(delay, pointsList);
     }
 
     private class LinePartitions implements Iterable<Point> {
-        private double delay;
+        private int delay;
         private ArrayList<Point> points;
 
-        public LinePartitions(double delay, ArrayList<Point> points) {
+        public LinePartitions(int delay, ArrayList<Point> points) {
             this.delay = delay;
             this.points = points;
         }
 
-        public double getDelay() {
+        public int getDelay() {
             return delay;
         }
 
