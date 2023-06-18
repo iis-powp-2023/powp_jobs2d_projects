@@ -1,106 +1,120 @@
 package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.features.CanvasFeature;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class CanvasManagerWindow extends JFrame implements WindowComponent {
-    private static double width = 537;
-    private static double height = 455;
     private HashMap<String, Dimension> paperFormatMap;
+
+    private JPanel panel = new JPanel();
+    private GridLayout layout = new GridLayout(0, 2, 10, 10);
+
+    private JLabel textWidth = new JLabel("Width");
+    private JLabel textHeight = new JLabel("Height");
+    private JLabel textOriginX = new JLabel("Origin X");
+    private JLabel textOriginY = new JLabel("Origin Y");
+    private JLabel textPaperSize = new JLabel("Paper Size");
+    private JLabel textOrientation = new JLabel("Orientation");
+
+    private JTextField fieldWidth = new JTextField(Double.toString(CanvasFeature.getWidth()));
+    private JTextField fieldHeight = new JTextField(Double.toString(CanvasFeature.getHeight()));
+    private JTextField fieldOriginX = new JTextField(Double.toString(CanvasFeature.getOriginX()));
+    private JTextField fieldOriginY = new JTextField(Double.toString(CanvasFeature.getOriginY()));
+
+    private JButton applyPaperSize = new JButton("Apply");
+    private JButton btnSwapDimensions = new JButton("Swap Dimensions");
+    private JButton applyCustomSize = new JButton("Apply");
+
+    private static int BORDER = 10;
+
+    JComboBox<Object> comboPaperSize;
 
     public CanvasManagerWindow() {
         initPaperFormatMap();
 
         setTitle("Canvas Manager");
-        setSize(300, 340);
+        setMinimumSize(new Dimension(360, 420));
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(12, 1));
+        panel.setLayout(layout);
+        panel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
         add(panel);
 
-        JLabel textWidth = new JLabel("width");
-        JTextField widthField = new JTextField(10);
-        JLabel textHeight = new JLabel("height");
-        JTextField heightField = new JTextField(10);
-        JButton swapWidthHeight = new JButton("swap");
-        JButton applyWidthHeight = new JButton("apply");
+        comboPaperSize = new JComboBox<>(paperFormatMap.keySet().toArray());
 
-        JLabel textPaperSize = new JLabel("paper size");
-        JComboBox<Object> paperSizeComboBox = new JComboBox<>(paperFormatMap.keySet().toArray());
-        JButton applyPaperSize = new JButton("apply");
-
-        JLabel textOrientation = new JLabel("orientation");
-        JComboBox<Object> orientationComboBox = new JComboBox<>(new String[]{"vertical", "horizontal"});
+        JComboBox<Object> orientationComboBox = new JComboBox<>(new String[]{"Vertical", "Horizontal"});
 
         panel.add(textWidth);
-        panel.add(widthField);
-        panel.add(textHeight);
-        panel.add(heightField);
-        panel.add(swapWidthHeight);
-        panel.add(applyWidthHeight);
+        panel.add(fieldWidth);
 
-        panel.add(new JLabel());
+        panel.add(textHeight);
+        panel.add(fieldHeight);
+
+        panel.add(textOriginX);
+        panel.add(fieldOriginX);
+
+        panel.add(textOriginY);
+        panel.add(fieldOriginY);
+
+        panel.add(applyCustomSize);
+        panel.add(btnSwapDimensions);
+
+        panel.add(new JPanel());
+        panel.add(new JPanel());
 
         panel.add(textPaperSize);
-        panel.add(paperSizeComboBox);
+        panel.add(comboPaperSize);
         panel.add(textOrientation);
         panel.add(orientationComboBox);
         panel.add(applyPaperSize);
 
-        applyWidthHeight.addActionListener(e -> {
+        pack();
+
+        applyCustomSize.addActionListener(e -> {
             try {
-                width = Double.parseDouble(widthField.getText().replace(',', '.'));
-                height = Double.parseDouble(heightField.getText().replace(',', '.'));
+                CanvasFeature.setWidth(Double.parseDouble(fieldWidth.getText().replace(',', '.')));
+                CanvasFeature.setHeight(Double.parseDouble(fieldHeight.getText().replace(',', '.')));
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
         });
 
-        swapWidthHeight.addActionListener(e -> {
-            String temp = widthField.getText();
-            widthField.setText(heightField.getText());
-            heightField.setText(temp);
+        btnSwapDimensions.addActionListener(e -> {
+            String temp = fieldWidth.getText();
+            fieldWidth.setText(fieldHeight.getText());
+            fieldHeight.setText(temp);
         });
 
         applyPaperSize.addActionListener(e -> {
-            Dimension dimension = paperFormatMap.get((String)paperSizeComboBox.getSelectedItem());
-            if(Objects.equals(orientationComboBox.getSelectedItem(), "vertical")) {
-                width = dimension.width;
-                height = dimension.height;
+            Dimension dimension = paperFormatMap.get((String) comboPaperSize.getSelectedItem());
+            if(Objects.equals(orientationComboBox.getSelectedItem(), "Vertical")) {
+                CanvasFeature.setWidth(dimension.width);
+                CanvasFeature.setHeight(dimension.height);
             } else {
-                height = dimension.width;
-                width = dimension.height;
+                CanvasFeature.setWidth(dimension.height);
+                CanvasFeature.setHeight(dimension.width);
             }
         });
     }
 
     private void initPaperFormatMap() {
         paperFormatMap = new HashMap<>();
-        paperFormatMap.put("A6", new Dimension(105, 148));
-        paperFormatMap.put("A5", new Dimension(148, 210));
-        paperFormatMap.put("A4", new Dimension(210, 297));
-        paperFormatMap.put("A3", new Dimension(297, 420));
-        paperFormatMap.put("A2", new Dimension(420, 594));
         paperFormatMap.put("A1", new Dimension(594, 841));
+        paperFormatMap.put("A2", new Dimension(420, 594));
+        paperFormatMap.put("A3", new Dimension(297, 420));
+        paperFormatMap.put("A4", new Dimension(210, 297));
+        paperFormatMap.put("A5", new Dimension(148, 210));
+        paperFormatMap.put("A6", new Dimension(105, 148));
     }
 
     @Override
     public void HideIfVisibleAndShowIfHidden() {
         this.setVisible(!this.isVisible());
     }
-
-
-    public static double getWidthValue() {
-        return width;
-    }
-
-    public static double getHeightValue() {
-        return height;
-    }
-
 }
