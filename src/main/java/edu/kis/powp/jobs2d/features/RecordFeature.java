@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.features;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.command.recorder.CommandRecorder;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
@@ -40,7 +41,7 @@ public class RecordFeature {
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Stop Recording", selectStopRecordingOptionListener);
         app.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Clear Recording", selectClearRecordingOptionListener);
 
-        DriverFeature.getDriverManager().addSubscriber(new RecordingDriverDecoratingSubscriber());
+        DriverFeature.getDriverManager().addSubscriber(new RecordingDriverDecoratingSubscriber(commandRecorder));
     }
 
     public static void recordCommand(DriverCommand command){
@@ -52,6 +53,7 @@ public class RecordFeature {
 
     public static void setRecording(){
         isRecording = true;
+        commandRecorder.restoreLastPosition();
     }
 
     public static void stopRecording(){
