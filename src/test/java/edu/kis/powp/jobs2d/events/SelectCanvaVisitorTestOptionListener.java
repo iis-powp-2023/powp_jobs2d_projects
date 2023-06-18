@@ -5,6 +5,7 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ShapeFactory;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
 import edu.kis.powp.jobs2d.command.gui.CanvasManagerWindow;
+import edu.kis.powp.jobs2d.features.CanvasFeature;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import java.awt.*;
@@ -21,7 +22,11 @@ public class SelectCanvaVisitorTestOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        CanvasVisitor canvasVisitor = new CanvasVisitor(new StandardShapeFactory().createCustomRectangle(0,0,CanvasManagerWindow.getWidthValue(), CanvasManagerWindow.getHeightValue()));
+        Shape shape = new StandardShapeFactory().createCustomRectangle(
+                CanvasFeature.getOriginX(), CanvasFeature.getOriginY(),
+                CanvasFeature.getWidth(), CanvasFeature.getHeight()
+        );
+        CanvasVisitor canvasVisitor = new CanvasVisitor(shape);
 
         command.accept(canvasVisitor);
 
