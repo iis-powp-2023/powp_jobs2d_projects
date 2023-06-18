@@ -2,6 +2,9 @@ package edu.kis.powp.jobs2d.events;
 
 import edu.kis.powp.jobs2d.command.CanvasVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ShapeFactory;
+import edu.kis.powp.jobs2d.command.StandardShapeFactory;
+import edu.kis.powp.jobs2d.command.gui.CanvasManagerWindow;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import java.awt.*;
@@ -11,17 +14,14 @@ import java.util.logging.Logger;
 
 public class SelectCanvaVisitorTestOptionListener implements ActionListener {
 
-    private Shape canvaShape;
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public SelectCanvaVisitorTestOptionListener(Shape canvaShape) {
-        this.canvaShape = canvaShape;
-    }
+    public SelectCanvaVisitorTestOptionListener() {}
 
     @Override
     public void actionPerformed(ActionEvent e) {
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        CanvasVisitor canvasVisitor = new CanvasVisitor(canvaShape);
+        CanvasVisitor canvasVisitor = new CanvasVisitor(new StandardShapeFactory().createCustomRectangle(0,0,CanvasManagerWindow.getWidthValue(), CanvasManagerWindow.getHeightValue()));
 
         command.accept(canvasVisitor);
 

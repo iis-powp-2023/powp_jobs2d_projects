@@ -55,7 +55,7 @@ public class TestJobs2dApp {
 
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
-        application.addTest("CanvasVisitor Test", new SelectCanvaVisitorTestOptionListener(new StandardShapeFactory().createCustomRectangle(0,0,537,455)));
+        application.addTest("CanvasVisitor Test", new SelectCanvaVisitorTestOptionListener());
         application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));

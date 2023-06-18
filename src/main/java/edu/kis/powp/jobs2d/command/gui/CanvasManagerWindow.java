@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class CanvasManagerWindow extends JFrame implements WindowComponent {
-    private float width;
-    private float height;
+    private static double width = 537;
+    private static double height = 455;
     private HashMap<String, Dimension> paperFormatMap;
 
     public CanvasManagerWindow() {
@@ -54,8 +54,8 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
 
         applyWidthHeight.addActionListener(e -> {
             try {
-                width = Float.parseFloat(widthField.getText().replace(',', '.'));
-                height = Float.parseFloat(heightField.getText().replace(',', '.'));
+                width = Double.parseDouble(widthField.getText().replace(',', '.'));
+                height = Double.parseDouble(heightField.getText().replace(',', '.'));
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
@@ -93,4 +93,14 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
     public void HideIfVisibleAndShowIfHidden() {
         this.setVisible(!this.isVisible());
     }
+
+
+    public static double getWidthValue() {
+        return width;
+    }
+
+    public static double getHeightValue() {
+        return height;
+    }
+
 }
