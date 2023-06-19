@@ -1,36 +1,37 @@
 package edu.kis.powp.jobs2d;
 
-import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.LineFactory;
-import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.StandardShapeFactory;
-import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
-import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
-import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
-import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
-import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
-import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
-import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
-import edu.kis.powp.jobs2d.drivers.DriverComposite;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
-import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
-import edu.kis.powp.jobs2d.events.*;
-import edu.kis.powp.jobs2d.features.*;
-import edu.kis.powp.jobs2d.transformations.TransformationFactory;
+        import edu.kis.legacy.drawer.panel.DrawPanelController;
+        import edu.kis.legacy.drawer.shape.LineFactory;
+        import edu.kis.powp.appbase.Application;
+        import edu.kis.powp.jobs2d.command.StandardShapeFactory;
+        import edu.kis.powp.jobs2d.command.gui.CommandEditWindow;
+        import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
+        import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+        import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
+        import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
+        import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
+        import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
+        import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
+        import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
+        import edu.kis.powp.jobs2d.drivers.DriverComposite;
+        import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+        import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
+        import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+        import edu.kis.powp.jobs2d.events.*;
+        import edu.kis.powp.jobs2d.features.*;
+        import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+        import java.awt.*;
+        import java.awt.event.ActionEvent;
+        import java.util.logging.Level;
+        import java.util.logging.Logger;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     /**
      * Setup test concerning preset figures in context.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupPresetTests(Application application) {
@@ -45,7 +46,7 @@ public class TestJobs2dApp {
 
     /**
      * Setup test using driver commands in context.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupCommandTests(Application application) {
@@ -70,7 +71,7 @@ public class TestJobs2dApp {
 
     /**
      * Setup driver manager, and set default Job2dDriver for application.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
@@ -124,6 +125,10 @@ public class TestJobs2dApp {
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
 
+        CommandEditWindow commandEditor = new CommandEditWindow(CommandsFeature.getDriverCommandManager());
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(commandEditor);
+        application.addWindowComponent("Command Editor", commandEditor);
+
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
@@ -138,7 +143,7 @@ public class TestJobs2dApp {
 
     /**
      * Setup menu for adjusting logging settings.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupLogger(Application application) {
