@@ -15,7 +15,7 @@ import edu.kis.powp.observer.Subscriber;
 import java.util.List;
 
 
-public class RecordFeature {
+public class RecordFeature implements FeatureObject{
 
     private static Application app;
     private static CommandRecorder commandRecorder;
@@ -27,7 +27,8 @@ public class RecordFeature {
      *
      * @param application Application context.
      */
-    public static void setupRecorderPlugin(Application application) {
+    @Override
+    public void setup(Application application) {
         commandRecorder = new CommandRecorder();
         SelectStartRecordingOptionListener selectStartRecordingOptionListener = new SelectStartRecordingOptionListener();
         SelectStopRecordingOptionListener selectStopRecordingOptionListener = new SelectStopRecordingOptionListener();
