@@ -1,6 +1,5 @@
 package edu.kis.powp.jobs2d.command;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class ComplexCommandFactory {
         return new ImmutableComplexCommand(commands.iterator(),"starCommand");
     }
 
-    static public ImmutableComplexCommand nestedShape(){
+    static public ImmutableComplexCommand nestedShape() {
         ImmutableComplexCommand nestedComplexCommand = ComplexCommandFactory.fixedStar();
         List<DriverCommand> commands = new ArrayList<>();
         commands.add(new SetPositionCommand(135, 122));
