@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.StandardShapeFactory;
 import edu.kis.powp.jobs2d.features.CanvasFeature;
 
 import javax.swing.*;
@@ -13,25 +14,34 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
     private HashMap<String, Dimension> paperFormatMap;
 
     private JPanel panel = new JPanel();
-    private GridLayout layout = new GridLayout(0, 2, 10, 10);
+    private GridLayout layout = new GridLayout(0, 2, GAP, GAP);
 
-    private JLabel textWidth = new JLabel("Width");
-    private JLabel textHeight = new JLabel("Height");
     private JLabel textOriginX = new JLabel("Origin X");
     private JLabel textOriginY = new JLabel("Origin Y");
+    private JLabel textWidth = new JLabel("Width");
+    private JLabel textHeight = new JLabel("Height");
+    private JLabel textRadius = new JLabel("Radius");
     private JLabel textPaperSize = new JLabel("Paper Size");
     private JLabel textOrientation = new JLabel("Orientation");
 
-    private JTextField fieldWidth = new JTextField(Double.toString(CanvasFeature.getWidth()));
-    private JTextField fieldHeight = new JTextField(Double.toString(CanvasFeature.getHeight()));
-    private JTextField fieldOriginX = new JTextField(Double.toString(CanvasFeature.getOriginX()));
-    private JTextField fieldOriginY = new JTextField(Double.toString(CanvasFeature.getOriginY()));
+    private JRadioButton radioRectangle = new JRadioButton("Rectangle");
+    private JRadioButton radioCircle = new JRadioButton("Circle");
+    private ButtonGroup groupShape = new ButtonGroup();
+
+    private JTextField fieldWidth = new JTextField("0");
+    private JTextField fieldHeight = new JTextField("0");
+    private JTextField fieldOriginX = new JTextField("0");
+    private JTextField fieldOriginY = new JTextField("0");
+    private JTextField fieldRadius = new JTextField("0");
 
     private JButton applyPaperSize = new JButton("Apply");
     private JButton btnSwapDimensions = new JButton("Swap Dimensions");
     private JButton applyCustomSize = new JButton("Apply");
 
+    private final StandardShapeFactory shapeFactory = new StandardShapeFactory();
+
     private static int BORDER = 10;
+    private static int GAP = 10;
 
     JComboBox<Object> comboPaperSize;
 
@@ -50,23 +60,25 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
 
         JComboBox<Object> orientationComboBox = new JComboBox<>(new String[]{"Vertical", "Horizontal"});
 
-        panel.add(textWidth);
-        panel.add(fieldWidth);
-
-        panel.add(textHeight);
-        panel.add(fieldHeight);
+        panel.add(radioRectangle);
+        panel.add(radioCircle);
+        groupShape.add(radioRectangle);
+        groupShape.add(radioCircle);
 
         panel.add(textOriginX);
         panel.add(fieldOriginX);
-
         panel.add(textOriginY);
         panel.add(fieldOriginY);
 
-        panel.add(applyCustomSize);
-        panel.add(btnSwapDimensions);
+        panel.add(textWidth);
+        panel.add(fieldWidth);
+        panel.add(textHeight);
+        panel.add(fieldHeight);
+        panel.add(textRadius);
+        panel.add(fieldRadius);
 
-        panel.add(new JPanel());
-        panel.add(new JPanel());
+        panel.add(btnSwapDimensions);
+        panel.add(applyCustomSize);
 
         panel.add(textPaperSize);
         panel.add(comboPaperSize);
@@ -74,15 +86,55 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         panel.add(orientationComboBox);
         panel.add(applyPaperSize);
 
+        radioRectangle.setSelected(true);
+        fieldRadius.setEnabled(false);
+
+        radioRectangle.addActionListener(e -> {
+            fieldHeight.setEnabled(true);
+            fieldWidth.setEnabled(true);
+            btnSwapDimensions.setEnabled(true);
+            fieldRadius.setEnabled(false);
+        });
+
+        radioCircle.addActionListener(e -> {
+            fieldHeight.setEnabled(false);
+            fieldWidth.setEnabled(false);
+            btnSwapDimensions.setEnabled(false);
+            fieldRadius.setEnabled(true);
+        });
+
         pack();
 
-        applyCustomSize.addActionListener(e -> {
-            try {
-                CanvasFeature.setWidth(Double.parseDouble(fieldWidth.getText().replace(',', '.')));
-                CanvasFeature.setHeight(Double.parseDouble(fieldHeight.getText().replace(',', '.')));
-            } catch(Exception ex) {
-                ex.printStackTrace();
-            }
+       applyCustomSize.addActionListener(e -> {
+           if(radioRectangle.isSelected()) {
+               try {
+                   Shape rectangle = shapeFactory.createCustomRectangle(
+                           Double.parseDouble(fieldOriginX.getText().replace(",", ".")),
+                           Double.parseDouble(fieldOriginY.getText().replace(",", ".")),
+                           Double.parseDouble(fieldWidth.getText().replace(",", ".")),
+                           Double.parseDouble(fieldHeight.getText().replace(",", "."))
+                   );
+
+                   CanvasFeature.setShape(rectangle);
+               }
+               catch (Exception ignored) {
+               }
+
+
+           }
+           else if(radioCircle.isSelected()) {
+               try {
+                   Shape circle = shapeFactory.createCircle(
+                           Double.parseDouble(fieldOriginX.getText().replace(",", ".")),
+                           Double.parseDouble(fieldOriginY.getText().replace(",", ".")),
+                           Double.parseDouble(fieldRadius.getText().replace(",", "."))
+                   );
+
+                   CanvasFeature.setShape(circle);
+               }
+               catch (Exception ignored) {
+               }
+           }
         });
 
         btnSwapDimensions.addActionListener(e -> {
@@ -93,12 +145,26 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
 
         applyPaperSize.addActionListener(e -> {
             Dimension dimension = paperFormatMap.get((String) comboPaperSize.getSelectedItem());
+            double originX, originY;
+
+            try {
+                originX = Double.parseDouble(fieldOriginX.getText().replace(",", "."));
+                originY = Double.parseDouble(fieldOriginY.getText().replace(",", "."));
+            }
+            catch (NumberFormatException ignored) {
+                return;
+            }
+
             if(Objects.equals(orientationComboBox.getSelectedItem(), "Vertical")) {
-                CanvasFeature.setWidth(dimension.width);
-                CanvasFeature.setHeight(dimension.height);
+                CanvasFeature.setShape(shapeFactory.createCustomRectangle(
+                        originX, originY,
+                        dimension.width, dimension.height
+                ));
             } else {
-                CanvasFeature.setWidth(dimension.height);
-                CanvasFeature.setHeight(dimension.width);
+                CanvasFeature.setShape(shapeFactory.createCustomRectangle(
+                        originX, originY,
+                        dimension.height, dimension.width
+                ));
             }
         });
     }

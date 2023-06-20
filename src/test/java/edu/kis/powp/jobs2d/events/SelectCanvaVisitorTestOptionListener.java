@@ -22,11 +22,7 @@ public class SelectCanvaVisitorTestOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DriverCommand command = CommandsFeature.getDriverCommandManager().getCurrentCommand();
-        Shape shape = new StandardShapeFactory().createCustomRectangle(
-                CanvasFeature.getOriginX(), CanvasFeature.getOriginY(),
-                CanvasFeature.getWidth(), CanvasFeature.getHeight()
-        );
-        CanvasVisitor canvasVisitor = new CanvasVisitor(shape);
+        CanvasVisitor canvasVisitor = new CanvasVisitor(CanvasFeature.getShape());
 
         command.accept(canvasVisitor);
 
