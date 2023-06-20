@@ -1,11 +1,15 @@
 package edu.kis.powp.jobs2d.drivers.decorator;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.features.MouseAdjustmentFeature;
 
 public class ZoomDriver extends DriverDecorator {
 
-    public ZoomDriver(Job2dDriver driver) {
+    private final MouseAdjustmentFeature mouseAdjustmentFeature;
+
+    public ZoomDriver(Job2dDriver driver, MouseAdjustmentFeature mouseAdjustmentFeature) {
         super(driver);
+        this.mouseAdjustmentFeature = mouseAdjustmentFeature;
     }
 
     @Override
