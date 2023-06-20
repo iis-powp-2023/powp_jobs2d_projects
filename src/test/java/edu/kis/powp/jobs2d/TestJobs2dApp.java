@@ -17,6 +17,7 @@ import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
 import edu.kis.powp.jobs2d.drivers.DriverComposite;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
+import edu.kis.powp.jobs2d.drivers.decorator.RealWorldDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
@@ -117,6 +118,8 @@ public class TestJobs2dApp {
         Job2dDriver counterClockwiseRotationDriver = new TransformationDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), TransformationFactory.getCounterclockwiseRotation());
         DriverFeature.addDriver("Counterclockwise rotation Driver", counterClockwiseRotationDriver);
 
+        Job2dDriver realWorldDriver = new RealWorldDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 50);
+        DriverFeature.addDriver("Real world Driver", realWorldDriver);
 
         DriverFeature.updateDriverInfo();
     }
@@ -168,12 +171,14 @@ public class TestJobs2dApp {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Application app = new Application("Jobs 2D");
-                DrawerFeature.setupDrawerPlugin(app);
-                CommandsFeature.setupCommandManager();
-                TransformationsFeature.setupTransformationPlugin(app);
+                FeatureManager.add(DrawerFeature.class);
+                FeatureManager.add(TransformationsFeature.class);
+                FeatureManager.add(DriverFeature.class);
+                FeatureManager.add(RecordFeature.class);
+                FeatureManager.add(CommandsFeature.class);
 
-                DriverFeature.setupDriverPlugin(app);
-                RecordFeature.setupRecorderPlugin(app);
+                FeatureManager.setupFeatures(app);
+
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
