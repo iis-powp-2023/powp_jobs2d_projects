@@ -170,6 +170,7 @@ public class TestJobs2dApp {
                                 app.getFreePanel().getWidth(),
                                 app.getFreePanel().getHeight())
                 );
+                app.getFreePanel().addMouseWheelListener(new MouseWheelModeFeature());
             }
         });
     }
