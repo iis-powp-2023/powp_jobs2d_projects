@@ -141,7 +141,8 @@ public class TestJobs2dApp {
         application.addWindowComponent("History of used commands", historyOfUsedCommandsWindow);
 
         BookmarksWindow bookmarksWindow = Bookmarks.getInstance().getBookmarksWindow();
-         application.addWindowComponent("Bookmarks", bookmarksWindow);
+        application.addWindowComponent("Bookmarks", bookmarksWindow);
+        Bookmarks.getInstance().setCommandManager(CommandsFeature.getDriverCommandManager());
 
     }
 

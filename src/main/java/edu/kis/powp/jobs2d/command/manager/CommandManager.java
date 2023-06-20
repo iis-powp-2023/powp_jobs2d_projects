@@ -22,11 +22,6 @@ public class CommandManager implements ICommandManager {
     private Publisher changePublisher = new Publisher();
     private List<Subscriber> deletedObservers = new ArrayList<>();
 
-    public CommandManager()
-    {
-        Bookmarks.getInstance().setCommandManager(this);
-    }
-
     /**
      * Set current command.
      * 
