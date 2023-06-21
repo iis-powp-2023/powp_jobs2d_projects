@@ -16,6 +16,8 @@ public class DriverUsageWindow extends JFrame implements WindowComponent {
     private JProgressBar headDurabilityRemaining;
     private JButton btnRefill;
     private JButton btnServiceHead;
+    private JLabel inkLabel;
+    private JLabel headLabel;
 
     public DriverUsageWindow() {
         this.setTitle("Driver usage Visualisation");
@@ -33,21 +35,35 @@ public class DriverUsageWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(currentDriverName, c);
 
+        inkLabel = new JLabel("Remaining ink");
+        c.fill = GridBagConstraints.CENTER;
+        c.gridwidth = 2;
+        c.gridy = 1;
+        c.weighty = 0.1;
+        content.add(inkLabel, c);
+
         inkRemaining = new JProgressBar();
         inkRemaining.setStringPainted(true);
         inkRemaining.setValue(100);
         c.fill = GridBagConstraints.CENTER;
         c.gridwidth = 2;
-        c.gridy = 1;
+        c.gridy = 2;
         c.weighty = 1;
         content.add(inkRemaining, c);
+
+        headLabel = new JLabel("Remaining Head Durability");
+        c.fill = GridBagConstraints.CENTER;
+        c.gridwidth = 2;
+        c.gridy = 3;
+        c.weighty = 0.1;
+        content.add(headLabel, c);
 
         headDurabilityRemaining = new JProgressBar();
         headDurabilityRemaining.setStringPainted(true);
         headDurabilityRemaining.setValue(100);
         c.fill = GridBagConstraints.CENTER;
         c.gridwidth = 2;
-        c.gridy = 2;
+        c.gridy = 4;
         c.weighty = 1;
         content.add(headDurabilityRemaining, c);
 
@@ -65,7 +81,7 @@ public class DriverUsageWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 5;
         c.weighty = 1;
         content.add(btnRefill, c);
 
@@ -83,7 +99,7 @@ public class DriverUsageWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 5;
         c.weighty = 1;
         content.add(btnServiceHead, c);
     }
