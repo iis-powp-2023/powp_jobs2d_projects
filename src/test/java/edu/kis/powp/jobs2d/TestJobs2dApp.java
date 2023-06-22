@@ -1,30 +1,29 @@
 package edu.kis.powp.jobs2d;
 
-        import edu.kis.legacy.drawer.panel.DrawPanelController;
-        import edu.kis.legacy.drawer.shape.LineFactory;
-        import edu.kis.powp.appbase.Application;
-        import edu.kis.powp.jobs2d.command.StandardShapeFactory;
-        import edu.kis.powp.jobs2d.command.gui.CommandEditWindow;
-        import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
-        import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-        import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
-        import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
-        import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
-        import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
-        import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
-        import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
-        import edu.kis.powp.jobs2d.drivers.DriverComposite;
-        import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-        import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
-        import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
-        import edu.kis.powp.jobs2d.events.*;
-        import edu.kis.powp.jobs2d.features.*;
-        import edu.kis.powp.jobs2d.transformations.TransformationFactory;
-
-        import java.awt.*;
-        import java.awt.event.ActionEvent;
-        import java.util.logging.Level;
-        import java.util.logging.Logger;
+import edu.kis.legacy.drawer.panel.DrawPanelController;
+import edu.kis.legacy.drawer.shape.LineFactory;
+import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.StandardShapeFactory;
+import edu.kis.powp.jobs2d.command.gui.CommandEditWindow;
+import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
+import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
+import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
+import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
+import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
+import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
+import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
+import edu.kis.powp.jobs2d.drivers.DriverComposite;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
+import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.events.*;
+import edu.kis.powp.jobs2d.features.*;
+import edu.kis.powp.jobs2d.transformations.TransformationFactory;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

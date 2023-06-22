@@ -4,7 +4,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 
 public class ToTextDriver implements Job2dDriver {
 
-    String text = "";
+    private String text = "";
 
     public ToTextDriver() {
 
