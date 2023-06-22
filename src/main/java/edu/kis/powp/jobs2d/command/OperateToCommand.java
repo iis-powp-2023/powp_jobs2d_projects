@@ -36,4 +36,10 @@ public class OperateToCommand implements DriverCommand {
     public void accept(ICommandVisitor visitor){
         visitor.visit(this);
     }
+
+    @Override
+    public DriverCommand deepCopy() {
+        DriverCommand copy = new OperateToCommand(posX, posY);
+        return copy;
+    }
 }

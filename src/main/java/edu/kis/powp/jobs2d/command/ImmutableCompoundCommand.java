@@ -27,6 +27,11 @@ public class ImmutableCompoundCommand implements ICompoundCommand {
 	}
 
 	@Override
+	public DriverCommand deepCopy() {
+		return new ImmutableCompoundCommand(commands, name);
+	}
+
+	@Override
 	public Iterator<DriverCommand> iterator() {
 		return commands.iterator();
 	}
