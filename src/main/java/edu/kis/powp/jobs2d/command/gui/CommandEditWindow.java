@@ -85,7 +85,7 @@ public class CommandEditWindow extends JFrame implements WindowComponent, Subscr
                 }
 
                 CommandTransformVisitor visitor = new CommandTransformVisitor(transformation);
-                visitor.visit(command);
+                command.accept(visitor);
                 commandManager.setCurrentCommand(visitor.getTransformedCommand());
                 transformTextArea.setText(defaultTransformText);
             } else {
