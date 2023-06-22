@@ -5,8 +5,6 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.drivers.usage.DriverChangeObserver;
-import edu.kis.powp.jobs2d.drivers.usage.DriverUsageWindow;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
 import edu.kis.powp.jobs2d.drivers.PositionLoggingDriver;
 import edu.kis.powp.jobs2d.drivers.MouseDrawerListener;
@@ -15,7 +13,7 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.drivers.usage.DeviceUsageManager;
-import edu.kis.powp.jobs2d.drivers.usage.UsageErrorStrategyLog;
+import edu.kis.powp.jobs2d.drivers.usage.LogUsageErrorStrategy;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
@@ -75,14 +73,14 @@ public class TestJobs2dApp {
         DeviceUsageManager deviceUsageManager;
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new UsageErrorStrategyLog());
+        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new LogUsageErrorStrategy());
         deviceUsageManager = driver.getDeviceUsageManager();
         deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
         DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
-        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"), new UsageErrorStrategyLog());
+        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"), new LogUsageErrorStrategy());
 
         deviceUsageManager = driver.getDeviceUsageManager();
         deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));

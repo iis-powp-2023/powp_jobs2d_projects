@@ -1,7 +1,7 @@
 package edu.kis.powp.jobs2d.drivers.usage;
 import java.util.logging.Logger;
 
-public class UsageErrorStrategyLog implements UsageErrorStrategy {
+public class LogUsageErrorStrategy implements UsageErrorStrategy {
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     @Override
