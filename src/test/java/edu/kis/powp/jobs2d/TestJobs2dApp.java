@@ -4,6 +4,7 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
+import edu.kis.powp.jobs2d.command.gui.CanvasManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
@@ -55,7 +56,7 @@ public class TestJobs2dApp {
 
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
-        application.addTest("CanvasVisitor Test",new SelectCanvaVisitorTestOptionListener(new StandardShapeFactory().createCustomRectangle(0,0,537,455)));
+        application.addTest("CanvasVisitor Test", new SelectCanvaVisitorTestOptionListener());
         application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
@@ -137,6 +138,9 @@ public class TestJobs2dApp {
         HistoryOfUsedCommandsSubscriber historyOfUsedCommandsSubscriber = new HistoryOfUsedCommandsSubscriber(historyOfUsedCommandsWindow);
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(historyOfUsedCommandsSubscriber);
         application.addWindowComponent("History of used commands", historyOfUsedCommandsWindow);
+
+        CanvasManagerWindow canvasManagerWindow = new CanvasManagerWindow();
+        application.addWindowComponent("Canvas Size Manager", canvasManagerWindow);
     }
 
     /**
