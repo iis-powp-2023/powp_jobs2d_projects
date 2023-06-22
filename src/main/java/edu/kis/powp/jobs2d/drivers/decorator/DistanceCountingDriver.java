@@ -2,20 +2,29 @@ package edu.kis.powp.jobs2d.drivers.decorator;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.usage.DeviceUsageManager;
+import edu.kis.powp.jobs2d.drivers.usage.ErrorType;
 import edu.kis.powp.jobs2d.drivers.usage.ServiceThresholds;
-
-import java.util.logging.Logger;
+import edu.kis.powp.jobs2d.drivers.usage.UsageErrorStrategy;
 
 public class DistanceCountingDriver extends DriverDecorator {
-    private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final DeviceUsageManager deviceUsageManager = new DeviceUsageManager();
+    private UsageErrorStrategy errorHandlingStrategy;
 
     public DeviceUsageManager getDeviceUsageManager() {
         return this.deviceUsageManager;
     }
 
-    public DistanceCountingDriver(Job2dDriver driver) {
+    public DistanceCountingDriver(Job2dDriver driver, UsageErrorStrategy strategy) {
         super(driver);
+        this.errorHandlingStrategy = strategy;
+    }
+
+    public UsageErrorStrategy getErrorHandlingStrategy() {
+        return errorHandlingStrategy;
+    }
+
+    public void setErrorHandlingStrategy(UsageErrorStrategy strategy) {
+        this.errorHandlingStrategy = strategy;
     }
 
     @Override
@@ -24,7 +33,7 @@ public class DistanceCountingDriver extends DriverDecorator {
             super.setPosition(x, y);
             deviceUsageManager.calculateMovingDistance(x, y);
         } else {
-            logger.info("Head needs to be serviced before performing this operation.");
+            errorHandlingStrategy.execute(ErrorType.HEAD_NEEDS_SERVICE);
         }
     }
 
@@ -38,10 +47,10 @@ public class DistanceCountingDriver extends DriverDecorator {
                 deviceUsageManager.calculateOperatingDistance(x,y);
             }
             else {
-                logger.info("Head needs to be serviced before performing this operation.");
+                errorHandlingStrategy.execute(ErrorType.HEAD_NEEDS_SERVICE);
             }
         } else {
-            logger.info("Ink needs to be refilled before performing this operation.");
+            errorHandlingStrategy.execute(ErrorType.INK_NEEDS_REFILL);
         }
 
     }
