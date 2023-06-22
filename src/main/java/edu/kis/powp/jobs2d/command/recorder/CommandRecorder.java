@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.command.recorder;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,8 @@ import java.util.List;
 public class CommandRecorder {
     private List<DriverCommand> driverCommands = new ArrayList<>();
     private List<DriverCommand> transformCommands = new ArrayList<>();
-
+    private int lastX;
+    private int lastY;
 
     public void addCommand(DriverCommand command){
         driverCommands.add(command);
@@ -34,4 +36,20 @@ public class CommandRecorder {
         return transformCommands;
     }
 
+    public void setLastPosition(int x, int y) {
+        this.lastX = x;
+        this.lastY = y;
+    }
+
+    public void restoreLastPosition() {
+        driverCommands.add(new SetPositionCommand(lastX, lastY));
+    }
+
+    public int getLastX() {
+        return this.lastX;
+    }
+
+    public int getLastY() {
+        return this.lastY;
+    }
 }
