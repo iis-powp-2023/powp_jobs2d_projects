@@ -152,7 +152,6 @@ public class TestJobs2dApp {
         application.addWindowComponent("Bookmarks", bookmarksWindow);
         Bookmarks.getInstance().setGui(bookmarksWindow);
         Bookmarks.getInstance().setCommandManager(CommandsFeature.getDriverCommandManager());
-
     }
 
     /**
