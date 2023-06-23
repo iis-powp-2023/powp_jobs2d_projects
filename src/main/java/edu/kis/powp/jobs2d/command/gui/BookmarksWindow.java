@@ -9,9 +9,10 @@ import java.util.LinkedList;
 import javax.swing.*;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.Bookmarks;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 
-public class BookmarksWindow extends JFrame implements WindowComponent
+public class BookmarksWindow extends JFrame implements WindowComponent, BookmarksGui
 {
     private Bookmarks bookmarks;
     private Container content;
@@ -47,25 +48,29 @@ public class BookmarksWindow extends JFrame implements WindowComponent
         content.add(textInput, gridBagConstraints);
     }
 
+    @Override
     public void displayFailiureStatus()
     {
         String errorResponse = "Could not save the current command\n" + defaultTextInputMessage;
         textInput.setText(errorResponse);
     }
 
+    @Override
     public void displayFailiureStatusDuplicate()
     {
         String errorResponse = "Current command is already bookmarked\n" + defaultTextInputMessage;
         textInput.setText(errorResponse);
     }
 
+    @Override
     public String getDescription()
     {
         return textInput.getText();
     }
 
 
-    public void updateBookmarks()
+    @Override
+    public void update()
     {
         LinkedList<DriverCommand> commands = bookmarks.getBookmarkedCommands();
         LinkedList<String> descriptions = bookmarks.getBookmarkedDescriptions();
@@ -83,7 +88,7 @@ public class BookmarksWindow extends JFrame implements WindowComponent
                     savedBookmarks.remove(row);
                     CommandLoaderListener action = new CommandLoaderListener(command, bookmarks.getCommandManager());
                     addBookmark(command.toString(), descriptions.get(i), action);
-                    updateBookmarks();
+                    update();
                     return;
                 }
             }
@@ -91,7 +96,7 @@ public class BookmarksWindow extends JFrame implements WindowComponent
             {
                 row.removeRow(content);
                 savedBookmarks.remove(row);
-                updateBookmarks();
+                update();
                 return;
             }
             i += 1;

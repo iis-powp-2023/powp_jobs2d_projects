@@ -3,9 +3,11 @@ package edu.kis.powp.jobs2d;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.Bookmarks;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
-import edu.kis.powp.jobs2d.command.gui.Bookmarks;
+import edu.kis.powp.jobs2d.command.gui.CommandEditWindow;
 import edu.kis.powp.jobs2d.command.gui.BookmarksWindow;
+import edu.kis.powp.jobs2d.command.gui.CanvasManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
@@ -22,7 +24,6 @@ import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
@@ -33,7 +34,7 @@ public class TestJobs2dApp {
 
     /**
      * Setup test concerning preset figures in context.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupPresetTests(Application application) {
@@ -48,7 +49,7 @@ public class TestJobs2dApp {
 
     /**
      * Setup test using driver commands in context.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupCommandTests(Application application) {
@@ -57,7 +58,7 @@ public class TestJobs2dApp {
 
 
         application.addTest("Visitor Test", new SelectVisitorTestOptionListener());
-        application.addTest("CanvasVisitor Test",new SelectCanvaVisitorTestOptionListener(new StandardShapeFactory().createCustomRectangle(0,0,537,455)));
+        application.addTest("CanvasVisitor Test", new SelectCanvaVisitorTestOptionListener());
         application.addTest("Transformation Visitor Test (Scale and Rotate)", new SelectTransformationVisitorTestOptionListener());
 
         application.addTest("Load immutable complex command test", new SelectTestImmutableComplexCommand(DriverFeature.getDriverManager()));
@@ -73,7 +74,7 @@ public class TestJobs2dApp {
 
     /**
      * Setup driver manager, and set default Job2dDriver for application.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
@@ -129,6 +130,10 @@ public class TestJobs2dApp {
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
 
+        CommandEditWindow commandEditor = new CommandEditWindow(CommandsFeature.getDriverCommandManager());
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(commandEditor);
+        application.addWindowComponent("Command Editor", commandEditor);
+
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(windowObserver);
@@ -140,15 +145,19 @@ public class TestJobs2dApp {
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(historyOfUsedCommandsSubscriber);
         application.addWindowComponent("History of used commands", historyOfUsedCommandsWindow);
 
-        BookmarksWindow bookmarksWindow = Bookmarks.getInstance().getBookmarksWindow();
+        CanvasManagerWindow canvasManagerWindow = new CanvasManagerWindow();
+        application.addWindowComponent("Canvas Size Manager", canvasManagerWindow);
+
+        BookmarksWindow bookmarksWindow = new BookmarksWindow();
         application.addWindowComponent("Bookmarks", bookmarksWindow);
+        Bookmarks.getInstance().setGui(bookmarksWindow);
         Bookmarks.getInstance().setCommandManager(CommandsFeature.getDriverCommandManager());
 
     }
 
     /**
      * Setup menu for adjusting logging settings.
-     * 
+     *
      * @param application Application context.
      */
     private static void setupLogger(Application application) {
