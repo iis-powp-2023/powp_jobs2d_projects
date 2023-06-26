@@ -8,11 +8,13 @@ import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class CommandEditorWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
     private JTextArea currentCommandField;
     private JTextArea currentCommandBody;
+    private JButton btnSaveCommand;
     
     private String currentCommand;
     public CommandEditorWindow(ICommandManager commandManager) {
@@ -32,23 +34,32 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.gridwidth = 2;
         c.gridy = 0;
-        c.weighty = 1;
+        c.weighty = 0;
         content.add(currentCommandField, c);
+        
+        btnSaveCommand = new JButton("Save command");
+        btnSaveCommand.addActionListener((ActionEvent e) -> this.saveCommand());
+        c.fill = GridBagConstraints.BOTH;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 0;
+        content.add(btnSaveCommand, c);
         
         currentCommandBody = new JTextArea();
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 1;
+        c.gridy = 3;
         c.weighty = 1;
     	content.add(currentCommandBody,c);
         
         updateCurrentCommandField();
+        updateCurrentCommandList();
+        updateBtnSaveState();
     }
 
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
-        updateCurrentCommandList();
     }
     
     public void updateCurrentCommandList() {
@@ -60,6 +71,16 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
         cmd.accept(toStringVisitor);
         
         currentCommandBody.setText(toStringVisitor.getCommandString());
+    }
+    
+    public void updateBtnSaveState() {
+    	if(commandManager.getCurrentCommand() != null) btnSaveCommand.setEnabled(true);
+    	else btnSaveCommand.setEnabled(false);
+    	
+    }
+    
+    public void saveCommand() {
+    	// TODO
     }
 
     @Override

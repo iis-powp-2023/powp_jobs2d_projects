@@ -12,5 +12,6 @@ public class CommandEditorWindowCommandChangeObserver implements Subscriber{
     public void update() {
         commandEditorWindow.updateCurrentCommandField();
         commandEditorWindow.updateCurrentCommandList();
+        commandEditorWindow.updateBtnSaveState();
     }
 }
