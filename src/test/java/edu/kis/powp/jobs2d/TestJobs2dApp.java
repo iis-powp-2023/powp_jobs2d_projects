@@ -3,10 +3,7 @@ package edu.kis.powp.jobs2d;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.gui.CommandEditorWindow;
-import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
-import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.command.gui.HistoryOfUsedCommandsWindow;
+import edu.kis.powp.jobs2d.command.gui.*;
 import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsManager;
 import edu.kis.powp.jobs2d.command.manager.HistoryOfUsedCommandsSubscriber;
 import edu.kis.powp.jobs2d.command.manager.LoggerDistanceObserver;
@@ -120,6 +117,10 @@ public class TestJobs2dApp {
 
         CommandEditorWindow commandEditor = new CommandEditorWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Editor", commandEditor);
+
+        CommandEditorWindowCommandChangeObserver editorWindowObserver = new CommandEditorWindowCommandChangeObserver(
+                commandEditor);
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(editorWindowObserver);
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
