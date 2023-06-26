@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.command.manager;
 
-import edu.kis.powp.jobs2d.features.DeviceUsageManager;
+import edu.kis.powp.jobs2d.drivers.usage.DeviceUsageManager;
 import edu.kis.powp.observer.Subscriber;
 import java.util.logging.Logger;
 

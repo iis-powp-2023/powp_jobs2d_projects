@@ -1,8 +1,9 @@
-package edu.kis.powp.jobs2d.features;
+package edu.kis.powp.jobs2d.drivers.usage;
 
+import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
 
-public class DeviceUsageManager{
+public class DeviceUsageManager {
     private double headDistance = 0;
     private double operatingDistance = 0;
 
@@ -11,15 +12,19 @@ public class DeviceUsageManager{
 
     private final Publisher distanceChangePublisher = new Publisher();
 
-    private double calculateDistance(int x, int y){
+    public DeviceUsageManager() {
+        this.distanceChangePublisher.addSubscriber(DriverFeature.getDriverUsageObserver());
+    }
+
+    public double calculateDistance(int x, int y){
         double distance = Math.sqrt(Math.pow(y - yLastPosition, 2) + Math.pow(x - xLastPosition, 2));
-        xLastPosition = x;
-        yLastPosition = y;
         return distance;
     }
 
     public void calculateMovingDistance(int x, int y){
         headDistance += calculateDistance(x, y);
+        xLastPosition = x;
+        yLastPosition = y;
         distanceChangePublisher.notifyObservers();
     }
 
@@ -27,6 +32,8 @@ public class DeviceUsageManager{
         double distance = calculateDistance(x, y);
         headDistance += distance;
         operatingDistance += distance;
+        xLastPosition = x;
+        yLastPosition = y;
         distanceChangePublisher.notifyObservers();
     }
 
@@ -34,8 +41,16 @@ public class DeviceUsageManager{
         return headDistance;
     }
 
+    public void setHeadDistance(double headDistance) {
+        this.headDistance = headDistance;
+    }
+
     public double getOperatingDistance() {
         return operatingDistance;
+    }
+
+    public void setOperatingDistance(double operatingDistance) {
+        this.operatingDistance = operatingDistance;
     }
 
     public Publisher getDistanceChangePublisher() {

@@ -21,6 +21,8 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.RealWorldDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
+import edu.kis.powp.jobs2d.drivers.usage.DeviceUsageManager;
+import edu.kis.powp.jobs2d.drivers.usage.LogUsageErrorStrategy;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
@@ -78,6 +80,7 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
+        DriverFeature.getDriverManager().addSubscriber(DriverFeature.getDriverUsageObserver());
         DriverComposite composite = new DriverComposite();
 
         Job2dDriver loggerDriver = new PositionLoggingDriver();
@@ -87,14 +90,14 @@ public class TestJobs2dApp {
         DeviceUsageManager deviceUsageManager;
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DistanceCountingDriver driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new LogUsageErrorStrategy());
         deviceUsageManager = driver.getDeviceUsageManager();
         deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
         DriverFeature.addDriver("Line Simulator + distance log", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
         composite.addDriver(driver);
 
-        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
+        driver = new DistanceCountingDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"), new LogUsageErrorStrategy());
 
         deviceUsageManager = driver.getDeviceUsageManager();
         deviceUsageManager.getDistanceChangePublisher().addSubscriber(new LoggerDistanceObserver(deviceUsageManager));
@@ -129,6 +132,7 @@ public class TestJobs2dApp {
 
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
+        application.addWindowComponent("Driver Usage", DriverFeature.getDriverUsageWindow());
 
         CommandEditWindow commandEditor = new CommandEditWindow(CommandsFeature.getDriverCommandManager());
         CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(commandEditor);

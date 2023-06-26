@@ -24,4 +24,8 @@ public abstract class DriverDecorator implements Job2dDriver {
     public String toString() {
         return driver.toString();
     }
+
+    public Job2dDriver getDriver() {
+        return this.driver;
+    }
 }
