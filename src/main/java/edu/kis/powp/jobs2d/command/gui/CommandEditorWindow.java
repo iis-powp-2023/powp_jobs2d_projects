@@ -31,7 +31,6 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 
         currentCommand = commandManager.getCurrentCommandString();
         currentCommandField = new JTextArea(currentCommand);
-        currentCommandField.setEditable(false);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
@@ -82,10 +81,11 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
     }
     
     public void saveCommand() {
-        CommandImporter importedCommand = CommandFactory.interpretInput(currentCommandBody.getText());
+    	String fullCommand = currentCommandField.getText() + System.lineSeparator() + currentCommandBody.getText();
+        CommandImporter importedCommand = CommandFactory.interpretInput(fullCommand);
         assert importedCommand != null;
         List<DriverCommand> commands = importedCommand.getCommand();
-        commandManager.setCurrentCommand(commands, currentCommand);
+        commandManager.setCurrentCommand(commands, importedCommand.getName());
     }
 
     @Override
