@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.ToStringCommandVisitor;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 
@@ -9,6 +10,7 @@ import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class CommandEditorWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
@@ -80,7 +82,10 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
     }
     
     public void saveCommand() {
-    	// TODO
+        CommandImporter importedCommand = CommandFactory.interpretInput(currentCommandBody.getText());
+        assert importedCommand != null;
+        List<DriverCommand> commands = importedCommand.getCommand();
+        commandManager.setCurrentCommand(commands, currentCommand);
     }
 
     @Override
