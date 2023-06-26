@@ -3,8 +3,10 @@ package edu.kis.powp.jobs2d;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.Bookmarks;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
 import edu.kis.powp.jobs2d.command.gui.CommandEditWindow;
+import edu.kis.powp.jobs2d.command.gui.BookmarksWindow;
 import edu.kis.powp.jobs2d.command.gui.CanvasManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -145,6 +147,11 @@ public class TestJobs2dApp {
 
         CanvasManagerWindow canvasManagerWindow = new CanvasManagerWindow();
         application.addWindowComponent("Canvas Size Manager", canvasManagerWindow);
+
+        BookmarksWindow bookmarksWindow = new BookmarksWindow();
+        application.addWindowComponent("Bookmarks", bookmarksWindow);
+        Bookmarks.getInstance().setGui(bookmarksWindow);
+        Bookmarks.getInstance().setCommandManager(CommandsFeature.getDriverCommandManager());
     }
 
     /**
