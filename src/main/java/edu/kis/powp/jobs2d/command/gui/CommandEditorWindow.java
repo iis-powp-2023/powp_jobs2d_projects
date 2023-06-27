@@ -16,6 +16,7 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
     private JTextArea currentCommandField;
     private JTextArea currentCommandBody;
+    private JTextArea currentCommandTransform;
     private JButton btnSaveCommand;
     
     private String currentCommand;
@@ -50,9 +51,17 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridwidth = 2;
-        c.gridy = 3;
+        c.gridy = 2;
         c.weighty = 1;
     	content.add(currentCommandBody,c);
+    	
+    	currentCommandTransform = new JTextArea();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        c.gridy = 3;
+        c.weighty = 0;
+    	content.add(currentCommandTransform,c);
         
         updateCurrentCommandField();
         updateCurrentCommandList();
@@ -77,7 +86,6 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
     public void updateBtnSaveState() {
     	if(commandManager.getCurrentCommand() != null) btnSaveCommand.setEnabled(true);
     	else btnSaveCommand.setEnabled(false);
-    	
     }
     
     public void saveCommand() {
