@@ -1,16 +1,22 @@
 package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.CommandTransformVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.ToStringCommandVisitor;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
+import edu.kis.powp.jobs2d.transformations.Flip;
+import edu.kis.powp.jobs2d.transformations.Rotation;
+import edu.kis.powp.jobs2d.transformations.Scale;
+import edu.kis.powp.jobs2d.transformations.Transformation;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Objects;
 
 public class CommandEditorWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
@@ -88,12 +94,36 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
     	else btnSaveCommand.setEnabled(false);
     }
     
-    public void saveCommand() {
-    	String fullCommand = currentCommandField.getText() + System.lineSeparator() + currentCommandBody.getText();
+    private void saveCommand() {
+        String fullCommand = currentCommandField.getText() + System.lineSeparator() + currentCommandBody.getText();
         CommandImporter importedCommand = CommandFactory.interpretInput(fullCommand);
         assert importedCommand != null;
         List<DriverCommand> commands = importedCommand.getCommand();
-        commandManager.setCurrentCommand(commands, importedCommand.getName());
+        if(Objects.equals(currentCommandTransform.getText(), ""))
+        {
+            commandManager.setCurrentCommand(commands, importedCommand.getName());
+        } else {
+            String transform = currentCommandTransform.getText();
+            String[] transformArray = transform.split(" ");
+            Transformation transformation = null;
+            if(Objects.equals(transformArray[0], "flip")){
+                transformation = new Flip(Integer.parseInt(transformArray[1]), Integer.parseInt(transformArray[2]));
+            } else if(Objects.equals(transformArray[0], "rotate")){
+                transformation = new Rotation(Integer.parseInt(transformArray[1]), Integer.parseInt(transformArray[2]));
+            } else if(Objects.equals(transformArray[0], "scale")){
+                transformation = new Scale(Double.parseDouble(transformArray[1]));
+            }
+            assert transformation != null;
+
+            ImmutableCompoundCommand.Builder commandBuilder = new ImmutableCompoundCommand.Builder(importedCommand.getName());
+            commandBuilder.addCommands(commands);
+            ImmutableCompoundCommand command = commandBuilder.build();
+
+            CommandTransformVisitor transformVisitor = new CommandTransformVisitor(transformation);
+            transformVisitor.visit(command);
+
+            commandManager.setCurrentCommand(transformVisitor.getTransformedCommand());
+        }
     }
 
     @Override
