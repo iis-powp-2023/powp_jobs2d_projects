@@ -6,9 +6,6 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.ToStringCommandVisitor;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
-import edu.kis.powp.jobs2d.transformations.Flip;
-import edu.kis.powp.jobs2d.transformations.Rotation;
-import edu.kis.powp.jobs2d.transformations.Scale;
 import edu.kis.powp.jobs2d.transformations.Transformation;
 
 
@@ -16,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Objects;
 
 public class CommandEditorWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
@@ -105,7 +101,6 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
             commandManager.setCurrentCommand(commands, importedCommand.getName());
         } else {
             Transformation transformation = CommandTransformationParser.parseText(transform);
-            assert transformation != null;
 
             ImmutableCompoundCommand.Builder commandBuilder = new ImmutableCompoundCommand.Builder(importedCommand.getName());
             commandBuilder.addCommands(commands);
