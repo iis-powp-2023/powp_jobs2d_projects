@@ -130,9 +130,13 @@ public class TestJobs2dApp {
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
 
-        CommandEditWindow commandEditor = new CommandEditWindow(CommandsFeature.getDriverCommandManager());
-        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(commandEditor);
+        CommandEditorWindow commandEditor = new CommandEditorWindow(CommandsFeature.getDriverCommandManager());
         application.addWindowComponent("Command Editor", commandEditor);
+
+        CommandEditorWindowCommandChangeObserver editorWindowObserver = new CommandEditorWindowCommandChangeObserver(
+                commandEditor);
+        CommandsFeature.getDriverCommandManager().getChangePublisher().addSubscriber(editorWindowObserver);
+
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
