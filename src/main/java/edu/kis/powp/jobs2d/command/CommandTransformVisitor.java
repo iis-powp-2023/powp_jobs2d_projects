@@ -31,8 +31,7 @@ public class CommandTransformVisitor implements ICommandVisitor{
             driverCommand.accept(this);
             commandsList.add(transformedCommand);
         }
-
-        transformedCommand = new ImmutableComplexCommand(commandsList.iterator());
+        transformedCommand = new ImmutableComplexCommand(commandsList.iterator(), command.toString());
     }
 
     @Override

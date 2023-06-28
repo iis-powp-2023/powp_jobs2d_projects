@@ -1,12 +1,17 @@
 package edu.kis.powp.jobs2d.command.gui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.swing.*;
-
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.appbase.gui.WindowComponent;
@@ -14,11 +19,9 @@ import edu.kis.powp.jobs2d.command.CountingCommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.adapter.LineFactoryWithThinLine;
+import edu.kis.powp.jobs2d.drivers.adapter.ScaledLineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
-
-
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
@@ -239,5 +242,4 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         updateObserverListField();
         this.setVisible(!this.isVisible());
     }
-
 }
