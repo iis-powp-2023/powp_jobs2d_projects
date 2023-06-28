@@ -99,20 +99,12 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
         CommandImporter importedCommand = CommandFactory.interpretInput(fullCommand);
         assert importedCommand != null;
         List<DriverCommand> commands = importedCommand.getCommand();
-        if(Objects.equals(currentCommandTransform.getText(), ""))
+        String transform = currentCommandTransform.getText();
+        if(transform.isEmpty())
         {
             commandManager.setCurrentCommand(commands, importedCommand.getName());
         } else {
-            String transform = currentCommandTransform.getText();
-            String[] transformArray = transform.split(" ");
-            Transformation transformation = null;
-            if(Objects.equals(transformArray[0], "flip")){
-                transformation = new Flip(Integer.parseInt(transformArray[1]), Integer.parseInt(transformArray[2]));
-            } else if(Objects.equals(transformArray[0], "rotate")){
-                transformation = new Rotation(Integer.parseInt(transformArray[1]), Integer.parseInt(transformArray[2]));
-            } else if(Objects.equals(transformArray[0], "scale")){
-                transformation = new Scale(Double.parseDouble(transformArray[1]));
-            }
+            Transformation transformation = CommandTransformationParser.parseText(transform);
             assert transformation != null;
 
             ImmutableCompoundCommand.Builder commandBuilder = new ImmutableCompoundCommand.Builder(importedCommand.getName());
