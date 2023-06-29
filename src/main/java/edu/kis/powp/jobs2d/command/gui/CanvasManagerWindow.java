@@ -2,17 +2,18 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
+import edu.kis.powp.jobs2d.command.recorder.CommandRecorder;
 import edu.kis.powp.jobs2d.features.CanvasFeature;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class CanvasManagerWindow extends JFrame implements WindowComponent {
     private HashMap<String, Dimension> paperFormatMap;
-
     private JPanel panel = new JPanel();
     private GridLayout layout = new GridLayout(0, 2, GAP, GAP);
 
@@ -37,11 +38,13 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
     private JButton applyPaperSize = new JButton("Apply");
     private JButton btnSwapDimensions = new JButton("Swap Dimensions");
     private JButton applyCustomSize = new JButton("Apply");
-
+    private Checkbox canvaVisibility = new Checkbox("Show Canva Preview");
+    private JButton addAsCommand = new JButton("Add Label as command");
     private final StandardShapeFactory shapeFactory = new StandardShapeFactory();
 
     private static int BORDER = 10;
     private static int GAP = 10;
+    private boolean isCanvasVisible = false;
 
     JComboBox<Object> comboPaperSize;
 
@@ -55,7 +58,6 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         panel.setLayout(layout);
         panel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
         add(panel);
-
         comboPaperSize = new JComboBox<>(paperFormatMap.keySet().toArray());
 
         JComboBox<Object> orientationComboBox = new JComboBox<>(new String[]{"Vertical", "Horizontal"});
@@ -85,9 +87,12 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         panel.add(textOrientation);
         panel.add(orientationComboBox);
         panel.add(applyPaperSize);
+        panel.add(canvaVisibility);
+        panel.add(addAsCommand);
 
         radioRectangle.setSelected(true);
         fieldRadius.setEnabled(false);
+        canvaVisibility.setEnabled(true);
 
         radioRectangle.addActionListener(e -> {
             fieldHeight.setEnabled(true);
@@ -101,6 +106,14 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
             fieldWidth.setEnabled(false);
             btnSwapDimensions.setEnabled(false);
             fieldRadius.setEnabled(true);
+        });
+
+        canvaVisibility.addItemListener(e->{
+            isCanvasVisible = e.getStateChange() == ItemEvent.SELECTED;
+        });
+
+        addAsCommand.addActionListener(e->{
+            addAsCommand.setEnabled(false);
         });
 
         pack();
@@ -131,10 +144,12 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
                    );
 
                    CanvasFeature.setShape(circle);
+
                }
                catch (Exception ignored) {
                }
            }
+           addAsCommand.setEnabled(true);
         });
 
         btnSwapDimensions.addActionListener(e -> {
@@ -167,6 +182,7 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
                 ));
             }
         });
+        addAsCommand.setEnabled(true);
     }
 
     private void initPaperFormatMap() {
@@ -177,6 +193,10 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         paperFormatMap.put("A4", new Dimension(210, 297));
         paperFormatMap.put("A5", new Dimension(148, 210));
         paperFormatMap.put("A6", new Dimension(105, 148));
+    }
+
+    public boolean isCanvasVisible() {
+        return isCanvasVisible;
     }
 
     @Override

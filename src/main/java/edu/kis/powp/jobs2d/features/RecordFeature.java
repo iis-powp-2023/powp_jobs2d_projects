@@ -73,6 +73,10 @@ public class RecordFeature implements FeatureObject{
         commandRecorder.clearTransformCommand();
     }
 
+    public static void clearCanvas(){
+        commandRecorder.deleteCanvas();
+    }
+
     public static List<DriverCommand> getTransformCommands(){
         return commandRecorder.getTransformCommands();
     }
