@@ -38,10 +38,6 @@ public class CommandRecorder {
         return transformCommands;
     }
 
-    public void addCanvas(DriverCommand command){
-        canvas.add(command);
-    }
-
     public void deleteCanvas(){
         this.canvas.clear();
     }

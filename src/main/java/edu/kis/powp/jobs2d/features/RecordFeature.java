@@ -1,22 +1,17 @@
 package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.command.recorder.CommandRecorder;
-import edu.kis.powp.jobs2d.drivers.DriverManager;
-import edu.kis.powp.jobs2d.drivers.decorator.RecordingDriver;
 import edu.kis.powp.jobs2d.events.RecordingDriverDecoratingSubscriber;
 import edu.kis.powp.jobs2d.events.SelectStartRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectStopRecordingOptionListener;
 import edu.kis.powp.jobs2d.events.SelectClearRecordingOptionListener;
-import edu.kis.powp.observer.Subscriber;
 
 import java.util.List;
 
 
-public class RecordFeature implements FeatureObject{
+public class RecordFeature implements FeatureObject {
 
     private static Application app;
     private static CommandRecorder commandRecorder;
@@ -45,42 +40,37 @@ public class RecordFeature implements FeatureObject{
         DriverFeature.getDriverManager().addSubscriber(new RecordingDriverDecoratingSubscriber(commandRecorder));
     }
 
-    public static void recordCommand(DriverCommand command){
-        if(isRecording){
+    public static void recordCommand(DriverCommand command) {
+        if (isRecording) {
             commandRecorder.addCommand(command);
         }
         commandRecorder.addTransformCommand(command);
     }
 
-    public static void setRecording(){
+    public static void setRecording() {
         isRecording = true;
         commandRecorder.restoreLastPosition();
     }
 
-    public static void stopRecording(){
+    public static void stopRecording() {
         isRecording = false;
     }
 
-    public static void clearRecording(){
+    public static void clearRecording() {
         commandRecorder.clearCommand();
     }
 
-    public static List<DriverCommand> getCommands(){
+    public static List<DriverCommand> getCommands() {
         return commandRecorder.getCommands();
     }
 
-    public static void clearTransformRecording(){
+    public static void clearTransformRecording() {
         commandRecorder.clearTransformCommand();
     }
 
-    public static void clearCanvas(){
-        commandRecorder.deleteCanvas();
-    }
-
-    public static List<DriverCommand> getTransformCommands(){
+    public static List<DriverCommand> getTransformCommands() {
         return commandRecorder.getTransformCommands();
     }
-
 }
 
 
