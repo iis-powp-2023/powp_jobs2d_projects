@@ -27,25 +27,8 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.decorator.DistanceCountingDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.RealWorldDriver;
 import edu.kis.powp.jobs2d.drivers.decorator.TransformationDriver;
-import edu.kis.powp.jobs2d.events.SelectCanvaVisitorTestOptionListener;
-import edu.kis.powp.jobs2d.events.SelectLoadRecordedCommandOptionListener;
-import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigure2OptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTestImmutableComplexCommand;
-import edu.kis.powp.jobs2d.events.SelectTransformRotateLeftVisitorOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTransformRotateRightVisitorOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTransformScaleDownVisitorOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTransformScaleUpVisitorOptionListener;
-import edu.kis.powp.jobs2d.events.SelectTransformationVisitorTestOptionListener;
-import edu.kis.powp.jobs2d.events.SelectVisitorTestOptionListener;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DeviceUsageManager;
-import edu.kis.powp.jobs2d.features.DrawerFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
-import edu.kis.powp.jobs2d.features.FeatureManager;
-import edu.kis.powp.jobs2d.features.RecordFeature;
-import edu.kis.powp.jobs2d.features.TransformationsFeature;
+import edu.kis.powp.jobs2d.events.*;
+import edu.kis.powp.jobs2d.features.*;
 import edu.kis.powp.jobs2d.transformations.TransformationFactory;
 
 public class TestJobs2dApp {
@@ -156,7 +139,6 @@ public class TestJobs2dApp {
         Job2dDriver realWorldDriver = new RealWorldDriver(
                 new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 50);
         DriverFeature.addDriver("Real world Driver", realWorldDriver);
-
         DriverFeature.updateDriverInfo();
     }
 

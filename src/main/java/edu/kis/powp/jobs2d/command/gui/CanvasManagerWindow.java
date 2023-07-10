@@ -1,8 +1,10 @@
 package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.StandardShapeFactory;
-import edu.kis.powp.jobs2d.features.CanvasFeature;
+import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.features.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +14,6 @@ import java.util.Objects;
 
 public class CanvasManagerWindow extends JFrame implements WindowComponent {
     private HashMap<String, Dimension> paperFormatMap;
-
     private JPanel panel = new JPanel();
     private GridLayout layout = new GridLayout(0, 2, GAP, GAP);
 
@@ -37,9 +38,8 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
     private JButton applyPaperSize = new JButton("Apply");
     private JButton btnSwapDimensions = new JButton("Swap Dimensions");
     private JButton applyCustomSize = new JButton("Apply");
-
+    private JButton addAsCommand = new JButton("Add Canva to Commands");
     private final StandardShapeFactory shapeFactory = new StandardShapeFactory();
-
     private static int BORDER = 10;
     private static int GAP = 10;
 
@@ -47,7 +47,6 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
 
     public CanvasManagerWindow() {
         initPaperFormatMap();
-
         setTitle("Canvas Manager");
         setMinimumSize(new Dimension(360, 420));
         setLocationRelativeTo(null);
@@ -55,7 +54,6 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         panel.setLayout(layout);
         panel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
         add(panel);
-
         comboPaperSize = new JComboBox<>(paperFormatMap.keySet().toArray());
 
         JComboBox<Object> orientationComboBox = new JComboBox<>(new String[]{"Vertical", "Horizontal"});
@@ -85,6 +83,7 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         panel.add(textOrientation);
         panel.add(orientationComboBox);
         panel.add(applyPaperSize);
+        panel.add(addAsCommand);
 
         radioRectangle.setSelected(true);
         fieldRadius.setEnabled(false);
@@ -103,38 +102,46 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
             fieldRadius.setEnabled(true);
         });
 
+
+        addAsCommand.addActionListener(e -> {
+            CommandManager manager = CommandsFeature.getDriverCommandManager();
+            ImmutableCompoundCommand.Builder builder = new ImmutableCompoundCommand.Builder("Canva");
+            builder.addCommands(CanvasFeature.getDrawCanvaCommands());
+            manager.setCurrentCommand(builder.build());
+            addAsCommand.setEnabled(false);
+        });
+
         pack();
 
-       applyCustomSize.addActionListener(e -> {
-           if(radioRectangle.isSelected()) {
-               try {
-                   Shape rectangle = shapeFactory.createCustomRectangle(
-                           Double.parseDouble(fieldOriginX.getText().replace(",", ".")),
-                           Double.parseDouble(fieldOriginY.getText().replace(",", ".")),
-                           Double.parseDouble(fieldWidth.getText().replace(",", ".")),
-                           Double.parseDouble(fieldHeight.getText().replace(",", "."))
-                   );
+        applyCustomSize.addActionListener(e -> {
+            if (radioRectangle.isSelected()) {
+                try {
+                    Shape rectangle = shapeFactory.createCustomRectangle(
+                            Double.parseDouble(fieldOriginX.getText().replace(",", ".")),
+                            Double.parseDouble(fieldOriginY.getText().replace(",", ".")),
+                            Double.parseDouble(fieldWidth.getText().replace(",", ".")),
+                            Double.parseDouble(fieldHeight.getText().replace(",", "."))
+                    );
 
-                   CanvasFeature.setShape(rectangle);
-               }
-               catch (Exception ignored) {
-               }
+                    CanvasFeature.setShape(rectangle);
+                } catch (Exception ignored) {
+                }
 
 
-           }
-           else if(radioCircle.isSelected()) {
-               try {
-                   Shape circle = shapeFactory.createCircle(
-                           Double.parseDouble(fieldOriginX.getText().replace(",", ".")),
-                           Double.parseDouble(fieldOriginY.getText().replace(",", ".")),
-                           Double.parseDouble(fieldRadius.getText().replace(",", "."))
-                   );
+            } else if (radioCircle.isSelected()) {
+                try {
+                    Shape circle = shapeFactory.createCircle(
+                            Double.parseDouble(fieldOriginX.getText().replace(",", ".")),
+                            Double.parseDouble(fieldOriginY.getText().replace(",", ".")),
+                            Double.parseDouble(fieldRadius.getText().replace(",", "."))
+                    );
 
-                   CanvasFeature.setShape(circle);
-               }
-               catch (Exception ignored) {
-               }
-           }
+                    CanvasFeature.setShape(circle);
+
+                } catch (Exception ignored) {
+                }
+            }
+            addAsCommand.setEnabled(true);
         });
 
         btnSwapDimensions.addActionListener(e -> {
@@ -150,12 +157,11 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
             try {
                 originX = Double.parseDouble(fieldOriginX.getText().replace(",", "."));
                 originY = Double.parseDouble(fieldOriginY.getText().replace(",", "."));
-            }
-            catch (NumberFormatException ignored) {
+            } catch (NumberFormatException ignored) {
                 return;
             }
 
-            if(Objects.equals(orientationComboBox.getSelectedItem(), "Vertical")) {
+            if (Objects.equals(orientationComboBox.getSelectedItem(), "Vertical")) {
                 CanvasFeature.setShape(shapeFactory.createCustomRectangle(
                         originX, originY,
                         dimension.width, dimension.height
@@ -166,7 +172,9 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
                         dimension.height, dimension.width
                 ));
             }
+            addAsCommand.setEnabled(true);
         });
+
     }
 
     private void initPaperFormatMap() {
@@ -178,6 +186,7 @@ public class CanvasManagerWindow extends JFrame implements WindowComponent {
         paperFormatMap.put("A5", new Dimension(148, 210));
         paperFormatMap.put("A6", new Dimension(105, 148));
     }
+
 
     @Override
     public void HideIfVisibleAndShowIfHidden() {

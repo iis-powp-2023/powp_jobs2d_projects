@@ -9,6 +9,8 @@ import java.util.List;
 public class CommandRecorder {
     private List<DriverCommand> driverCommands = new ArrayList<>();
     private List<DriverCommand> transformCommands = new ArrayList<>();
+
+    private List<DriverCommand> canvas = new ArrayList<>();
     private int lastX;
     private int lastY;
 
@@ -35,6 +37,12 @@ public class CommandRecorder {
     public List<DriverCommand> getTransformCommands(){
         return transformCommands;
     }
+
+    public void deleteCanvas(){
+        this.canvas.clear();
+    }
+
+    public List<DriverCommand> getCanvas(){return canvas;}
 
     public void setLastPosition(int x, int y) {
         this.lastX = x;

@@ -6,7 +6,6 @@ import java.util.Iterator;
 public class CanvasVisitor implements ICommandVisitor{
 
     private Shape canvas;
-
     private boolean isIncluded;
 
     public boolean isIncluded() {
